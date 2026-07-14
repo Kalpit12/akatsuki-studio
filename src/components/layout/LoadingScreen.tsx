@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LOGO_SRC } from "@/components/brand/Logo";
+import { LOGO_SRC, INTRO_DONE_EVENT } from "@/components/brand/Logo";
 
 export function LoadingScreen() {
   const [progress, setProgress] = useState(0);
@@ -43,7 +43,13 @@ export function LoadingScreen() {
   }, []);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence
+      onExitComplete={() => {
+        // Fire only after the overlay is fully gone — otherwise header smoke
+        // plays behind the loader and looks like it never ran.
+        window.dispatchEvent(new Event(INTRO_DONE_EVENT));
+      }}
+    >
       {!done && (
         <motion.div
           className="fixed inset-0 z-[10001] flex flex-col items-center justify-center bg-black"
@@ -54,7 +60,6 @@ export function LoadingScreen() {
             transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
           }}
         >
-          {/* Soft red glow behind logo */}
           <motion.div
             className="pointer-events-none absolute h-64 w-64 rounded-full bg-[#e10600]/20 blur-[100px]"
             initial={{ opacity: 0, scale: 0.6 }}
@@ -80,7 +85,6 @@ export function LoadingScreen() {
                 fetchPriority="high"
               />
 
-              {/* Subtle shine sweep */}
               <motion.div
                 className="pointer-events-none absolute inset-0 overflow-hidden"
                 aria-hidden

@@ -8,6 +8,59 @@ import { getFeaturedProjects } from "@/data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
+function FeaturedProjectVideo({
+  src,
+  poster,
+  active,
+}: {
+  src: string;
+  poster: string;
+  active: boolean;
+}) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+
+    if (active) {
+      // Ensure source is ready, then play — React `autoPlay` alone is unreliable
+      // when panels toggle or when the file is large / below the fold.
+      const play = () => {
+        video.muted = true;
+        const p = video.play();
+        if (p) void p.catch(() => {});
+      };
+
+      if (video.readyState >= 2) play();
+      else {
+        video.addEventListener("loadeddata", play, { once: true });
+        video.load();
+      }
+    } else {
+      video.pause();
+      try {
+        video.currentTime = 0;
+      } catch {
+        /* ignore seek before ready */
+      }
+    }
+  }, [active, src]);
+
+  return (
+    <video
+      ref={ref}
+      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
+      src={src}
+      poster={poster}
+      muted
+      loop
+      playsInline
+      preload={active ? "auto" : "metadata"}
+    />
+  );
+}
+
 export function FeaturedProjects() {
   const projects = getFeaturedProjects();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,7 +94,6 @@ export function FeaturedProjects() {
       mounted = false;
       ctx.revert();
     };
-    // projects is a static filter of module data — don't depend on a fresh array each render
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -94,16 +146,13 @@ export function FeaturedProjects() {
               src={project.coverImage}
               alt=""
               className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
               aria-hidden
             />
-            <video
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
+            <FeaturedProjectVideo
               src={project.coverVideo}
               poster={project.coverImage}
-              autoPlay={activeIndex === i}
-              muted
-              loop
-              playsInline
+              active={activeIndex === i}
             />
             <div className="absolute inset-0 bg-black/40 transition-colors duration-700 group-hover:bg-black/25" />
 

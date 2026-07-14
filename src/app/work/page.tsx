@@ -5,7 +5,7 @@ import { WorkIndex } from "@/components/work/WorkIndex";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Selected films and campaigns by Akatsuki Studio — recent visual work built to move brands past the scroll.",
+    "Our most recent works — films and campaigns by Akatsuki Studio. Vibrant visuals that tell powerful stories.",
 };
 
 export default function WorkPage() {

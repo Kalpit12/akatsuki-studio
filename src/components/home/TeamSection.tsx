@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { team, type TeamMember } from "@/data/team";
@@ -32,7 +32,11 @@ function SocialIcon({
 
 function FounderSocials({ member }: { member: TeamMember }) {
   return (
-    <div className="absolute right-4 bottom-4 flex items-center gap-0.5 rounded-full bg-black/70 px-1.5 py-1.5 backdrop-blur-md">
+    <div
+      className="absolute right-4 bottom-4 flex items-center gap-0.5 rounded-full bg-black/70 px-1.5 py-1.5 backdrop-blur-md"
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+    >
       <SocialIcon href={member.social.instagram} label={`${member.name} on Instagram`}>
         <svg
           viewBox="0 0 24 24"
@@ -63,6 +67,82 @@ function FounderSocials({ member }: { member: TeamMember }) {
   );
 }
 
+function FounderPortrait({ member }: { member: TeamMember }) {
+  const [mobileSwap, setMobileSwap] = useState(false);
+  const hasHoverAlt = Boolean(member.hoverImage && member.hoverImage !== member.image);
+
+  const toggleMobileSwap = () => {
+    // Desktop keeps CSS hover — don't hijack fine-pointer devices
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (!hasHoverAlt) return;
+    setMobileSwap((v) => !v);
+  };
+
+  return (
+    <div
+      role={hasHoverAlt ? "button" : undefined}
+      tabIndex={hasHoverAlt ? 0 : undefined}
+      aria-pressed={hasHoverAlt ? mobileSwap : undefined}
+      aria-label={
+        hasHoverAlt
+          ? mobileSwap
+            ? `Show primary photo of ${member.name}`
+            : `Show alternate photo of ${member.name}`
+          : undefined
+      }
+      onClick={toggleMobileSwap}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleMobileSwap();
+        }
+      }}
+      className="group relative aspect-square cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] shadow-[0_24px_80px_rgba(0,0,0,0.45)] outline-none focus-visible:ring-2 focus-visible:ring-accent/70 [@media(hover:hover)_and_(pointer:fine)]:cursor-default"
+    >
+      {member.image ? (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={member.image}
+            alt={member.name}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition duration-700",
+              // Desktop hover (unchanged)
+              "[@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-0",
+              // Mobile / touch tap toggle
+              mobileSwap &&
+                "[@media(hover:none)]:scale-105 [@media(hover:none)]:opacity-0",
+            )}
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={member.hoverImage ?? member.image}
+            alt=""
+            className={cn(
+              "absolute inset-0 h-full w-full scale-105 object-cover opacity-0 transition duration-700",
+              "[@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-100 [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100",
+              mobileSwap &&
+                "[@media(hover:none)]:scale-100 [@media(hover:none)]:opacity-100",
+            )}
+            aria-hidden
+          />
+        </>
+      ) : null}
+
+      {hasHoverAlt ? (
+        <span
+          className="pointer-events-none absolute top-4 left-4 rounded-full bg-black/55 px-2.5 py-1 text-[10px] tracking-[0.18em] text-white/80 uppercase backdrop-blur-sm [@media(hover:hover)_and_(pointer:fine)]:hidden"
+          aria-hidden
+        >
+          Tap
+        </span>
+      ) : null}
+
+      <FounderSocials member={member} />
+    </div>
+  );
+}
+
 function FounderBlock({
   member,
   reverse,
@@ -82,27 +162,7 @@ function FounderBlock({
         data-story-portrait
         className={cn("lg:col-span-5", reverse && "lg:order-2")}
       >
-        <div className="group relative aspect-square overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
-          {member.image ? (
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={member.image}
-                alt={member.name}
-                className="absolute inset-0 h-full w-full object-cover transition duration-700 [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-0"
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={member.hoverImage ?? member.image}
-                alt=""
-                className="absolute inset-0 h-full w-full scale-105 object-cover opacity-0 transition duration-700 [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-100 [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100"
-                aria-hidden
-              />
-            </>
-          ) : null}
-
-          <FounderSocials member={member} />
-        </div>
+        <FounderPortrait member={member} />
 
         <div className="mt-5">
           <p className="font-display text-xl tracking-tight text-white md:text-2xl">

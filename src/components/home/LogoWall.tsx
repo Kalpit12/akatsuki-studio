@@ -71,6 +71,8 @@ export function LogoWall({
                     src={client.logo}
                     alt={client.name}
                     title={client.name}
+                    loading="lazy"
+                    decoding="async"
                     className="block h-11 w-auto max-w-[12rem] object-contain object-center transition duration-300 md:h-[3.25rem] md:max-w-[14rem]"
                   />
                   <span

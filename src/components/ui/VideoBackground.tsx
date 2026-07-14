@@ -33,6 +33,19 @@ export function VideoBackground({
     return () => window.removeEventListener("scroll", onScroll);
   }, [parallax]);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    const play = () => {
+      const p = video.play();
+      if (p) void p.catch(() => {});
+    };
+    if (video.readyState >= 2) play();
+    else video.addEventListener("canplay", play, { once: true });
+  }, [src]);
+
   return (
     <div className={cn("absolute inset-0 overflow-hidden bg-background", className)}>
       {poster && (
@@ -41,6 +54,8 @@ export function VideoBackground({
           src={poster}
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-center"
+          loading="eager"
+          decoding="async"
           aria-hidden
         />
       )}
@@ -49,11 +64,10 @@ export function VideoBackground({
         className="absolute inset-0 h-full w-full object-cover object-center"
         src={src}
         poster={poster}
-        autoPlay
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
       />
       {overlay && (
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-background/90" />

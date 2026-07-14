@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { notifyScroll, resetScrollBridge } from "@/lib/scroll-bridge";
+import { notifyScroll, resetScrollBridge, registerScrollController } from "@/lib/scroll-bridge";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,6 +20,10 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     });
 
     lenisRef.current = lenis;
+    registerScrollController({
+      stop: () => lenis.stop(),
+      start: () => lenis.start(),
+    });
 
     lenis.on("scroll", (e) => {
       ScrollTrigger.update();
@@ -57,6 +61,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     resetScrollBridge(lenis.scroll);
 
     return () => {
+      registerScrollController(null);
       lenis.destroy();
       lenisRef.current = null;
       resetScrollBridge(0);

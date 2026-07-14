@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { Logo } from "@/components/brand/Logo";
 import { MoonSplash } from "@/components/brand/MoonSplash";
 import { cn } from "@/lib/utils";
-import { subscribeScroll } from "@/lib/scroll-bridge";
+import { setScrollLocked, subscribeScroll } from "@/lib/scroll-bridge";
 
 function NavLink({
   href,
@@ -40,15 +40,62 @@ function NavLink({
   );
 }
 
+function MobileMenuLink({
+  href,
+  label,
+  accent,
+  onNavigate,
+}: {
+  href: string;
+  label: string;
+  accent?: boolean;
+  onNavigate: () => void;
+}) {
+  const [active, setActive] = useState(false);
+
+  return (
+    <Link
+      href={href}
+      onClick={onNavigate}
+      onPointerEnter={() => setActive(true)}
+      onPointerLeave={() => setActive(false)}
+      onPointerDown={() => setActive(true)}
+      onPointerUp={() => setActive(false)}
+      onPointerCancel={() => setActive(false)}
+      className={cn(
+        "heading-md relative isolate inline-flex w-fit max-w-full items-center py-1 transition-colors duration-300",
+        accent ? "text-accent" : "text-white",
+        active && !accent && "text-accent",
+        active && accent && "text-accent-hover",
+      )}
+    >
+      <MoonSplash active={active} />
+      <span className="relative z-10">{label}</span>
+      <span
+        aria-hidden
+        className={cn(
+          "absolute -bottom-1 left-0 h-px w-full origin-left bg-current transition-transform duration-300",
+          active ? "scale-x-100" : "scale-x-0",
+        )}
+      />
+    </Link>
+  );
+}
+
 export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
   const [open, setOpen] = useState(false);
   const [ctaHovered, setCtaHovered] = useState(false);
+  const openRef = useRef(open);
+  openRef.current = open;
 
   useEffect(() => {
     return subscribeScroll((y, delta) => {
+      // Read latest menu state without resizing this effect's deps
+      if (openRef.current) return;
+
       setScrolled(y > 80);
 
       if (y < 64) {
@@ -66,8 +113,9 @@ export function Header() {
   }, [pathname]);
 
   useEffect(() => {
-    if (!navVisible) setOpen(false);
-  }, [navVisible]);
+    setScrollLocked(open);
+    return () => setScrollLocked(false);
+  }, [open]);
 
   const navLinks = NAV_LINKS.map((link) => (
     <NavLink
@@ -82,7 +130,8 @@ export function Header() {
     <button
       type="button"
       aria-label="Toggle menu"
-      className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
+      aria-expanded={open}
+      className="relative z-[60] flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
       onClick={() => setOpen((v) => !v)}
     >
       <span className={cn("h-px w-6 bg-white transition", open && "translate-y-2 rotate-45")} />
@@ -95,28 +144,32 @@ export function Header() {
     <>
       <header
         className={cn(
-          "fixed top-0 right-0 left-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-          scrolled ? "glass py-4" : "bg-transparent py-6 md:py-8",
-          !navVisible && scrolled && "py-3 md:py-4",
+          "fixed top-0 right-0 left-0 z-50 max-w-[100vw] overflow-x-clip transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          scrolled || open ? "glass py-4" : "bg-transparent py-5 md:py-8",
+          !navVisible && scrolled && !open && "py-3 md:py-4",
         )}
       >
         <div
           className={cn(
-            "section-padding flex flex-col items-center transition-[gap] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-            navVisible ? "gap-5 md:gap-6" : "gap-0",
+            "section-padding flex max-w-[100vw] flex-col items-center transition-[gap] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+            navVisible || open ? "gap-5 md:gap-6" : "gap-0",
           )}
         >
-          <div className="relative flex w-full items-center justify-center">
-            <Logo className="h-11 w-auto md:h-14" priority />
+          <div className="relative flex w-full max-w-full items-center justify-center overflow-x-clip md:overflow-visible">
+            <Logo
+              className="h-10 w-auto max-w-[min(70vw,14rem)] md:h-14 md:max-w-none"
+              priority
+              smokeReveal
+            />
             <AnimatePresence>
-              {navVisible ? (
+              {navVisible || open ? (
                 <motion.div
                   key="header-actions"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute top-1/2 right-0 flex -translate-y-1/2 items-center gap-3"
+                  className="absolute top-1/2 right-0 z-[60] flex -translate-y-1/2 items-center gap-3"
                 >
                   <Link
                     href="/contact"
@@ -158,37 +211,45 @@ export function Header() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 flex flex-col justify-center bg-background/95 backdrop-blur-xl lg:hidden"
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-40 flex flex-col bg-background/95 backdrop-blur-xl lg:hidden"
           >
-            <nav className="section-padding flex flex-col gap-8">
+            {/* Top-anchored list — stays put while the menu is open */}
+            <nav className="section-padding flex flex-1 flex-col justify-start gap-5 overflow-y-auto overscroll-contain pt-28 pb-10 sm:gap-6 sm:pt-32">
               {NAV_LINKS.map((link, i) => (
                 <motion.div
                   key={link.href}
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -16 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
+                  transition={{
+                    delay: 0.05 + i * 0.04,
+                    duration: 0.4,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                 >
-                  <Link
+                  <MobileMenuLink
                     href={link.href}
-                    className="heading-md text-white"
-                    onClick={() => setOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
+                    label={link.label}
+                    onNavigate={() => setOpen(false)}
+                  />
                 </motion.div>
               ))}
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -16 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: NAV_LINKS.length * 0.05 }}
+                transition={{
+                  delay: 0.05 + NAV_LINKS.length * 0.04,
+                  duration: 0.4,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="pt-2"
               >
-                <Link
+                <MobileMenuLink
                   href="/contact"
-                  className="heading-md text-accent"
-                  onClick={() => setOpen(false)}
-                >
-                  Start a Project
-                </Link>
+                  label="Start a Project"
+                  accent
+                  onNavigate={() => setOpen(false)}
+                />
               </motion.div>
             </nav>
           </motion.div>

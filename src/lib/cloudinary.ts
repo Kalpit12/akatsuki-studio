@@ -135,8 +135,18 @@ export const MEDIA = {
     pxImg(1516680, 800),
   ],
 
-  /** Project covers — hospitality + automotive */
+  /** Project covers — hospitality + automotive + retail */
   projects: {
+    elias: {
+      video: "/elias-jewellery-campaign.mp4",
+      poster: "/elias-jewellery-campaign.jpg",
+      gallery: [
+        "/elias-jewellery-campaign.jpg",
+        pxImg(1454171),
+        pxImg(1191531),
+        pxImg(6044266),
+      ],
+    },
     resort: {
       video: pxVid(3571264, "3571264-uhd_2560_1440_30fps.mp4"),
       poster: pxImg(258154),

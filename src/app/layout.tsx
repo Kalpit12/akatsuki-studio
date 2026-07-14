@@ -9,12 +9,17 @@ const syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
+  // Loader holds the first paint ~3s — skipping preload avoids unused-preload console noise
+  preload: false,
+  display: "swap",
 });
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  preload: false,
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -38,8 +43,7 @@ export const metadata: Metadata = {
     description: SITE.description,
   },
   icons: {
-    icon: "/brand/akatsuki-logo.png",
-    apple: "/brand/akatsuki-logo.png",
+    icon: [{ url: "/brand/akatsuki-logo.png", type: "image/png" }],
   },
   robots: { index: true, follow: true },
 };

@@ -18,14 +18,16 @@ export function HeroSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const mobile = window.matchMedia("(max-width: 767px)").matches;
+
       gsap.fromTo(
         ".hero-line",
-        { y: 80, opacity: 0 },
+        { y: mobile ? 18 : 48, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 1.2,
-          stagger: 0.12,
+          duration: mobile ? 0.85 : 1.1,
+          stagger: mobile ? 0.08 : 0.1,
           ease: "power4.out",
           delay: 2.8,
         },
@@ -33,7 +35,7 @@ export function HeroSection() {
 
       gsap.fromTo(
         ".hero-eyebrow, .hero-support, .hero-cta",
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: mobile ? 12 : 20 },
         {
           opacity: 1,
           y: 0,
@@ -55,7 +57,7 @@ export function HeroSection() {
       });
 
       gsap.to(".hero-content", {
-        y: -80,
+        y: mobile ? -40 : -80,
         opacity: 0,
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -72,8 +74,8 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-[200vh]">
-      <div className="sticky top-0 h-screen overflow-hidden">
+    <section ref={sectionRef} className="relative h-[200vh] overflow-x-clip">
+      <div className="sticky top-0 h-screen overflow-x-clip overflow-y-hidden">
         <div className="hero-video-wrap absolute inset-0 scale-105 will-change-transform">
           <VideoBackground src={MEDIA.hero} poster={MEDIA.heroPoster} overlay />
         </div>
@@ -83,41 +85,52 @@ export function HeroSection() {
           aria-hidden
         />
 
-        <div className="hero-content relative z-10 flex h-full flex-col items-center justify-center px-6 pt-36 pb-20 text-center md:pt-44 lg:pt-48">
-          <p className="hero-eyebrow label mb-6 text-white/80 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+        <div className="hero-content relative z-10 flex h-full w-full max-w-[100vw] flex-col items-center justify-center overflow-x-clip px-4 pt-24 pb-14 text-center sm:px-6 sm:pt-36 sm:pb-20 md:pt-44 lg:pt-48">
+          <p className="hero-eyebrow label mb-3 max-w-[22rem] px-1 text-[9px] leading-relaxed tracking-[0.14em] text-white/80 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] sm:mb-6 sm:max-w-none sm:text-xs sm:tracking-[0.2em] md:text-xs">
             Hospitality & automotive · Nairobi, Kenya
           </p>
+
           <h1
             ref={titleRef}
-            className="heading-xl max-w-5xl text-balance text-white drop-shadow-[0_4px_32px_rgba(0,0,0,0.85)]"
+            className="font-display w-full max-w-[min(100%,22rem)] text-[1.7rem] font-medium leading-[1.22] tracking-[-0.025em] text-white drop-shadow-[0_4px_32px_rgba(0,0,0,0.85)] sm:max-w-xl sm:text-[clamp(1.85rem,5vw,3.25rem)] sm:leading-[1.12] md:max-w-5xl md:text-[clamp(2.5rem,calc(0.55rem+5.8vw),7rem)] md:leading-[1.02] md:tracking-[-0.03em] md:text-balance"
           >
             <span className="hero-line block">Great property.</span>
-            <span className="hero-line block">Quiet showroom.</span>
-            <span className="hero-line block">
-              Let&apos;s{" "}
-              <RotatingText
-                words={HERO_VERBS}
-                className="text-accent"
-                startDelayMs={4200}
-              />{" "}
-              that.
+            <span className="hero-line mt-[0.06em] block md:mt-[0.08em]">
+              Quiet showroom.
+            </span>
+            {/* Desktop keeps one locked line; mobile allows natural spacing */}
+            <span className="hero-line mt-[0.06em] block md:mt-[0.08em]">
+              <span className="inline max-md:inline md:whitespace-nowrap">
+                Let&apos;s{" "}
+                <RotatingText
+                  words={HERO_VERBS}
+                  className="text-accent"
+                  startDelayMs={4200}
+                />{" "}
+                that.
+              </span>
             </span>
           </h1>
-          <p className="hero-support mt-8 max-w-xl text-base leading-relaxed text-white/75 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] md:text-lg">
+
+          <p className="hero-support mt-4 max-w-[20rem] text-[0.8125rem] leading-relaxed text-white/75 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] sm:mt-8 sm:max-w-xl sm:text-base md:text-lg">
             Cinematic campaigns for hotels, resorts, and automotive brands —
             built to fill rooms, move metal, and own the feed.
           </p>
-          <div className="hero-cta mt-10 flex flex-col items-center gap-5 sm:flex-row sm:gap-6">
-            <MagneticButton href="/contact">Start a Project →</MagneticButton>
+
+          <div className="hero-cta mt-6 flex w-full max-w-sm flex-col items-stretch gap-3 sm:mt-10 sm:max-w-none sm:w-auto sm:flex-row sm:items-center sm:gap-6">
+            <MagneticButton href="/contact" className="justify-center">
+              Start a Project →
+            </MagneticButton>
             <MagneticButton
               href="/work"
               variant="outline"
-              className="border-white/40 bg-black/25 backdrop-blur-sm hover:border-accent hover:bg-accent/15"
+              className="justify-center border-white/40 bg-black/25 backdrop-blur-sm hover:border-accent hover:bg-accent/15"
             >
               See the work ↓
             </MagneticButton>
           </div>
-          <span className="hero-cta mt-10 animate-pulse-glow text-xs uppercase tracking-[0.3em] text-white/55">
+
+          <span className="hero-cta mt-7 animate-pulse-glow text-[10px] uppercase tracking-[0.3em] text-white/55 sm:mt-10 sm:text-xs">
             Scroll
           </span>
         </div>

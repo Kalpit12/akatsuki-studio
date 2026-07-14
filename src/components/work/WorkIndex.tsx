@@ -23,11 +23,11 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         "[data-work-hero]",
-        { y: 48, opacity: 0 },
+        { y: 36, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 1.1,
+          duration: 0.95,
           ease: "power3.out",
           stagger: 0.08,
         },
@@ -35,14 +35,13 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
 
       gsap.fromTo(
         "[data-work-tile]",
-        { y: 80, opacity: 0, clipPath: "inset(12% 8% 12% 8%)" },
+        { y: 48, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1.15,
+          duration: 0.95,
           ease: "power3.out",
-          stagger: 0.14,
+          stagger: 0.1,
           scrollTrigger: {
             trigger: "[data-work-grid]",
             start: "top 82%",
@@ -52,11 +51,11 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
 
       gsap.fromTo(
         "[data-work-cta]",
-        { y: 40, opacity: 0 },
+        { y: 32, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.9,
+          duration: 0.85,
           ease: "power3.out",
           scrollTrigger: {
             trigger: "[data-work-cta]",
@@ -72,36 +71,44 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
   }, []);
 
   return (
-    <div ref={rootRef} className="pt-28 md:pt-36">
-      <header className="section-padding pb-14 md:pb-20">
+    <div ref={rootRef} className="relative pt-28 md:pt-36">
+      <div
+        className="pointer-events-none absolute top-24 right-[8%] h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(225,6,0,0.16)_0%,transparent_70%)] blur-3xl"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute top-48 left-[-4%] h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(225,6,0,0.1)_0%,transparent_70%)] blur-3xl"
+        aria-hidden
+      />
+
+      <header className="section-padding relative pb-14 md:pb-20">
         <p data-work-hero className="label mb-5 text-accent">
-          Selected work
+          Our work
         </p>
-        <h1
-          data-work-hero
-          className="heading-xl max-w-4xl text-balance"
-        >
-          Recent films &amp; campaigns
+        <h1 data-work-hero className="heading-xl max-w-4xl text-balance">
+          Our most recent{" "}
+          <span className="text-accent">works</span>
+          <span
+            className="ml-1.5 inline-block h-2.5 w-2.5 rounded-full bg-accent align-middle shadow-[0_0_16px_rgba(225,6,0,0.7)]"
+            aria-hidden
+          />
         </h1>
+        <span
+          data-work-hero
+          className="mt-6 block h-px w-16 bg-accent/70 shadow-[0_0_10px_rgba(225,6,0,0.45)]"
+          aria-hidden
+        />
         <p
           data-work-hero
-          className="mt-6 max-w-xl text-base leading-relaxed text-muted md:text-lg"
+          className="mt-6 max-w-xl border-l border-accent/35 pl-4 text-base leading-relaxed text-muted md:text-lg"
         >
-          Visuals built to move people — and brands — past the scroll. A selection
-          of briefs from recent years.
+          Vibrant visuals that tell powerful stories — films and campaigns from
+          recent years.
         </p>
-        <div
-          data-work-hero
-          className="mt-10 flex items-center gap-6 border-t border-white/10 pt-6"
-        >
-          <p className="label text-white/40">{String(projects.length).padStart(2, "0")} projects</p>
-          <span className="h-px flex-1 bg-gradient-to-r from-white/15 to-transparent" />
-          <p className="label text-white/40">Hover to preview</p>
-        </div>
       </header>
 
-      <div data-work-grid className="section-padding pb-24 md:pb-32">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-x-6 md:gap-y-10 lg:gap-x-8 lg:gap-y-14">
+      <div data-work-grid className="section-padding relative pb-24 md:pb-32">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-x-8 md:gap-y-14 lg:gap-x-10 lg:gap-y-16">
           {projects.map((project, i) => (
             <WorkProjectTile key={project.slug} project={project} index={i} />
           ))}
@@ -110,25 +117,31 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
 
       <section
         data-work-cta
-        className="section-padding border-t border-white/10 py-24 md:py-32"
+        className="section-padding relative overflow-hidden border-t border-accent/20 py-24 md:py-32"
       >
-        <div className="flex flex-col items-start justify-between gap-10 md:flex-row md:items-end">
+        <div
+          className="pointer-events-none absolute top-1/2 right-[10%] h-56 w-56 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(225,6,0,0.16)_0%,transparent_70%)] blur-3xl"
+          aria-hidden
+        />
+        <div className="relative flex flex-col items-start justify-between gap-10 md:flex-row md:items-end">
           <div>
-            <p className="label mb-4 text-accent">Next brief</p>
+            <p className="label mb-4 text-accent">Next chapter</p>
             <h2 className="heading-lg max-w-2xl text-balance">
-              Like what you see? Let&apos;s build the next one.
+              Like what you see?
+              <br />
+              Let&apos;s <span className="text-accent">connect</span>.
             </h2>
             <p className="mt-4 max-w-md text-muted">
-              Tell us what you&apos;re launching — we&apos;ll tell you how the work
+              Tell us what you&apos;re building — we&apos;ll tell you how the work
               should land.
             </p>
           </div>
           <MagneticButton href="/contact" variant="primary">
-            Start a project →
+            Let&apos;s Talk →
           </MagneticButton>
         </div>
 
-        <div className="mt-16 flex flex-wrap gap-x-8 gap-y-3 text-sm text-muted">
+        <div className="relative mt-16 flex flex-wrap gap-x-8 gap-y-3 text-sm text-muted">
           <Link href="/services" className="transition hover:text-white">
             Services
           </Link>

@@ -21,6 +21,34 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "elias-jewellery-campaign",
+    title: "Elias Jewellery Campaign",
+    client: "Elias Jewelers",
+    category: "Campaign Film",
+    industry: "Luxury Retail",
+    year: "2025",
+    excerpt:
+      "A quiet, light-led film where every stone and silhouette gets space to breathe — built to stop the scroll for luxury jewellery.",
+    coverVideo: MEDIA.projects.elias.video,
+    coverImage: MEDIA.projects.elias.poster,
+    heroVideo: MEDIA.projects.elias.video,
+    challenge:
+      "Fine jewellery dies in noisy feeds. Elias needed a campaign that felt as intentional as the craft — macro craft, soft light, zero visual clutter.",
+    direction:
+      "Restraint first: controlled lighting, close detail on metal and stone, and a tempo that lets desire settle. Delivered as a hero film with social cutdowns.",
+    results: [
+      { label: "Campaign reach", value: "850K+" },
+      { label: "Engagement lift", value: "+2.1×" },
+      { label: "Showroom enquiries", value: "+28%" },
+    ],
+    credits: [
+      { role: "Creative Direction", name: "Akatsuki Studio" },
+      { role: "Client", name: "Elias Jewelers" },
+    ],
+    gallery: [...MEDIA.projects.elias.gallery],
+    featured: true,
+  },
+  {
     slug: "hemingways-arrival",
     title: "Arrival Ritual",
     client: "Hemingways Nairobi",
