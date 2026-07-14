@@ -12,10 +12,10 @@ import { cn } from "@/lib/utils";
 gsap.registerPlugin(ScrollTrigger);
 
 const PILLARS = [
-  { label: "Film", detail: "Commercials & brand films" },
-  { label: "Automotive", detail: "Launches & dealerships" },
-  { label: "Real estate", detail: "Property showcases" },
-  { label: "Digital", detail: "Campaigns & websites" },
+  { label: "Film", detail: "Commercials & brand films", accent: false },
+  { label: "Automotive", detail: "Launches & dealerships", accent: true },
+  { label: "Real estate", detail: "Property showcases", accent: false },
+  { label: "Digital", detail: "Campaigns & websites", accent: true },
 ] as const;
 
 type AboutSectionProps = {
@@ -191,12 +191,24 @@ export function AboutSection({
           {PILLARS.map((pillar) => (
             <li
               key={pillar.label}
-              className="group bg-background px-4 py-5 transition-colors hover:bg-white/[0.03] md:px-5 md:py-6"
+              className={cn(
+                "px-4 py-5 md:px-5 md:py-6",
+                pillar.accent ? "bg-white/[0.03]" : "bg-background",
+              )}
             >
-              <p className="font-display text-lg text-white transition-colors group-hover:text-accent md:text-xl">
+              <p
+                className={cn(
+                  "font-display text-lg md:text-xl",
+                  pillar.accent ? "text-accent" : "text-white",
+                )}
+              >
                 {pillar.label}
               </p>
-              <p className="mt-2 text-xs leading-relaxed text-muted">{pillar.detail}</p>
+              {pillar.accent ? (
+                <p className="mt-2 text-xs leading-relaxed text-muted">
+                  {pillar.detail}
+                </p>
+              ) : null}
             </li>
           ))}
         </ul>
