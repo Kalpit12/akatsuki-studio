@@ -5,7 +5,9 @@ let lastScrollY = 0;
 
 export function subscribeScroll(listener: ScrollListener) {
   listeners.add(listener);
-  return () => listeners.delete(listener);
+  return () => {
+    listeners.delete(listener);
+  };
 }
 
 export function notifyScroll(scrollY: number) {
