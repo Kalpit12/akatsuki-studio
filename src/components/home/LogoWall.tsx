@@ -1,0 +1,80 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { Marquee, MarqueeItem } from "@/components/ui/Marquee";
+import { clients } from "@/data/clients";
+
+type LogoWallProps = {
+  /** Hide the section intro (useful on /clients where the page hero already covers it) */
+  showIntro?: boolean;
+  /** Copy under the logo strip */
+  caption?: ReactNode;
+};
+
+export function LogoWall({
+  showIntro = true,
+  caption = (
+    <>
+      Brands that chose impact over noise — and stayed for the work.
+    </>
+  ),
+}: LogoWallProps) {
+  return (
+    <section className="border-y border-white/10 py-14 md:py-16">
+      {showIntro ? (
+        <div className="section-padding mb-8 flex flex-col gap-2 md:mb-10 md:flex-row md:items-end md:justify-between">
+          <p className="label">Brands we&apos;ve worked with</p>
+          <p className="max-w-md text-sm leading-relaxed text-muted">
+            Trust earned in pixels, metal, and moments that stick.
+          </p>
+        </div>
+      ) : null}
+
+      {/* Full-bleed white strip — keeps brand colors true */}
+      <div className="relative overflow-hidden bg-white py-7 shadow-[inset_0_1px_0_rgba(225,6,0,0.35),inset_0_-1px_0_rgba(225,6,0,0.35)] md:py-9">
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white to-transparent md:w-24"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white to-transparent md:w-24"
+          aria-hidden
+        />
+        <Marquee speed={32} className="gap-0">
+          {clients.map((client, i) => (
+            <MarqueeItem
+              key={`${client.slug}-${i}`}
+              className="text-transparent"
+            >
+              <span className="inline-flex h-14 items-center justify-center gap-12 px-4 md:h-16 md:gap-16 md:px-6">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={client.logo}
+                  alt={client.name}
+                  title={client.name}
+                  className="block h-11 w-auto max-w-[12rem] object-contain object-center transition duration-300 md:h-[3.25rem] md:max-w-[14rem]"
+                />
+                <span
+                  className="h-1.5 w-1.5 shrink-0 self-center rounded-full bg-accent"
+                  aria-hidden
+                />
+              </span>
+            </MarqueeItem>
+          ))}
+        </Marquee>
+      </div>
+
+      {caption ? (
+        <div className="section-padding mt-8 text-center md:mt-10">
+          {typeof caption === "string" ? (
+            <p className="font-display text-lg leading-snug text-white/80 md:text-xl">
+              {caption}
+            </p>
+          ) : (
+            caption
+          )}
+        </div>
+      ) : null}
+    </section>
+  );
+}
