@@ -34,19 +34,19 @@ export function LogoWall({
       <div className="relative">
         {/* Top edge: faint rail + beam traveling right */}
         <div
-          className="pointer-events-none absolute inset-x-0 top-0 z-30 h-3 -translate-y-1/2 overflow-visible"
+          className="pointer-events-none absolute inset-x-0 top-0 z-30 h-2 -translate-y-1/2 overflow-visible"
           aria-hidden
         >
-          <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-accent/45" />
+          <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-accent/30" />
           <span className="logo-wall-beam logo-wall-beam--right" />
         </div>
 
         {/* Bottom edge: faint rail + beam traveling left */}
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-3 translate-y-1/2 overflow-visible"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-2 translate-y-1/2 overflow-visible"
           aria-hidden
         >
-          <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-accent/45" />
+          <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-accent/30" />
           <span className="logo-wall-beam logo-wall-beam--left" />
         </div>
 
