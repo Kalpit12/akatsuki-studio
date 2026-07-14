@@ -119,7 +119,7 @@ function ClientSectorBlock({
         </Link>
       </div>
 
-      <ul className="space-y-3">
+      <ul className="space-y-0">
         {clients.map((client, i) => (
           <ClientRow
             key={client.slug}
@@ -138,41 +138,42 @@ function ClientRow({ client, index }: { client: Client; index: number }) {
 
   const inner = (
     <>
-      <span className="flex items-center font-mono text-xs tracking-[0.2em] text-accent md:col-span-1">
-        {String(index).padStart(2, "0")}
-      </span>
+      <div className="flex min-w-0 flex-1 items-center gap-3 md:gap-3.5">
+        <span className="w-7 shrink-0 font-mono text-xs tracking-[0.2em] text-accent">
+          {String(index).padStart(2, "0")}
+        </span>
 
-      {/* White logo strip — true brand colors, centered */}
-      <div className="md:col-span-3">
-        <div className="flex h-20 w-full items-center justify-center overflow-hidden bg-white px-4 shadow-[inset_3px_0_0_0_#e10600] transition duration-300 group-hover:shadow-[inset_3px_0_0_0_#e10600,0_0_0_1px_rgba(225,6,0,0.25)] md:h-24 md:px-5">
+        <span className="mr-2 flex h-8 w-20 shrink-0 items-center justify-start md:mr-4 md:h-9 md:w-24">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={client.logo}
             alt={`${client.name} logo`}
-            className="mx-auto h-12 w-auto max-h-14 max-w-[90%] object-contain object-center md:h-14"
+            width={96}
+            height={36}
+            className="max-h-full max-w-full object-contain object-left opacity-[0.88] brightness-0 invert"
             loading="lazy"
             decoding="async"
           />
+        </span>
+
+        <div className="flex min-w-0 flex-col justify-center">
+          <h3
+            className={cn(
+              "font-display text-2xl leading-tight text-white transition-colors md:text-3xl",
+              hasWork && "group-hover:text-accent",
+            )}
+          >
+            {client.name}
+          </h3>
+          <p className="mt-1 text-xs uppercase tracking-[0.16em] text-white/40">
+            {client.detail}
+          </p>
         </div>
       </div>
 
-      <div className="flex flex-col justify-center md:col-span-5">
-        <h3
-          className={cn(
-            "font-display text-2xl leading-tight text-white transition-colors md:text-3xl",
-            hasWork && "group-hover:text-accent",
-          )}
-        >
-          {client.name}
-        </h3>
-        <p className="mt-1.5 text-xs uppercase tracking-[0.16em] text-white/40">
-          {client.detail}
-        </p>
-      </div>
-
-      <div className="flex items-center md:col-span-3 md:justify-end">
+      <div className="flex shrink-0 items-center justify-end">
         {hasWork && project ? (
-          <div className="relative mr-4 hidden h-14 w-24 overflow-hidden border border-white/10 md:block">
+          <div className="relative mr-4 hidden h-14 w-24 overflow-hidden md:block">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={project.coverImage}
@@ -199,7 +200,7 @@ function ClientRow({ client, index }: { client: Client; index: number }) {
   );
 
   const rowClass =
-    "client-row group grid grid-cols-1 items-center gap-5 border border-white/10 bg-white/[0.02] px-4 py-4 transition-colors hover:border-white/20 hover:bg-white/[0.04] md:grid-cols-12 md:gap-6 md:px-5 md:py-5";
+    "client-row group flex flex-col gap-3 border-b border-white/10 py-5 transition-colors hover:border-white/20 sm:flex-row sm:items-center sm:justify-between sm:gap-6 md:py-6";
 
   if (hasWork && client.workSlug) {
     return (
