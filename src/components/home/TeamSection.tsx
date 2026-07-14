@@ -113,6 +113,8 @@ function FounderPortrait({ member }: { member: TeamMember }) {
               mobileSwap &&
                 "[@media(hover:none)]:scale-105 [@media(hover:none)]:opacity-0",
             )}
+            loading="lazy"
+            decoding="async"
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -124,6 +126,8 @@ function FounderPortrait({ member }: { member: TeamMember }) {
               mobileSwap &&
                 "[@media(hover:none)]:scale-100 [@media(hover:none)]:opacity-100",
             )}
+            loading="lazy"
+            decoding="async"
             aria-hidden
           />
         </>

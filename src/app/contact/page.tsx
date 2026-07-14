@@ -40,16 +40,18 @@ export default function ContactPage() {
         src={MEDIA.contactPoster}
         alt=""
         className="pointer-events-none fixed inset-0 -z-20 h-full w-full object-cover opacity-25"
+        loading="lazy"
+        decoding="async"
         aria-hidden
       />
       <video
         className="pointer-events-none fixed inset-0 -z-20 h-full w-full object-cover opacity-20"
         src={MEDIA.contact}
-        poster={MEDIA.contactPoster}
         autoPlay
         muted
         loop
         playsInline
+        preload="metadata"
         aria-hidden
       />
       <div

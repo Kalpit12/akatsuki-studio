@@ -10,11 +10,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 function FeaturedProjectVideo({
   src,
-  poster,
   active,
 }: {
   src: string;
-  poster: string;
   active: boolean;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -52,11 +50,10 @@ function FeaturedProjectVideo({
       ref={ref}
       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
       src={src}
-      poster={poster}
       muted
       loop
       playsInline
-      preload={active ? "auto" : "metadata"}
+      preload={active ? "auto" : "none"}
     />
   );
 }
@@ -151,7 +148,6 @@ export function FeaturedProjects() {
             />
             <FeaturedProjectVideo
               src={project.coverVideo}
-              poster={project.coverImage}
               active={activeIndex === i}
             />
             <div className="absolute inset-0 bg-black/40 transition-colors duration-700 group-hover:bg-black/25" />

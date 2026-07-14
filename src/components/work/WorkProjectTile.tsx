@@ -74,6 +74,8 @@ export function WorkProjectTile({
             "absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
             hovered ? "scale-[1.04] opacity-0" : "scale-100 opacity-100",
           )}
+          loading="lazy"
+          decoding="async"
           aria-hidden
         />
         <video
@@ -83,11 +85,10 @@ export function WorkProjectTile({
             hovered ? "scale-[1.04] opacity-100" : "scale-100 opacity-0",
           )}
           src={project.coverVideo}
-          poster={project.coverImage}
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
         />
 
         <span

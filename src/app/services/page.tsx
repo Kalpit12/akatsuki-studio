@@ -37,16 +37,18 @@ export default function ServicesPage() {
                   src={service.poster}
                   alt=""
                   className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                   aria-hidden
                 />
                 <video
                   className="relative h-full w-full object-cover"
                   src={service.video}
-                  poster={service.poster}
                   autoPlay
                   muted
                   loop
                   playsInline
+                  preload="metadata"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
                 <div className="pointer-events-none absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent" />

@@ -52,6 +52,8 @@ export default async function JournalArticlePage({ params }: Props) {
             src={post.image}
             alt=""
             className="h-full w-full object-cover"
+            fetchPriority="low"
+            decoding="async"
             aria-hidden
           />
           <div className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent" />

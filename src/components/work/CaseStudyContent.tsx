@@ -19,16 +19,19 @@ export function CaseStudyContent({
           src={project.coverImage}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
+          // Case hero is LCP on this page — keep eager, but low so React skips unused preloads
+          fetchPriority="low"
+          decoding="async"
           aria-hidden
         />
         <video
           className="absolute inset-0 h-full w-full object-cover"
           src={project.heroVideo}
-          poster={project.coverImage}
           autoPlay
           muted
           loop
           playsInline
+          preload="metadata"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-black/30 to-transparent" />
         <div className="section-padding relative flex h-full flex-col justify-end pb-16 pt-32">
@@ -104,15 +107,16 @@ export function CaseStudyContent({
                   src={p.coverImage}
                   alt={p.title}
                   className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <video
                   className="relative h-full w-full object-cover transition group-hover:scale-105"
                   src={p.coverVideo}
-                  poster={p.coverImage}
                   muted
                   loop
                   playsInline
-                  preload="metadata"
+                  preload="none"
                   onMouseEnter={(e) => void e.currentTarget.play()}
                   onMouseLeave={(e) => {
                     e.currentTarget.pause();

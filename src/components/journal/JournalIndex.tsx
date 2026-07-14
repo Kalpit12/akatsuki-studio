@@ -95,6 +95,8 @@ export function JournalIndex({ posts }: JournalIndexProps) {
                 src={featured.image}
                 alt={featured.title}
                 className="h-full w-full object-cover transition duration-[1.1s] ease-out group-hover:scale-[1.04]"
+                fetchPriority="low"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-background/40" />
               <div className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent" />
@@ -151,6 +153,8 @@ export function JournalIndex({ posts }: JournalIndexProps) {
                     src={post.image}
                     alt=""
                     className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
                     aria-hidden
                   />
                 </div>

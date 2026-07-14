@@ -45,17 +45,19 @@ export function ServicesPreview() {
         src={current.poster}
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
+        loading="lazy"
+        decoding="async"
         aria-hidden
       />
       <video
         key={current.id}
         className="absolute inset-0 h-full w-full object-cover"
         src={current.video}
-        poster={current.poster}
         autoPlay
         muted
         loop
         playsInline
+        preload="metadata"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/50" />
 

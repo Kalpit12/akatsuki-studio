@@ -119,6 +119,8 @@ export function CraftSection() {
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out ${
               i === active ? "opacity-100" : "opacity-0"
             }`}
+            loading="lazy"
+            decoding="async"
           />
         ))}
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/92 to-background/55" />

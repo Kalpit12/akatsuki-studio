@@ -242,6 +242,8 @@ export function StudioGallery() {
               src={space.src}
               alt={`${space.title} — Akatsuki Studio`}
               className="absolute inset-0 h-full w-full object-cover transition duration-[1.1s] ease-out group-hover:scale-[1.04]"
+              loading="lazy"
+              decoding="async"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-80 transition duration-500 group-hover:opacity-95" />
 

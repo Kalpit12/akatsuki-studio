@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { Marquee, MarqueeItem } from "@/components/ui/Marquee";
-import { clients } from "@/data/clients";
+import { clientRoster, clients } from "@/data/clients";
 
 type LogoWallProps = {
   /** Hide the section intro (useful on /clients where the page hero already covers it) */
@@ -10,6 +10,9 @@ type LogoWallProps = {
   /** Copy under the logo strip */
   caption?: ReactNode;
 };
+
+/** First logos likely in view when the strip mounts — fetch early, skip React preload. */
+const EAGER_COUNT = 8;
 
 export function LogoWall({
   showIntro = true,
@@ -60,28 +63,37 @@ export function LogoWall({
             aria-hidden
           />
           <Marquee speed={32} className="gap-0">
-            {clients.map((client, i) => (
-              <MarqueeItem
-                key={`${client.slug}-${i}`}
-                className="text-transparent"
-              >
-                <span className="inline-flex h-14 items-center justify-center gap-12 px-4 md:h-16 md:gap-16 md:px-6">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={client.logo}
-                    alt={client.name}
-                    title={client.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="block h-11 w-auto max-w-[12rem] object-contain object-center transition duration-300 md:h-[3.25rem] md:max-w-[14rem]"
-                  />
-                  <span
-                    className="h-1.5 w-1.5 shrink-0 self-center rounded-full bg-accent"
-                    aria-hidden
-                  />
-                </span>
-              </MarqueeItem>
-            ))}
+            {clients.map((client, i) => {
+              // Marquee duplicates children — only eager-load the first pass of near-viewport logos
+              const eager =
+                i < EAGER_COUNT && i < clientRoster.length;
+              return (
+                <MarqueeItem
+                  key={`${client.slug}-${i}`}
+                  className="text-transparent"
+                >
+                  <span className="inline-flex h-14 items-center justify-center gap-12 px-4 md:h-16 md:gap-16 md:px-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={client.logo}
+                      alt={client.name}
+                      title={client.name}
+                      width={180}
+                      height={52}
+                      loading={eager ? "eager" : "lazy"}
+                      // fetchPriority=low skips React 19 auto <link rel="preload">
+                      fetchPriority="low"
+                      decoding="async"
+                      className="block h-11 w-auto max-w-[12rem] object-contain object-center transition duration-300 md:h-[3.25rem] md:max-w-[14rem]"
+                    />
+                    <span
+                      className="h-1.5 w-1.5 shrink-0 self-center rounded-full bg-accent"
+                      aria-hidden
+                    />
+                  </span>
+                </MarqueeItem>
+              );
+            })}
           </Marquee>
         </div>
       </div>

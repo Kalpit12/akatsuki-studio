@@ -118,6 +118,8 @@ export function ReelSection() {
                     src={item.poster}
                     alt=""
                     className="absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
                     aria-hidden
                   />
                   <video
@@ -125,11 +127,11 @@ export function ReelSection() {
                       isActive ? "scale-100 opacity-100" : "scale-[1.04] opacity-75"
                     }`}
                     src={item.video}
-                    poster={item.poster}
-                    autoPlay
+                    autoPlay={isActive}
                     muted
                     loop
                     playsInline
+                    preload={isActive ? "metadata" : "none"}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/35" />
                   <div

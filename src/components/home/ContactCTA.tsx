@@ -11,16 +11,18 @@ export function ContactCTA() {
         src={MEDIA.contactPoster}
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
+        loading="lazy"
+        decoding="async"
         aria-hidden
       />
       <video
         className="absolute inset-0 h-full w-full object-cover"
         src={MEDIA.contact}
-        poster={MEDIA.contactPoster}
         autoPlay
         muted
         loop
         playsInline
+        preload="metadata"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/55" />
       {/* Brand red atmosphere */}

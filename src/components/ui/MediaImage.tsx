@@ -16,6 +16,7 @@ export function MediaImage({ src, alt, className, priority }: MediaImageProps) {
       src={src}
       alt={alt}
       loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : "low"}
       decoding="async"
       className={cn("h-full w-full object-cover", className)}
     />

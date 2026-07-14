@@ -150,6 +150,8 @@ function ClientRow({ client, index }: { client: Client; index: number }) {
             src={client.logo}
             alt={`${client.name} logo`}
             className="mx-auto h-12 w-auto max-h-14 max-w-[90%] object-contain object-center md:h-14"
+            loading="lazy"
+            decoding="async"
           />
         </div>
       </div>
@@ -176,6 +178,8 @@ function ClientRow({ client, index }: { client: Client; index: number }) {
               src={project.coverImage}
               alt=""
               className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+              loading="lazy"
+              decoding="async"
               aria-hidden
             />
           </div>

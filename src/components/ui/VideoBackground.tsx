@@ -54,7 +54,8 @@ export function VideoBackground({
           src={poster}
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-center"
-          loading="eager"
+          // Avoid React 19 SSR <link rel="preload"> — loader delays paint and triggers console warnings
+          fetchPriority="low"
           decoding="async"
           aria-hidden
         />
@@ -63,7 +64,6 @@ export function VideoBackground({
         ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover object-center"
         src={src}
-        poster={poster}
         muted
         loop
         playsInline

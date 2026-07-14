@@ -35,6 +35,8 @@ export function MediaVideo({
           src={poster}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
+          loading="lazy"
+          decoding="async"
           aria-hidden
         />
       )}

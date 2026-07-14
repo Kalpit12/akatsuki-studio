@@ -104,7 +104,10 @@ export function Logo({
       width={308}
       height={89}
       decoding="async"
+      // Header logo shares the same URL as the loader mark — keep it low so React
+      // does not emit a second unused preload while the intro screen is up.
       loading={priority ? "eager" : "lazy"}
+      fetchPriority="low"
       className={cn("relative z-10 h-auto w-auto object-contain", className)}
     />
   );
