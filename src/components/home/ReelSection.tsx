@@ -9,12 +9,12 @@ import { MEDIA } from "@/lib/cloudinary";
 gsap.registerPlugin(ScrollTrigger);
 
 const REELS = [
-  { ...MEDIA.reel[0], tag: "Hospitality · F&B", meta: "Resort · 0:28" },
-  { ...MEDIA.reel[1], tag: "Hospitality", meta: "Property · 0:45" },
-  { ...MEDIA.reel[2], tag: "Automotive", meta: "Launch · 0:40" },
-  { ...MEDIA.reel[3], tag: "Hospitality", meta: "Coast · 0:32" },
-  { ...MEDIA.reel[4], tag: "Automotive", meta: "Detail · 0:22" },
-  { ...MEDIA.reel[5], tag: "Hospitality", meta: "Lobby · 0:35" },
+  { ...MEDIA.reel[0], tag: "Campaign · Brand", meta: "Kitchen · 0:28" },
+  { ...MEDIA.reel[1], tag: "Commercial", meta: "Lifestyle · 0:45" },
+  { ...MEDIA.reel[2], tag: "Launch", meta: "Film · 0:40" },
+  { ...MEDIA.reel[3], tag: "Brand", meta: "Atmosphere · 0:32" },
+  { ...MEDIA.reel[4], tag: "Detail", meta: "Craft · 0:22" },
+  { ...MEDIA.reel[5], tag: "Commercial", meta: "Space · 0:35" },
 ] as const;
 
 export function ReelSection() {

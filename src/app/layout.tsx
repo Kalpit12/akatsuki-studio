@@ -24,7 +24,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: `${SITE.name} — Hospitality & Automotive Creative Kenya`,
+    default: `${SITE.name} — Creative Studio Kenya`,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,

@@ -36,7 +36,7 @@ export function LogoWall({
         <div className="section-padding mb-8 flex flex-col gap-2 md:mb-10 md:flex-row md:items-end md:justify-between">
           <p className="label">Brands we&apos;ve worked with</p>
           <p className="max-w-md text-sm leading-relaxed text-muted">
-            Trust earned in pixels, metal, and moments that stick.
+            Trust earned in pixels, moments, and work that sticks.
           </p>
         </div>
       ) : null}

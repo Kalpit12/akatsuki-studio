@@ -1,12 +1,11 @@
 export const SITE = {
   name: "Akatsuki Studio",
-  tagline: "Hospitality & automotive creative · Nairobi, Kenya",
+  tagline: "Creative studio · Nairobi, Kenya",
   description:
-    "Akatsuki Studio Kenya crafts cinematic campaigns for hospitality and automotive brands — film, photography, and digital experiences that fill rooms and move metal.",
+    "Akatsuki Studio Kenya crafts cinematic campaigns for brands of every kind — film, photography, and digital experiences that build attention, trust, and identity.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://akatsukistudio.co.ke",
   email: "akatsukistudioke@gmail.com",
   phone: "+254 700 000 000",
-  address: "Westlands, Nairobi, Kenya",
   social: {
     instagram: "https://instagram.com/akatsukistudioke",
     youtube: "https://youtube.com/@akatsukistudio",
@@ -33,10 +32,10 @@ export const STATS = [
 ] as const;
 
 export const PROCESS_STEPS = [
-  { title: "Discover", description: "Immersion into guests, drivers, and what makes them choose you." },
-  { title: "Strategy", description: "Demand-led direction — rooms filled, metal moved." },
-  { title: "Concept", description: "Stories built for the stay and the drive." },
-  { title: "Production", description: "On-property and on-road shoots with cinematic craft." },
-  { title: "Post", description: "Grade, sound, and cutdowns for every booking channel." },
-  { title: "Launch", description: "Rollout engineered for direct bookings and dealership traffic." },
+  { title: "Audit", description: "We identify what's working, what's missing, and where the opportunity lies." },
+  { title: "Position", description: "Craft a creative direction your audience instantly understands." },
+  { title: "Produce", description: "Premium visual content that elevates perception." },
+  { title: "Amplify", description: "Launch across the right platforms with the right messaging." },
+  { title: "Optimize", description: "Measure performance and continuously improve." },
+  { title: "Repeat", description: "Build a consistent content engine instead of one-off campaigns." },
 ] as const;

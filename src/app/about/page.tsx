@@ -8,7 +8,7 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Akatsuki Studio is a Nairobi creative production studio for hospitality and automotive brands — cinematic campaigns that fill rooms and move metal.",
+    "Akatsuki Studio is a Nairobi creative production studio — cinematic campaigns, brands, and stories for clients of every kind.",
 };
 
 export default function AboutPage() {
@@ -16,18 +16,20 @@ export default function AboutPage() {
     <div className="pt-32 md:pt-40">
       <div className="section-padding pb-16">
         <p className="label mb-4">About</p>
-        <h1 className="heading-xl max-w-4xl text-balance">
-          Storytellers for the stay and the drive.
+        <h1 className="heading-lg max-w-3xl text-balance">
+          We&apos;re just a bunch of creatives who hate boring.
         </h1>
       </div>
       <AboutSection
         eyebrow="Our Story"
-        title="We help hotels fill rooms and automotive brands move metal."
+        title="Akatsuki started with a camera and an obsession for making things look and feel different. Today, we're a team creating campaigns, brands, and stories that people actually stop scrolling for."
+        titleClassName="heading-md max-w-4xl leading-snug"
         paragraphs={[
-          "Akatsuki Studio partners with hospitality and automotive clients across Kenya — from luxury Nairobi hotels and coastal resorts to vehicle launches and dealership campaigns.",
-          "We blend cinematic production with demand strategy so the work looks expensive and performs: direct bookings, showroom traffic, and a feed guests and drivers can't ignore.",
+          "Akatsuki Studio exists for brands that want more than content. We help businesses build attention, trust, and identity through thoughtful strategy, bold ideas, and cinematic execution.",
+          "Whether it's a single campaign or a long-term partnership, our goal is simple: create work that feels different, performs better, and stands the test of time.",
         ]}
-        closing="Let's create something guests book and drivers chase."
+        closing="Let's build something unforgettable."
+        closingClassName="text-accent"
         showTruth={false}
         showAboutLink={false}
         showStudioFloor

@@ -11,43 +11,43 @@ const SPACES = [
   {
     src: MEDIA.studio[0],
     label: "01",
-    title: "Lobby hour",
-    detail: "First impressions that book the stay",
+    title: "First frame",
+    detail: "Atmosphere that stops the scroll",
     layout: "md:col-span-7 md:row-span-2 md:min-h-[640px]",
   },
   {
     src: MEDIA.studio[1],
     label: "02",
-    title: "Resort light",
-    detail: "Pool, terrace, golden hour",
+    title: "Golden hour",
+    detail: "Light we wait for every time",
     layout: "md:col-span-5 md:min-h-[310px]",
   },
   {
     src: MEDIA.studio[2],
     label: "03",
-    title: "On the road",
-    detail: "Metal, pace, and desire",
+    title: "On the move",
+    detail: "Pace, energy, and desire",
     layout: "md:col-span-5 md:min-h-[310px]",
   },
   {
     src: MEDIA.studio[3],
     label: "04",
-    title: "Suite quiet",
-    detail: "Rooms shot to convert",
+    title: "Quiet detail",
+    detail: "Frames shot to convert",
     layout: "md:col-span-4 md:min-h-[280px]",
   },
   {
     src: MEDIA.studio[4],
     label: "05",
-    title: "Bodywork",
-    detail: "Detail that sells the badge",
+    title: "Product craft",
+    detail: "Detail that sells the brand",
     layout: "md:col-span-4 md:min-h-[280px]",
   },
   {
     src: MEDIA.studio[5],
     label: "06",
-    title: "F&B fire",
-    detail: "Plates guests taste twice",
+    title: "Heat & heart",
+    detail: "Moments people feel twice",
     layout: "md:col-span-4 md:min-h-[280px]",
   },
 ] as const;
@@ -225,8 +225,8 @@ export function StudioGallery() {
           />
         </div>
         <p className="max-w-sm border-l border-accent/35 pl-4 text-sm leading-relaxed text-muted md:pb-1">
-          On location across Kenya — hotels, resorts, dealerships, and open road —
-          framed so the work feels as expensive as the brand.
+          On location across Kenya — sets, streets, and spaces where brands come
+          to life, framed so the work feels as expensive as the brand.
         </p>
       </div>
 

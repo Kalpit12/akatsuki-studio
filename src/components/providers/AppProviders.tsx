@@ -12,7 +12,6 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
       <RouteScrollSync />
       <LoadingScreen />
       <MagneticCursor />
-      <div className="noise-overlay" aria-hidden />
       <PageTransition>{children}</PageTransition>
     </SmoothScrollProvider>
   );

@@ -1,7 +1,7 @@
 export const testimonials = [
   {
     quote:
-      "Autobox needed more than pretty car shots. Akatsuki gave us films that feel premium on the floor and convert when guests leave — enquire rates went up the week the campaign landed.",
+      "Autobox needed more than pretty product shots. Akatsuki gave us films that feel premium on screen and convert when people leave — enquire rates went up the week the campaign landed.",
     name: "James Otieno",
     title: "Sales Lead, Autobox Motors",
     client: "Autobox Motors",

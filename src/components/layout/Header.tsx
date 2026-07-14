@@ -288,7 +288,6 @@ export function Footer() {
                   {SITE.email}
                 </a>
               </li>
-              <li>{SITE.address}</li>
               <li>
                 <a
                   href={SITE.social.instagram}

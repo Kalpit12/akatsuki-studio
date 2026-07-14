@@ -13,13 +13,13 @@ export const services = [
   },
   {
     id: "automotive",
-    title: "Automotive Production",
+    title: "Commercial Production",
     teaser: "Frames that turn heads and drive results.",
     description:
-      "When it comes to automotive content, we don't follow industry standards — we help set them. From luxury dealerships and performance builds to commercial campaigns and launch films, every frame is crafted to showcase the performance, design, and emotion behind every vehicle.",
+      "When it comes to commercial content, we don't follow the pack — we help set the bar. From product films and launch campaigns to branded storytelling, every frame is crafted to showcase design, emotion, and performance.",
     video: MEDIA.services.automotive.video,
     poster: MEDIA.services.automotive.poster,
-    tags: ["Launches", "Dealerships", "Performance"],
+    tags: ["Launches", "Product", "Performance"],
   },
   {
     id: "events",

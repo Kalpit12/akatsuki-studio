@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SITE, STATS } from "@/lib/constants";
+import { STATS } from "@/lib/constants";
 import { MEDIA } from "@/lib/cloudinary";
 import { CountUpStat } from "@/components/ui/CountUpStat";
 import { cn } from "@/lib/utils";
@@ -21,10 +21,13 @@ const PILLARS = [
 type AboutSectionProps = {
   eyebrow?: string;
   title?: string;
+  titleClassName?: string;
   paragraphs?: string[];
   closing?: string;
+  closingClassName?: string;
   showStats?: boolean;
   showTruth?: boolean;
+  showHeader?: boolean;
   /** Video source for the media panel */
   videoSrc?: string;
   videoPoster?: string;
@@ -37,16 +40,19 @@ type AboutSectionProps = {
 
 const DEFAULT_PARAGRAPHS = [
   "At Akatsuki Studio, we don't measure success by the number of videos we deliver — we measure it by the impact they create. More enquiries. More engagement. More people remembering your brand.",
-  "From cinematic commercials and industry-leading automotive content to real estate showcases, corporate events, product launches, social media campaigns, and websites that convert — every project starts with one question: what will this actually do for the business?",
+  "From cinematic commercials and brand films to events, product launches, social campaigns, and websites that convert — every project starts with one question: what will this actually do for the business?",
 ];
 
 export function AboutSection({
   eyebrow = "Who we are",
   title = "Measured by impact — not volume.",
+  titleClassName,
   paragraphs = DEFAULT_PARAGRAPHS,
   closing = "Because anyone can post content. We create content people remember.",
+  closingClassName,
   showStats = true,
   showTruth = true,
+  showHeader = true,
   videoSrc = MEDIA.about,
   videoPoster = MEDIA.aboutPoster,
   mediaSide = "left",
@@ -144,7 +150,7 @@ export function AboutSection({
             <p className="mt-1 font-display text-2xl text-white">Nairobi</p>
           </div>
           <p className="max-w-[10rem] text-right text-[11px] uppercase leading-relaxed tracking-[0.16em] text-white/55">
-            Film · Motors · Property
+            Film · Brand · Digital
           </p>
         </div>
       </div>
@@ -181,7 +187,12 @@ export function AboutSection({
       ))}
 
       {closing ? (
-        <p className="mt-8 max-w-xl font-display text-xl text-white md:text-2xl">
+        <p
+          className={cn(
+            "mt-8 max-w-xl font-display text-xl text-white md:text-2xl",
+            closingClassName,
+          )}
+        >
           {closing}
         </p>
       ) : null}
@@ -229,16 +240,16 @@ export function AboutSection({
   return (
     <section ref={ref} className="relative overflow-hidden py-28 md:py-36">
       <div className="section-padding">
-        <div className="mb-14 flex flex-col gap-4 border-b border-white/10 pb-10 md:mb-16 md:flex-row md:items-end md:justify-between md:pb-12">
-          <div>
-            <p className="label mb-4">{eyebrow}</p>
-            <h2 className="heading-lg max-w-3xl text-balance">{title}</h2>
+        {showHeader ? (
+          <div className="mb-14 flex flex-col gap-4 border-b border-white/10 pb-10 md:mb-16 md:pb-12">
+            <div>
+              <p className="label mb-4">{eyebrow}</p>
+              <h2 className={cn("max-w-3xl text-balance", titleClassName ?? "heading-lg")}>
+                {title}
+              </h2>
+            </div>
           </div>
-          <p className="max-w-xs text-sm leading-relaxed text-muted md:pb-1 md:text-right">
-            {SITE.address}
-            <span className="mt-1 block text-white/50">Creative production studio</span>
-          </p>
-        </div>
+        ) : null}
 
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           {mediaOnRight ? (
@@ -264,15 +275,15 @@ export function AboutSection({
                 Where the work comes to life.
               </h3>
               <p className="mb-5 max-w-md text-base leading-relaxed text-muted md:text-lg">
-                This is where hospitality and automotive campaigns are built —
-                briefs on the wall, timelines on the monitors, and cuts that have
-                to feel expensive before they ever leave the suite.
+                This is where campaigns are built — briefs on the wall,
+                timelines on the monitors, and cuts that have to feel expensive
+                before they ever leave the suite.
               </p>
               <p className="mb-5 max-w-md text-base leading-relaxed text-muted md:text-lg">
-                Clients walk in with a property or a launch. They leave with a
+                Clients walk in with a brief or a launch. They leave with a
                 story the feed can&apos;t ignore.
               </p>
-              <p className="mt-4 max-w-md font-display text-xl text-white md:text-2xl">
+              <p className="mt-4 max-w-md font-display text-xl text-accent md:text-2xl">
                 Come see where the magic happens.
               </p>
             </div>
@@ -295,7 +306,7 @@ export function AboutSection({
                     <p className="font-mono text-[10px] tracking-[0.22em] text-accent">
                       THE FLOOR
                     </p>
-                    <p className="mt-1 font-display text-2xl text-white">Westlands</p>
+                    <p className="mt-1 font-display text-2xl text-white">The studio</p>
                   </div>
                   <p className="text-[11px] uppercase tracking-[0.16em] text-white/55">
                     Where the cut lands

@@ -137,7 +137,7 @@ export function TestimonialsSection() {
             data-testimonial-head
             className="max-w-xs text-sm leading-relaxed text-muted md:pb-1 md:text-right"
           >
-            From Autobox and Huawei to hospitality and beyond — voices from the
+            From Autobox and Huawei to brands of every kind — voices from the
             roster.
           </p>
         </div>

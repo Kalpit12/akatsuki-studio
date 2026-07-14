@@ -9,7 +9,7 @@ export function AwardsSection() {
         <div>
           <p className="label mb-4">Recognition</p>
           <h2 className="heading-lg max-w-xl text-balance">
-            Proof the work lands for hotels and motors.
+            Proof the work lands — for any brand that shows up.
           </h2>
         </div>
         <p className="max-w-xs text-sm text-muted">

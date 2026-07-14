@@ -13,21 +13,21 @@ export type JournalPost = {
 export const journalPosts: JournalPost[] = [
   {
     slug: "hospitality-content-that-books",
-    title: "Hospitality Content That Actually Books",
+    title: "Content That Actually Converts",
     excerpt:
-      "Why pretty resort photography fails — and how cinematic systems drive direct bookings instead of vanity reach.",
+      "Why pretty photography fails — and how cinematic systems drive enquiries instead of vanity reach.",
     date: "2025-06-12",
-    category: "Hospitality",
+    category: "Strategy",
     image: MEDIA.journal[0],
     readTime: "6 min",
   },
   {
     slug: "automotive-launches-that-move-metal",
-    title: "Automotive Launches That Move Metal",
+    title: "Launches That Land",
     excerpt:
-      "From night drives to dealership cutdowns — building desire before the spec sheet ever hits the floor.",
+      "From hero films to social cutdowns — building desire before the brief ever hits the feed.",
     date: "2025-05-03",
-    category: "Automotive",
+    category: "Campaigns",
     image: MEDIA.journal[1],
     readTime: "5 min",
   },
@@ -35,7 +35,7 @@ export const journalPosts: JournalPost[] = [
     slug: "behind-arrival-ritual",
     title: "Behind Arrival Ritual",
     excerpt:
-      "How we filmed a Nairobi luxury hotel welcome that guests save, share, and book from — shot by shot.",
+      "How we filmed a welcome sequence people save, share, and enquire from — shot by shot.",
     date: "2025-04-18",
     category: "Case Study",
     image: MEDIA.journal[2],

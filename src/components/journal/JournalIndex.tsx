@@ -76,8 +76,7 @@ export function JournalIndex({ posts }: JournalIndexProps) {
             Stories from the studio.
           </h1>
           <p className="max-w-sm text-sm leading-relaxed text-muted md:pb-2 md:text-right">
-            Process, hospitality demand, and automotive launches — notes from the
-            floor in Westlands.
+            Process notes, craft, and campaigns — from the studio floor.
           </p>
         </div>
       </div>

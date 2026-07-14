@@ -87,16 +87,16 @@ export function HeroSection() {
 
         <div className="hero-content relative z-10 flex h-full w-full max-w-[100vw] flex-col items-center justify-center overflow-x-clip px-4 pt-24 pb-14 text-center sm:px-6 sm:pt-36 sm:pb-20 md:pt-44 lg:pt-48">
           <p className="hero-eyebrow label mb-3 max-w-[22rem] px-1 text-[9px] leading-relaxed tracking-[0.14em] text-white/80 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] sm:mb-6 sm:max-w-none sm:text-xs sm:tracking-[0.2em] md:text-xs">
-            Hospitality & automotive · Nairobi, Kenya
+            Creative studio · Nairobi, Kenya
           </p>
 
           <h1
             ref={titleRef}
             className="font-display w-full max-w-[min(100%,22rem)] text-[1.7rem] font-medium leading-[1.22] tracking-[-0.025em] text-white drop-shadow-[0_4px_32px_rgba(0,0,0,0.85)] sm:max-w-xl sm:text-[clamp(1.85rem,5vw,3.25rem)] sm:leading-[1.12] md:max-w-5xl md:text-[clamp(2.5rem,calc(0.55rem+5.8vw),7rem)] md:leading-[1.02] md:tracking-[-0.03em] md:text-balance"
           >
-            <span className="hero-line block">Great property.</span>
+            <span className="hero-line block">Great brand.</span>
             <span className="hero-line mt-[0.06em] block md:mt-[0.08em]">
-              Quiet showroom.
+              Quiet feed.
             </span>
             {/* Desktop keeps one locked line; mobile allows natural spacing */}
             <span className="hero-line mt-[0.06em] block md:mt-[0.08em]">
@@ -113,8 +113,8 @@ export function HeroSection() {
           </h1>
 
           <p className="hero-support mt-4 max-w-[20rem] text-[0.8125rem] leading-relaxed text-white/75 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] sm:mt-8 sm:max-w-xl sm:text-base md:text-lg">
-            Cinematic campaigns for hotels, resorts, and automotive brands —
-            built to fill rooms, move metal, and own the feed.
+            Cinematic campaigns for brands of every kind — built to earn
+            attention, build trust, and own the feed.
           </p>
 
           <div className="hero-cta mt-6 flex w-full max-w-sm flex-col items-stretch gap-3 sm:mt-10 sm:max-w-none sm:w-auto sm:flex-row sm:items-center sm:gap-6">

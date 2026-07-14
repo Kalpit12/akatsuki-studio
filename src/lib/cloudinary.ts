@@ -1,6 +1,6 @@
 /**
  * Demo media library — Pexels + Coverr CDN assets for cinematic agency demos.
- * Focused on hospitality + automotive. Swap for Cloudinary uploads in production.
+ * Swap for Cloudinary uploads in production.
  */
 
 const pxImg = (id: number, w = 1600) =>
@@ -44,15 +44,15 @@ export const MEDIA = {
   studioTour: "/the-floor.mp4",
   studioTourPoster: pxImg(2034335),
 
-  /** Contact / CTA — automotive road energy */
+  /** Contact / CTA — cinematic energy */
   contact: coverr("coverr-drone-shot-of-a-highway-at-sunset-5633"),
   contactPoster: pxImg(1402787),
 
-  /** Footer — distinct hospitality atmosphere */
+  /** Footer atmosphere */
   footer: pxVid(1409899, "1409899-uhd_2560_1440_25fps.mp4"),
   footerPoster: pxImg(189296),
 
-  /** Horizontal reel — hospitality + automotive cuts */
+  /** Horizontal reel cuts */
   reel: [
     {
       video: coverr("coverr-slow-motion-of-a-chef-cooking-5584"),
@@ -62,7 +62,7 @@ export const MEDIA = {
     {
       video: pxVid(3571264, "3571264-uhd_2560_1440_30fps.mp4"),
       poster: pxImg(258154, 1280),
-      label: "Resort Light",
+      label: "Lifestyle Light",
     },
     {
       video: coverr("coverr-drone-shot-of-a-highway-at-sunset-5633"),
@@ -117,7 +117,7 @@ export const MEDIA = {
     },
   },
 
-  /** Studio / on-location atmosphere — hotels, roads, craft */
+  /** Studio / on-location atmosphere */
   studio: [
     pxImg(2034335, 1400),
     pxImg(258154, 1400),
@@ -135,7 +135,7 @@ export const MEDIA = {
     pxImg(1516680, 800),
   ],
 
-  /** Project covers — hospitality + automotive + retail */
+  /** Project covers */
   projects: {
     elias: {
       video: "/elias-jewellery-campaign.mp4",

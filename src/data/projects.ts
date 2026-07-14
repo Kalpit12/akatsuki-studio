@@ -21,6 +21,90 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "kyra-platinum-imports",
+    title: "Kyra Platinum",
+    client: "Kyra Platinum Imports",
+    category: "Brand Film",
+    industry: "Commercial",
+    year: "2025",
+    excerpt:
+      "Premium metal, sharp presence — a brand film that makes every import feel inevitable.",
+    coverVideo: MEDIA.projects.motors.video,
+    coverImage: MEDIA.projects.motors.poster,
+    heroVideo: MEDIA.projects.motors.video,
+    challenge:
+      "Kyra Platinum Imports needed to look as exclusive online as the inventory feels on the floor — the feed was lagging behind the brand.",
+    direction:
+      "Cinematic vehicle presence, night energy, and detail cuts built for Instagram, YouTube, and the showroom screen.",
+    results: [
+      { label: "Campaign reach", value: "1.4M+" },
+      { label: "Engagement lift", value: "+2.3×" },
+      { label: "Enquiries", value: "+31%" },
+    ],
+    credits: [
+      { role: "Creative Direction", name: "Akatsuki Studio" },
+      { role: "Client", name: "Kyra Platinum Imports" },
+    ],
+    gallery: [...MEDIA.projects.motors.gallery],
+    featured: true,
+  },
+  {
+    slug: "tvs-energy",
+    title: "TVS Energy",
+    client: "TVS",
+    category: "Commercial",
+    industry: "Commercial",
+    year: "2025",
+    excerpt:
+      "Kinetic cuts and punchy sound — a feed that finally matches the pace of the brand.",
+    coverVideo: MEDIA.projects.automotive.video,
+    coverImage: MEDIA.projects.automotive.poster,
+    heroVideo: MEDIA.projects.automotive.video,
+    challenge:
+      "TVS rides on energy. The social system needed motion that felt alive — not stock footage with a logo.",
+    direction:
+      "High-tempo edits, strong sound design, and social assets the brand team can actually ship week after week.",
+    results: [
+      { label: "Reach", value: "2.1M+" },
+      { label: "Completion rate", value: "64%" },
+      { label: "Social lift", value: "+1.9×" },
+    ],
+    credits: [
+      { role: "Creative Direction", name: "Akatsuki Studio" },
+      { role: "Client", name: "TVS" },
+    ],
+    gallery: [...MEDIA.projects.automotive.gallery],
+    featured: true,
+  },
+  {
+    slug: "macaash-investments",
+    title: "First Impression",
+    client: "Macaash Investments",
+    category: "Brand Film",
+    industry: "Campaign",
+    year: "2025",
+    excerpt:
+      "Property sold on first impression — light, space, and finish that make enquiries more serious.",
+    coverVideo: MEDIA.projects.resort.video,
+    coverImage: MEDIA.projects.resort.poster,
+    heroVideo: MEDIA.projects.resort.video,
+    challenge:
+      "Developments need to feel inevitable on screen. Soft photography wasn't converting serious buyers.",
+    direction:
+      "Architectural light, quiet walkthroughs, and cuts designed for paid and organic enquiry paths.",
+    results: [
+      { label: "Enquiries", value: "+36%" },
+      { label: "Qualified leads", value: "+24%" },
+      { label: "Campaign reach", value: "980K+" },
+    ],
+    credits: [
+      { role: "Creative Direction", name: "Akatsuki Studio" },
+      { role: "Client", name: "Macaash Investments" },
+    ],
+    gallery: [...MEDIA.projects.resort.gallery],
+    featured: true,
+  },
+  {
     slug: "elias-jewellery-campaign",
     title: "Elias Jewellery Campaign",
     client: "Elias Jewelers",
@@ -39,7 +123,7 @@ export const projects: Project[] = [
     results: [
       { label: "Campaign reach", value: "850K+" },
       { label: "Engagement lift", value: "+2.1×" },
-      { label: "Showroom enquiries", value: "+28%" },
+      { label: "Enquiries", value: "+28%" },
     ],
     credits: [
       { role: "Creative Direction", name: "Akatsuki Studio" },
@@ -47,115 +131,6 @@ export const projects: Project[] = [
     ],
     gallery: [...MEDIA.projects.elias.gallery],
     featured: true,
-  },
-  {
-    slug: "hemingways-arrival",
-    title: "Arrival Ritual",
-    client: "Hemingways Nairobi",
-    category: "Brand Film",
-    industry: "Hospitality",
-    year: "2025",
-    excerpt:
-      "A cinematic welcome film that makes the lobby feel like the first chapter of the stay.",
-    coverVideo: MEDIA.projects.resort.video,
-    coverImage: MEDIA.projects.resort.poster,
-    heroVideo: MEDIA.projects.resort.video,
-    challenge:
-      "A luxury Nairobi hotel was booking on reputation alone — online, the experience looked interchangeable with every other five-star feed.",
-    direction:
-      "We shot the arrival as a sensory ritual: light on stone, staff choreography, suite quiet. Built for Instagram and the booking page, not a corporate montage.",
-    results: [
-      { label: "Direct enquiries", value: "+34%" },
-      { label: "Reel views", value: "1.1M" },
-      { label: "Save rate", value: "+2.4×" },
-    ],
-    credits: [
-      { role: "Director", name: "Amara Okonkwo" },
-      { role: "DP", name: "James Mwangi" },
-      { role: "Agency", name: "Akatsuki Studio" },
-    ],
-    gallery: [...MEDIA.projects.resort.gallery],
-    featured: true,
-  },
-  {
-    slug: "toyota-built-to-move",
-    title: "Built to Move",
-    client: "Toyota Kenya",
-    category: "Commercial",
-    industry: "Automotive",
-    year: "2025",
-    excerpt:
-      "A launch film that sells the drive — metal, road, and the feeling of control.",
-    coverVideo: MEDIA.projects.automotive.video,
-    coverImage: MEDIA.projects.automotive.poster,
-    heroVideo: MEDIA.projects.automotive.video,
-    challenge:
-      "A new model launch needed desire, not a feature list. Spec sheets don't stop the scroll — motion does.",
-    direction:
-      "Anamorphic night drives, macro bodywork, and a score that hits like torque. Cutdowns for dealership floors, YouTube, and Meta.",
-    results: [
-      { label: "Launch views", value: "3.6M" },
-      { label: "Dealership traffic", value: "+22%" },
-      { label: "Completion rate", value: "68%" },
-    ],
-    credits: [
-      { role: "Creative Director", name: "Zara Kimani" },
-      { role: "Editor", name: "David Ochieng" },
-    ],
-    gallery: [...MEDIA.projects.automotive.gallery],
-    featured: true,
-  },
-  {
-    slug: "sarova-coastal-demand",
-    title: "Coastal Demand",
-    client: "Sarova Hotels",
-    category: "Campaign",
-    industry: "Hospitality",
-    year: "2024",
-    excerpt:
-      "From pretty resort photos to a demand engine guests book direct from.",
-    coverVideo: MEDIA.projects.lodge.video,
-    coverImage: MEDIA.projects.lodge.poster,
-    heroVideo: MEDIA.projects.lodge.video,
-    challenge:
-      "Beautiful property, soft direct bookings — too much demand leaking to OTAs and influencers.",
-    direction:
-      "Content system across reels, F&B, rooms, and proof. Shot native for the feed, wired to a booking CTA guests already trust.",
-    results: [
-      { label: "Direct bookings", value: "+30%" },
-      { label: "Occupancy lift", value: "+18pts" },
-      { label: "Followers", value: "+8.1K" },
-    ],
-    credits: [
-      { role: "Director", name: "Amara Okonkwo" },
-      { role: "Producer", name: "Grace Wanjiru" },
-    ],
-    gallery: [...MEDIA.projects.lodge.gallery],
-    featured: true,
-  },
-  {
-    slug: "dobie-night-drive",
-    title: "Night Drive",
-    client: "DT Dobie",
-    category: "Digital",
-    industry: "Automotive",
-    year: "2024",
-    excerpt:
-      "Lifestyle film and social system for a premium Nairobi dealership brand.",
-    coverVideo: MEDIA.projects.motors.video,
-    coverImage: MEDIA.projects.motors.poster,
-    heroVideo: MEDIA.projects.motors.video,
-    challenge:
-      "Premium inventory was invisible online. The showroom felt exclusive; the feed felt generic.",
-    direction:
-      "Night-time city drives, owner portraits, and short-form cuts that make the badge feel inevitable.",
-    results: [
-      { label: "Reach", value: "1.3M" },
-      { label: "Test drives booked", value: "+41%" },
-      { label: "Engaged accounts", value: "35K+" },
-    ],
-    credits: [{ role: "Strategy Lead", name: "Zara Kimani" }],
-    gallery: [...MEDIA.projects.motors.gallery],
   },
 ];
 

@@ -10,45 +10,45 @@ gsap.registerPlugin(ScrollTrigger);
 
 const CRAFT = [
   {
-    id: "light",
-    title: "Light",
-    line: "Mood before megapixels.",
-    detail: "Every frame starts with intention — shadow, flare, and the emotion between.",
+    id: "golden-hour",
+    title: "Chasing golden hour.",
+    line: "The light that sells the feeling.",
+    detail: "We wait for the hour that makes every frame glow and feel like cinema.",
     media: MEDIA.studio[2],
   },
   {
-    id: "lens",
-    title: "Lens",
-    line: "Perspective that sells the story.",
-    detail: "Glass chosen for feeling, not habit. Wide when the world matters. Tight when the eyes do.",
+    id: "coffee",
+    title: "Looking for better coffee.",
+    line: "Fuel for the long take.",
+    detail: "Good shots take patience — and another round before the coffee goes cold.",
     media: MEDIA.studio[0],
   },
   {
-    id: "sound",
-    title: "Sound",
-    line: "Half the picture is invisible.",
-    detail: "Score, silence, and texture that make the cut land harder than the visual alone.",
+    id: "one-last-shot",
+    title: 'Saying "one last shot."',
+    line: "Never settle for almost.",
+    detail: "The take after the take is usually the one that ends up in the cut.",
     media: MEDIA.studio[3],
   },
   {
-    id: "color",
-    title: "Color",
-    line: "Grade like memory, not reality.",
-    detail: "Palettes that brand the moment — warm enough to want, cold enough to remember.",
+    id: "colour-grade",
+    title: "Colour grading at 2 AM.",
+    line: "When the world goes quiet.",
+    detail: "Late nights with the timeline — nudging hues until the frame finally feels right.",
     media: MEDIA.reel[0]?.poster ?? MEDIA.studio[1],
   },
   {
-    id: "cut",
-    title: "Cut",
-    line: "Rhythm is the real director.",
-    detail: "Pace that holds attention without begging for it. Edit for pulse, not padding.",
+    id: "cars",
+    title: "Talking about cars.",
+    line: "Obsession meets craft.",
+    detail: "Lines, sound, and presence — the same instincts we bring to every launch.",
     media: MEDIA.studio[4],
   },
   {
-    id: "story",
-    title: "Story",
-    line: "Pretty without purpose is noise.",
-    detail: "Strategy under the spectacle — so the work moves culture and the business.",
+    id: "next-idea",
+    title: "Planning the next big idea.",
+    line: "Always one frame ahead.",
+    detail: "Even mid-shoot, the next concept is already forming — restlessness is part of the craft.",
     media: MEDIA.studio[5],
   },
 ] as const;
@@ -131,12 +131,11 @@ export function CraftSection() {
         <div className="craft-intro max-w-xl">
           <p className="label mb-5">The craft</p>
           <h2 className="heading-lg mb-6 text-balance">
-            Six obsessions behind every stay and every drive.
+            Six obsessions behind every frame we ship.
           </h2>
           <p className="mb-8 max-w-md text-base leading-relaxed text-muted md:text-lg">
-            Not a service menu — the instincts we protect on every property shoot
-            and vehicle launch. This is how hospitality and automotive work ends
-            up feeling expensive.
+            The little habits, inside jokes, and everyday rituals that quietly
+            shape how we create, collaborate, and obsess over every project.
           </p>
 
           <div className="mb-10 border-l-2 border-accent pl-5">
@@ -181,7 +180,7 @@ export function CraftSection() {
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
                   <span
-                    className={`font-display text-3xl tracking-tight transition-colors duration-300 md:text-5xl ${
+                    className={`font-display text-2xl tracking-tight transition-colors duration-300 sm:text-3xl md:text-4xl ${
                       isActive ? "text-white" : "text-white/40 group-hover:text-white/70"
                     }`}
                   >
@@ -189,7 +188,9 @@ export function CraftSection() {
                   </span>
                   <span
                     className={`max-w-xs text-sm transition-opacity duration-300 md:text-right ${
-                      isActive ? "text-white/70 opacity-100" : "opacity-0 md:opacity-40 md:group-hover:opacity-70"
+                      isActive
+                        ? "text-white/70 opacity-100"
+                        : "opacity-0 md:opacity-40 md:group-hover:opacity-70"
                     }`}
                   >
                     {item.line}

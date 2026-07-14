@@ -8,7 +8,7 @@ import { clientRoster, getClientSectorsPresent } from "@/data/clients";
 export const metadata: Metadata = {
   title: "Clients",
   description:
-    "Brands Akatsuki Studio has worked with — automotive, technology, hospitality, education, and more.",
+    "Brands Akatsuki Studio has worked with — across industries, briefs, and scales.",
 };
 
 export default function ClientsPage() {
@@ -28,7 +28,7 @@ export default function ClientsPage() {
               <span className="text-accent">Proven on every brief.</span>
             </p>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              21 partners across automotive, hospitality, tech, and beyond.
+              21 partners across every kind of brief.
             </p>
           </div>
         </div>
@@ -38,7 +38,7 @@ export default function ClientsPage() {
         showIntro={false}
         caption={
           <p className="mx-auto max-w-2xl font-display text-2xl leading-snug text-balance text-white md:text-3xl">
-            From dealership floors to dining rooms —{" "}
+            From first campaigns to long-term partners —{" "}
             <span className="text-accent">brands that refuse to blend in.</span>
           </p>
         }

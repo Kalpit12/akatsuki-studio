@@ -64,23 +64,23 @@ export default async function JournalArticlePage({ params }: Props) {
         <div className="max-w-2xl space-y-6 text-base leading-relaxed text-muted md:text-lg lg:col-span-8">
           <p>
             At Akatsuki, every brief starts with the same question: what does this
-            need to make someone do — book a room, book a test drive, or believe the
+            need to make someone do — enquire, engage, or believe the
             brand enough to choose it?
           </p>
           <p>
             {post.excerpt} This piece walks through how we approach that problem on
-            the floor in Westlands — from first immersion to the cut that ships.
+            the studio floor — from first immersion to the cut that ships.
           </p>
           <p>
-            Pretty frames are table stakes. The work that moves hospitality and
-            automotive brands is the work that connects craft to demand.
+            Pretty frames are table stakes. The work that moves brands is the
+            work that connects craft to demand.
           </p>
         </div>
         <aside className="lg:col-span-4">
           <div className="border border-white/10 p-6 md:p-8 lg:sticky lg:top-32">
             <p className="label mb-4 text-accent">Next step</p>
             <p className="mb-6 font-display text-xl text-white">
-              Have a property or a launch that needs to land?
+              Have a brief or a launch that needs to land?
             </p>
             <MagneticButton href="/contact">Start a project →</MagneticButton>
           </div>

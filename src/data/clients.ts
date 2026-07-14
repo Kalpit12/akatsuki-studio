@@ -36,10 +36,10 @@ export const sectorMeta: Record<
   { label: string; title: string; blurb: string }
 > = {
   automotive: {
-    label: "Automotive",
-    title: "Motor brands & dealerships",
+    label: "Mobility",
+    title: "Brands on the move",
     blurb:
-      "Importers, custom shops, dealerships, and mobility brands — content that turns heads and moves metal.",
+      "Importers, custom shops, and mobility brands — content that turns heads and drives results.",
   },
   corporate: {
     label: "Corporate & Technology",
@@ -53,16 +53,16 @@ export const sectorMeta: Record<
     blurb: "Institutions that need presence with the same care as the classroom.",
   },
   "real-estate": {
-    label: "Real Estate & Property",
-    title: "Property & accessibility",
+    label: "Real Estate",
+    title: "Spaces & places",
     blurb:
-      "Investments and home solutions that deserve a cinematic first impression.",
+      "Developments and home solutions that deserve a cinematic first impression.",
   },
   hospitality: {
-    label: "Hospitality & Restaurants",
-    title: "Coffee, dining & hospitality",
+    label: "Food & Spaces",
+    title: "Coffee, dining & places",
     blurb:
-      "Spaces where atmosphere sells — coffee museums, restaurants, and hospitality brands.",
+      "Spaces where atmosphere sells — coffee, restaurants, and experience brands.",
   },
   healthcare: {
     label: "Healthcare",
@@ -86,49 +86,53 @@ export const clientRoster: Client[] = [
     name: "TVS",
     slug: "tvs",
     sector: "automotive",
-    detail: "Motorcycles & Mobility",
+    detail: "Mobility",
     logo: "/clients/wall/tvs.webp",
+    workSlug: "tvs-energy",
+    workTitle: "TVS Energy",
   },
   {
     name: "Kyra Platinum Imports",
     slug: "kyra-platinum-imports",
     sector: "automotive",
-    detail: "Vehicle Importer",
+    detail: "Import Partner",
     logo: "/clients/wall/kyra-platinum-imports.webp",
+    workSlug: "kyra-platinum-imports",
+    workTitle: "Kyra Platinum",
   },
   {
     name: "Kyra Customs",
     slug: "kyra-customs",
     sector: "automotive",
-    detail: "Vehicle Customisation",
+    detail: "Custom Builds",
     logo: "/clients/wall/kyra-customs.webp",
   },
   {
     name: "11 Motors",
     slug: "11-motors",
     sector: "automotive",
-    detail: "Dealership",
+    detail: "Retail",
     logo: "/clients/wall/11-motors.webp",
   },
   {
     name: "Autobox Motors",
     slug: "autobox-motors",
     sector: "automotive",
-    detail: "Dealership",
+    detail: "Retail",
     logo: "/clients/wall/autobox-motors.webp",
   },
   {
     name: "Alliance Automotive",
     slug: "alliance-automotive",
     sector: "automotive",
-    detail: "Automotive Services",
+    detail: "Brand Services",
     logo: "/clients/wall/alliance-automotive.webp",
   },
   {
     name: "Posh Autobody",
     slug: "posh-autobody",
     sector: "automotive",
-    detail: "Auto Body & Paint",
+    detail: "Custom Craft",
     logo: "/clients/wall/posh-autobody.webp",
   },
   {
@@ -165,6 +169,8 @@ export const clientRoster: Client[] = [
     sector: "real-estate",
     detail: "Real Estate",
     logo: "/clients/wall/macaash-investments.webp",
+    workSlug: "macaash-investments",
+    workTitle: "First Impression",
   },
   {
     name: "Stiltz Homelift",
@@ -177,7 +183,7 @@ export const clientRoster: Client[] = [
     name: "Connect Coffee Museum",
     slug: "connect-coffee-museum",
     sector: "hospitality",
-    detail: "Coffee & Hospitality",
+    detail: "Coffee Experience",
     logo: "/clients/wall/connect-coffee-museum.webp",
   },
   {
@@ -221,6 +227,8 @@ export const clientRoster: Client[] = [
     sector: "retail",
     detail: "Luxury Jewellery",
     logo: "/clients/wall/elias-jewelers.webp",
+    workSlug: "elias-jewellery-campaign",
+    workTitle: "Elias Jewellery Campaign",
   },
   {
     name: "CoffeePump Podcast",

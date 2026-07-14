@@ -185,7 +185,7 @@ function FounderBlock({
         {member.story.map((block) => (
           <div key={block.lead} data-story-block>
             <p className="text-lg leading-relaxed text-white md:text-xl md:leading-relaxed">
-              <strong className="font-semibold text-white">{block.lead}</strong>{" "}
+              <strong className="font-semibold text-accent">{block.lead}</strong>{" "}
               <span className="text-white/65">{block.body}</span>
             </p>
           </div>

@@ -5,7 +5,7 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 export const metadata: Metadata = {
   title: "What We Create",
   description:
-    "Creative campaigns, automotive production, event coverage, SEO, social, cinematic content, and website design by Akatsuki Studio.",
+    "Creative campaigns, commercial production, event coverage, SEO, social, cinematic content, and website design by Akatsuki Studio.",
 };
 
 export default function ServicesPage() {
@@ -17,7 +17,7 @@ export default function ServicesPage() {
           Campaigns, film, and digital built to be remembered.
         </h1>
         <p className="mt-8 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
-          From end-to-end creative campaigns and automotive production to events,
+          From end-to-end creative campaigns and commercial production to events,
           SEO, social, cinematic content, and websites — every offering starts
           with impact, not volume.
         </p>
