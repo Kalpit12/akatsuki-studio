@@ -12,10 +12,10 @@ import { cn } from "@/lib/utils";
 gsap.registerPlugin(ScrollTrigger);
 
 const PILLARS = [
-  { label: "Film", detail: "Commercials & brand films", accent: false },
-  { label: "Automotive", detail: "Launches & dealerships", accent: true },
-  { label: "Real estate", detail: "Property showcases", accent: false },
-  { label: "Digital", detail: "Campaigns & websites", accent: true },
+  { label: "Seen", detail: "Not scrolled past", accent: false },
+  { label: "Felt", detail: "Before it's explained", accent: true },
+  { label: "Wanted", detail: "Desire in every frame", accent: false },
+  { label: "Remembered", detail: "Long after the cut", accent: true },
 ] as const;
 
 type AboutSectionProps = {
@@ -192,23 +192,21 @@ export function AboutSection({
             <li
               key={pillar.label}
               className={cn(
-                "px-4 py-5 md:px-5 md:py-6",
+                "flex flex-col justify-between px-4 py-5 md:min-h-[7.5rem] md:px-5 md:py-6",
                 pillar.accent ? "bg-white/[0.03]" : "bg-background",
               )}
             >
               <p
                 className={cn(
-                  "font-display text-lg md:text-xl",
+                  "font-display text-xl tracking-tight md:text-2xl",
                   pillar.accent ? "text-accent" : "text-white",
                 )}
               >
                 {pillar.label}
               </p>
-              {pillar.accent ? (
-                <p className="mt-2 text-xs leading-relaxed text-muted">
-                  {pillar.detail}
-                </p>
-              ) : null}
+              <p className="mt-3 max-w-[11rem] text-[11px] leading-relaxed tracking-[0.04em] text-muted md:mt-4">
+                {pillar.detail}
+              </p>
             </li>
           ))}
         </ul>

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "../components/ui/CurvedLoop.css";
+@import "../components/ui/LogoLoop.css";
 
 :root {
   --background: #090909;
@@ -146,61 +148,9 @@ body {
   animation: marquee 40s linear infinite;
 }
 
-@keyframes logo-wall-beam-right {
-  from {
-    transform: translate3d(-100%, -50%, 0);
-  }
-  to {
-    transform: translate3d(100vw, -50%, 0);
-  }
-}
-
-@keyframes logo-wall-beam-left {
-  from {
-    transform: translate3d(100vw, -50%, 0);
-  }
-  to {
-    transform: translate3d(-100%, -50%, 0);
-  }
-}
-
-.logo-wall-beam {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  display: block;
-  height: 1px;
-  width: clamp(4.5rem, 14vw, 8rem);
-  border-radius: 9999px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(225, 6, 0, 0.25) 15%,
-    #e10600 45%,
-    #ff6b63 75%,
-    transparent 100%
-  );
-  box-shadow:
-    0 0 4px 0 rgba(225, 6, 0, 0.75),
-    0 0 10px 1px rgba(225, 6, 0, 0.35);
-  will-change: transform;
-}
-
-.logo-wall-beam--right {
-  animation: logo-wall-beam-right 6s linear infinite;
-}
-
-.logo-wall-beam--left {
-  animation: logo-wall-beam-left 6s linear infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .logo-wall-beam--right,
-  .logo-wall-beam--left {
+  .animate-marquee {
     animation: none;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    opacity: 0.9;
   }
 }
 
