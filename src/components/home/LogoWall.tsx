@@ -31,7 +31,22 @@ export function LogoWall({
       ) : null}
 
       {/* Full-bleed white strip — keeps brand colors true */}
-      <div className="relative overflow-hidden bg-white py-7 shadow-[inset_0_1px_0_rgba(225,6,0,0.35),inset_0_-1px_0_rgba(225,6,0,0.35)] md:py-9">
+      <div className="relative overflow-hidden bg-white py-7 md:py-9">
+        {/* Top beam → right */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 z-20 h-[2px] overflow-hidden"
+          aria-hidden
+        >
+          <span className="logo-wall-beam logo-wall-beam--right" />
+        </div>
+        {/* Bottom beam ← left */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[2px] overflow-hidden"
+          aria-hidden
+        >
+          <span className="logo-wall-beam logo-wall-beam--left" />
+        </div>
+
         <div
           className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white to-transparent md:w-24"
           aria-hidden
