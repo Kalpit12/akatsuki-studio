@@ -74,8 +74,9 @@ export function CraftSection() {
       }
     };
 
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(run, { timeout: 2200 });
+    const idle = window.requestIdleCallback;
+    if (typeof idle === "function") {
+      const id = idle.call(window, run, { timeout: 2200 });
       return () => window.cancelIdleCallback(id);
     }
 

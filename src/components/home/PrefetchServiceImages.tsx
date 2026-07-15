@@ -22,8 +22,9 @@ export function PrefetchServiceImages() {
       }
     };
 
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(run, { timeout: 1800 });
+    const idle = window.requestIdleCallback;
+    if (typeof idle === "function") {
+      const id = idle.call(window, run, { timeout: 1800 });
       return () => window.cancelIdleCallback(id);
     }
 
