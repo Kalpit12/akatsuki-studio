@@ -3,13 +3,12 @@ import { AboutSection } from "@/components/home/AboutSection";
 import { LogoWall } from "@/components/home/LogoWall";
 import { FeaturedProjects } from "@/components/home/FeaturedProjects";
 import { ImpactStories } from "@/components/home/ImpactStories";
+import { Vishh254Teaser } from "@/components/home/Vishh254Teaser";
 import { ReelSection } from "@/components/home/ReelSection";
 import { ServicesPreview } from "@/components/home/ServicesPreview";
 import { PrefetchServiceImages } from "@/components/home/PrefetchServiceImages";
 import { ProcessTimeline } from "@/components/home/ProcessTimeline";
-import { AwardsSection } from "@/components/home/AwardsSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
-import { StudioGallery } from "@/components/home/StudioGallery";
 import { CraftSection } from "@/components/home/CraftSection";
 import { ContactCTA } from "@/components/home/ContactCTA";
 import { MEDIA } from "@/lib/cloudinary";
@@ -33,12 +32,11 @@ export default function HomePage() {
       <LogoWall />
       <FeaturedProjects />
       <ImpactStories />
+      <Vishh254Teaser />
       <ReelSection />
       <ServicesPreview />
       <ProcessTimeline />
-      <AwardsSection />
       <TestimonialsSection />
-      <StudioGallery />
       <CraftSection />
       <ContactCTA />
     </>

@@ -80,12 +80,37 @@ function ReelCardVideo({
 gsap.registerPlugin(ScrollTrigger);
 
 const REELS = [
-  { ...MEDIA.reel[0], tag: "Campaign · Brand", meta: "Kitchen · 0:28" },
-  { ...MEDIA.reel[1], tag: "Commercial", meta: "Lifestyle · 0:45" },
-  { ...MEDIA.reel[2], tag: "Launch", meta: "Film · 0:40" },
-  { ...MEDIA.reel[3], tag: "Brand", meta: "Atmosphere · 0:32" },
-  { ...MEDIA.reel[4], tag: "Detail", meta: "Craft · 0:22" },
-  { ...MEDIA.reel[5], tag: "Commercial", meta: "Space · 0:35" },
+  {
+    ...MEDIA.reel[0],
+    label: "Connect Coffee",
+    tag: "Hospitality",
+    meta: "Coffee Experience",
+  },
+  {
+    video: MEDIA.about,
+    poster: MEDIA.aboutPoster,
+    label: "Huawei",
+    tag: "Launch",
+    meta: "Product Film",
+  },
+  {
+    ...MEDIA.reel[2],
+    label: "Autobox",
+    tag: "Automotive",
+    meta: "Retail · Brand",
+  },
+  {
+    ...MEDIA.reel[3],
+    label: "11 Motors",
+    tag: "Automotive",
+    meta: "Retail",
+  },
+  {
+    ...MEDIA.reel[4],
+    label: "BTS",
+    tag: "Production",
+    meta: "Behind the scenes",
+  },
 ] as const;
 
 export function ReelSection() {
@@ -236,14 +261,14 @@ export function ReelSection() {
           })}
 
           <Link
-            href="/work"
+            href="/clients"
             data-magnetic
             className="group relative flex h-full w-[70vw] shrink-0 flex-col justify-between border border-white/15 bg-white/[0.03] p-8 md:w-[40vw] md:p-10"
           >
             <p className="label text-accent">Continue</p>
             <div>
               <h3 className="heading-md mb-4 max-w-xs text-balance leading-tight transition group-hover:text-accent">
-                See the full case studies.
+                See every brand we&apos;ve worked with.
               </h3>
               <span className="text-xs uppercase tracking-[0.2em] text-white/60 transition group-hover:text-white">
                 All work →

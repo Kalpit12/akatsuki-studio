@@ -29,6 +29,41 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "tvs-energy",
+    title: "TVS Motors",
+    client: "TVS Motors",
+    category: "Commercial",
+    industry: "Commercial",
+    year: "2025",
+    excerpt:
+      "Kinetic cuts and punchy sound — a feed that finally matches the pace of the brand.",
+    coverVideo: "/TVS/tvs-launch.mp4",
+    coverImage: "/TVS/tvs-launch.jpg",
+    heroVideo: "/TVS/tvs-launch.mp4",
+    challenge:
+      "TVS Motors rides on pace and presence. The social system needed motion that felt alive — not stock footage with a logo.",
+    direction:
+      "High-tempo edits, strong sound design, and social assets the brand team can actually ship week after week.",
+    results: [
+      { label: "Reach", value: "2.1M+" },
+      { label: "Completion rate", value: "64%" },
+      { label: "Social lift", value: "+1.9×" },
+    ],
+    credits: [
+      { role: "Creative Direction", name: "Akatsuki Studio" },
+      { role: "Client", name: "TVS Motors" },
+    ],
+    gallery: [
+      "/TVS/tvs-still-01.jpg",
+      "/TVS/tvs-still-02.jpg",
+      "/TVS/tvs-still-03.jpg",
+      "/TVS/tvs-still-04.jpg",
+      "/TVS/tvs-still-05.jpg",
+      "/TVS/tvs-still-06.jpg",
+    ],
+    featured: true,
+  },
+  {
     slug: "kyra-platinum-imports",
     title: "Kyra Platinum",
     client: "Kyra Platinum Imports",
@@ -71,81 +106,6 @@ export const projects: Project[] = [
         video: "/Kyra/kyra-xm.mp4",
         poster: "/Kyra/kyra-xm.jpg",
         label: "XM Cut",
-      },
-    ],
-    featured: true,
-  },
-  {
-    slug: "tvs-energy",
-    title: "TVS Motors",
-    client: "TVS Motors",
-    category: "Commercial",
-    industry: "Commercial",
-    year: "2025",
-    excerpt:
-      "Kinetic cuts and punchy sound — a feed that finally matches the pace of the brand.",
-    coverVideo: "/TVS/tvs-launch.mp4",
-    coverImage: "/TVS/tvs-launch.jpg",
-    heroVideo: "/TVS/tvs-launch.mp4",
-    challenge:
-      "TVS Motors rides on pace and presence. The social system needed motion that felt alive — not stock footage with a logo.",
-    direction:
-      "High-tempo edits, strong sound design, and social assets the brand team can actually ship week after week.",
-    results: [
-      { label: "Reach", value: "2.1M+" },
-      { label: "Completion rate", value: "64%" },
-      { label: "Social lift", value: "+1.9×" },
-    ],
-    credits: [
-      { role: "Creative Direction", name: "Akatsuki Studio" },
-      { role: "Client", name: "TVS Motors" },
-    ],
-    gallery: [
-      "/TVS/tvs-still-01.jpg",
-      "/TVS/tvs-still-02.jpg",
-      "/TVS/tvs-still-03.jpg",
-      "/TVS/tvs-still-04.jpg",
-      "/TVS/tvs-still-05.jpg",
-      "/TVS/tvs-still-06.jpg",
-    ],
-    featured: true,
-  },
-  {
-    slug: "macaash-investments",
-    title: "First Impression",
-    client: "Macaash Investments",
-    category: "Brand Film",
-    industry: "Campaign",
-    year: "2025",
-    excerpt:
-      "Property sold on first impression — light, space, and finish that make enquiries more serious.",
-    coverVideo: "/Macaash/macaash-cover.mp4",
-    coverImage: "/Macaash/macaash-cover.jpg",
-    heroVideo: "/Macaash/macaash-cover.mp4",
-    challenge:
-      "Developments need to feel inevitable on screen. Soft photography wasn't converting serious buyers.",
-    direction:
-      "Architectural light, quiet walkthroughs, and cuts designed for paid and organic enquiry paths.",
-    results: [
-      { label: "Enquiries", value: "+36%" },
-      { label: "Qualified leads", value: "+24%" },
-      { label: "Campaign reach", value: "980K+" },
-    ],
-    credits: [
-      { role: "Creative Direction", name: "Akatsuki Studio" },
-      { role: "Client", name: "Macaash Investments" },
-    ],
-    gallery: [],
-    films: [
-      {
-        video: "/Macaash/macaash-reel-01.mp4",
-        poster: "/Macaash/macaash-reel-01.jpg",
-        label: "Macaash Reel 01",
-      },
-      {
-        video: "/Macaash/macaash-reel-02.mp4",
-        poster: "/Macaash/macaash-reel-02.jpg",
-        label: "Macaash Reel 02",
       },
     ],
     featured: true,
@@ -194,7 +154,47 @@ export const projects: Project[] = [
     ],
     featured: true,
   },
-];
+  {
+    slug: "macaash-investments",
+    title: "First Impression",
+    client: "Macaash Investments",
+    category: "Brand Film",
+    industry: "Campaign",
+    year: "2025",
+    excerpt:
+      "Property sold on first impression — light, space, and finish that make enquiries more serious.",
+    coverVideo: "/Macaash/macaash-cover.mp4",
+    coverImage: "/Macaash/macaash-cover.jpg",
+    heroVideo: "/Macaash/macaash-cover.mp4",
+    challenge:
+      "Developments need to feel inevitable on screen. Soft photography wasn't converting serious buyers.",
+    direction:
+      "Architectural light, quiet walkthroughs, and cuts designed for paid and organic enquiry paths.",
+    results: [
+      { label: "Enquiries", value: "+36%" },
+      { label: "Qualified leads", value: "+24%" },
+      { label: "Campaign reach", value: "980K+" },
+    ],
+    credits: [
+      { role: "Creative Direction", name: "Akatsuki Studio" },
+      { role: "Client", name: "Macaash Investments" },
+    ],
+    gallery: [],
+    films: [
+      {
+        video: "/Macaash/macaash-reel-01.mp4",
+        poster: "/Macaash/macaash-reel-01.jpg",
+        label: "Macaash Reel 01",
+      },
+      {
+        video: "/Macaash/macaash-reel-02.mp4",
+        poster: "/Macaash/macaash-reel-02.jpg",
+        label: "Macaash Reel 02",
+      },
+    ],
+    featured: true,
+  },
+]
 
 export function getProject(slug: string) {
   return projects.find((p) => p.slug === slug);
