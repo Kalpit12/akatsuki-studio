@@ -77,8 +77,8 @@ export const projects: Project[] = [
   },
   {
     slug: "tvs-energy",
-    title: "TVS Energy",
-    client: "TVS",
+    title: "TVS Motors",
+    client: "TVS Motors",
     category: "Commercial",
     industry: "Commercial",
     year: "2025",
@@ -88,7 +88,7 @@ export const projects: Project[] = [
     coverImage: "/TVS/tvs-launch.jpg",
     heroVideo: "/TVS/tvs-launch.mp4",
     challenge:
-      "TVS rides on energy. The social system needed motion that felt alive — not stock footage with a logo.",
+      "TVS Motors rides on pace and presence. The social system needed motion that felt alive — not stock footage with a logo.",
     direction:
       "High-tempo edits, strong sound design, and social assets the brand team can actually ship week after week.",
     results: [
@@ -98,7 +98,7 @@ export const projects: Project[] = [
     ],
     credits: [
       { role: "Creative Direction", name: "Akatsuki Studio" },
-      { role: "Client", name: "TVS" },
+      { role: "Client", name: "TVS Motors" },
     ],
     gallery: [
       "/TVS/tvs-still-01.jpg",
@@ -135,12 +135,7 @@ export const projects: Project[] = [
       { role: "Creative Direction", name: "Akatsuki Studio" },
       { role: "Client", name: "Macaash Investments" },
     ],
-    gallery: [
-      "/Macaash/macaash-still-01.jpg",
-      "/Macaash/macaash-still-02.jpg",
-      "/Macaash/macaash-still-03.jpg",
-      "/Macaash/macaash-still-04.jpg",
-    ],
+    gallery: [],
     films: [
       {
         video: "/Macaash/macaash-reel-01.mp4",

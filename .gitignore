@@ -60,3 +60,14 @@ next-env.d.ts
 /public/Macaash/Macaash 2.mp4
 /public/Macaash/Macaash Cover.mp4
 
+# Original service / craft source PNGs (site uses compressed .webp)
+/public/Website Design.png
+/public/Social Media Management.png
+/public/SEO & Digital growth.png
+/public/Event Coverage.png
+/public/Creative Campaigns.png
+/public/Commerical Production.png
+/public/Cinematic Content.png
+/public/Craft/*.png
+/public/services/*.jpg
+

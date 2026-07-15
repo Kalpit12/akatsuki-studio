@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MEDIA } from "@/lib/cloudinary";
+import { cn } from "@/lib/utils";
+import { useIntroReady } from "@/hooks/useIntroReady";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,49 +15,73 @@ const CRAFT = [
     title: "Chasing golden hour.",
     line: "The light that sells the feeling.",
     detail: "We wait for the hour that makes every frame glow and feel like cinema.",
-    media: MEDIA.studio[2],
+    media: "/Craft/chasing-golden-hour.webp",
   },
   {
     id: "coffee",
     title: "Looking for better coffee.",
     line: "Fuel for the long take.",
     detail: "Good shots take patience — and another round before the coffee goes cold.",
-    media: MEDIA.studio[0],
+    media: "/Craft/looking-for-better-coffee.webp",
   },
   {
     id: "one-last-shot",
     title: 'Saying "one last shot."',
     line: "Never settle for almost.",
     detail: "The take after the take is usually the one that ends up in the cut.",
-    media: MEDIA.studio[3],
+    media: "/Craft/saying-one-last-shot.webp",
   },
   {
     id: "colour-grade",
     title: "Colour grading at 2 AM.",
     line: "When the world goes quiet.",
     detail: "Late nights with the timeline — nudging hues until the frame finally feels right.",
-    media: MEDIA.reel[0]?.poster ?? MEDIA.studio[1],
+    media: "/Craft/color-grading-at-2-am.webp",
   },
   {
     id: "cars",
     title: "Talking about cars.",
     line: "Obsession meets craft.",
     detail: "Lines, sound, and presence — the same instincts we bring to every launch.",
-    media: MEDIA.studio[4],
+    media: "/Craft/talking-about-cars.webp",
   },
   {
     id: "next-idea",
     title: "Planning the next big idea.",
     line: "Always one frame ahead.",
     detail: "Even mid-shoot, the next concept is already forming — restlessness is part of the craft.",
-    media: MEDIA.studio[5],
+    media: "/Craft/planning-the-next-big-idea.webp",
   },
 ] as const;
+
+export const CRAFT_IMAGES = CRAFT.map((c) => c.media);
 
 export function CraftSection() {
   const ref = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
   const current = CRAFT[active];
+  const introReady = useIntroReady();
+
+  // Prefetch craft stills after intro so hover swaps stay snappy
+  useEffect(() => {
+    if (!introReady) return;
+
+    const run = () => {
+      for (const href of CRAFT_IMAGES) {
+        const img = new Image();
+        img.decoding = "async";
+        img.src = href;
+      }
+    };
+
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(run, { timeout: 2200 });
+      return () => window.cancelIdleCallback(id);
+    }
+
+    const t = window.setTimeout(run, 600);
+    return () => window.clearTimeout(t);
+  }, [introReady]);
 
   useEffect(() => {
     const el = ref.current;
@@ -108,7 +133,6 @@ export function CraftSection() {
       ref={ref}
       className="relative min-h-screen overflow-hidden border-y border-white/10"
     >
-      {/* Atmospheric media — crossfades with active craft */}
       <div className="absolute inset-0" aria-hidden>
         {CRAFT.map((item, i) => (
           // eslint-disable-next-line @next/next/no-img-element
@@ -116,11 +140,13 @@ export function CraftSection() {
             key={item.id}
             src={item.media}
             alt=""
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out ${
-              i === active ? "opacity-100" : "opacity-0"
-            }`}
-            loading="lazy"
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out",
+              i === active ? "opacity-100" : "opacity-0",
+            )}
+            loading={i === 0 ? "eager" : "lazy"}
             decoding="async"
+            fetchPriority={i === 0 ? "low" : "auto"}
           />
         ))}
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/92 to-background/55" />

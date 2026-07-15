@@ -104,34 +104,24 @@ export function CaseStudyContent({
           </section>
         ) : null}
 
-        <section className="section-padding py-16">
-          <p className="label mb-8">Gallery</p>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {project.gallery.map((src, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={src}
-                src={src}
-                alt={`${project.title} gallery ${i + 1}`}
-                className="aspect-[4/3] w-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
-            ))}
-          </div>
-        </section>
-
-        <section className="section-padding border-y border-white/10 py-20">
-          <p className="label mb-10">Campaign Results</p>
-          <div className="grid gap-8 md:grid-cols-3">
-            {project.results.map((r) => (
-              <div key={r.label}>
-                <p className="font-display text-5xl text-accent">{r.value}</p>
-                <p className="label mt-2">{r.label}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        {project.gallery.length > 0 ? (
+          <section className="section-padding py-16">
+            <p className="label mb-8">Gallery</p>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {project.gallery.map((src, i) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={src}
+                  src={src}
+                  alt={`${project.title} gallery ${i + 1}`}
+                  className="aspect-[4/3] w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <section className="section-padding py-20">
           <p className="label mb-8">Credits</p>

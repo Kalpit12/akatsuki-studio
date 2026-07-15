@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { services } from "@/data/services";
 import Link from "next/link";
-import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
+import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,21 +39,28 @@ export function ServicesPreview() {
   const current = services[active];
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen overflow-hidden">
-      <LazyVideoPlayer
-        key={current.id}
-        src={current.video}
-        poster={current.image}
-        className="absolute inset-0 h-full w-full"
-        playInView
-        showControls={false}
-        showPlayOverlay={false}
-      />
+    <section ref={sectionRef} className="relative min-h-screen overflow-hidden bg-black">
+      {services.map((service, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={service.id}
+          src={service.image}
+          alt=""
+          className={cn(
+            "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
+            i === active ? "opacity-100" : "opacity-0",
+          )}
+          loading="eager"
+          decoding="async"
+          fetchPriority={i === 0 ? "high" : i < 3 ? "low" : "auto"}
+          aria-hidden
+        />
+      ))}
       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/50" />
 
       <div className="section-padding relative z-10 flex min-h-screen flex-col justify-center gap-16 py-28 lg:flex-row lg:items-end lg:justify-between lg:gap-24">
         <div className="max-w-xl shrink-0">
-          <p className="label mb-4">What we create</p>
+          <p className="label mb-4 text-accent">What we create</p>
           <h2 className="heading-lg mb-6 text-balance">
             Campaigns, film, and digital that people remember.
           </h2>
@@ -69,10 +76,7 @@ export function ServicesPreview() {
           </Link>
         </div>
 
-        <nav
-          className="w-full max-w-lg"
-          aria-label="Studio services"
-        >
+        <nav className="w-full max-w-lg" aria-label="Studio services">
           <ul className="space-y-0">
             {services.map((service, i) => {
               const isActive = active === i;
