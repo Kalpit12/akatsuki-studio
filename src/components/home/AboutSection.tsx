@@ -216,13 +216,13 @@ export function AboutSection({
             <li
               key={pillar.label}
               className={cn(
-                "flex flex-col justify-between px-4 py-5 md:min-h-[7.5rem] md:px-5 md:py-6",
+                "flex min-w-0 flex-col justify-between px-3 py-5 sm:px-4 md:min-h-[7.5rem] md:px-5 md:py-6",
                 pillar.accent ? "bg-white/[0.03]" : "bg-background",
               )}
             >
               <p
                 className={cn(
-                  "font-display text-xl tracking-tight md:text-2xl",
+                  "font-display text-lg leading-none tracking-tight sm:text-xl md:text-[1.35rem] lg:text-2xl",
                   pillar.accent ? "text-accent" : "text-white",
                 )}
               >
