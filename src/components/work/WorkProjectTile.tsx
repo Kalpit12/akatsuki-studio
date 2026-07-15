@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/data/projects";
+import { useWorkMorph } from "@/components/work/WorkMorphProvider";
 import { cn } from "@/lib/utils";
 
 export function WorkProjectTile({
@@ -13,45 +14,65 @@ export function WorkProjectTile({
   index: number;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLAnchorElement>(null);
+  const { startMorph, activeSlug, lockHero } = useWorkMorph();
+  const [inView, setInView] = useState(false);
   const [hovered, setHovered] = useState(false);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+  const morphingAway = activeSlug === project.slug && lockHero;
 
-    if (hovered) {
-      void video.play().catch(() => undefined);
-    } else {
-      video.pause();
-      video.currentTime = 0;
-    }
-  }, [hovered]);
-
-  // Touch / coarse pointers: preview when the tile media is in view
   useEffect(() => {
     const root = rootRef.current;
     const video = videoRef.current;
     if (!root || !video) return;
-    if (!window.matchMedia("(hover: none)").matches) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        const visible = Boolean(entry?.isIntersecting);
+        setInView(visible);
+        if (visible) {
+          video.muted = true;
           void video.play().catch(() => undefined);
-          setHovered(true);
         } else {
           video.pause();
-          video.currentTime = 0;
-          setHovered(false);
+          try {
+            video.currentTime = 0;
+          } catch {
+            /* ignore */
+          }
         }
       },
-      { threshold: 0.55 },
+      { threshold: 0.35, rootMargin: "0px 0px -8% 0px" },
     );
 
     observer.observe(root);
     return () => observer.disconnect();
   }, []);
+
+  function handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
+      return;
+    }
+
+    const media = mediaRef.current;
+    if (!media) return;
+
+    e.preventDefault();
+    const rect = media.getBoundingClientRect();
+    startMorph({
+      slug: project.slug,
+      coverImage: project.coverImage,
+      from: {
+        top: rect.top,
+        left: rect.left,
+        width: rect.width,
+        height: rect.height,
+      },
+    });
+  }
+
+  const showVideo = inView || hovered;
 
   return (
     <Link
@@ -59,20 +80,27 @@ export function WorkProjectTile({
       href={`/work/${project.slug}`}
       data-work-tile
       data-cursor-label="View"
+      onClick={handleClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setHovered(true)}
       onBlur={() => setHovered(false)}
       className="group block"
     >
-      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white/[0.03] md:rounded-3xl">
+      <div
+        ref={mediaRef}
+        className={cn(
+          "relative aspect-[4/5] overflow-hidden rounded-2xl bg-white/[0.03] md:rounded-3xl",
+          morphingAway && "opacity-0",
+        )}
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={project.coverImage}
           alt=""
           className={cn(
             "absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-            hovered ? "scale-[1.04] opacity-0" : "scale-100 opacity-100",
+            showVideo ? "scale-[1.02] opacity-0" : "scale-100 opacity-100",
           )}
           loading="lazy"
           decoding="async"
@@ -82,13 +110,13 @@ export function WorkProjectTile({
           ref={videoRef}
           className={cn(
             "absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-            hovered ? "scale-[1.04] opacity-100" : "scale-100 opacity-0",
+            showVideo ? "scale-[1.02] opacity-100" : "scale-100 opacity-0",
           )}
           src={project.coverVideo}
           muted
           loop
           playsInline
-          preload="none"
+          preload="metadata"
         />
 
         <span

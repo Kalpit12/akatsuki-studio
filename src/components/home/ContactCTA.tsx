@@ -2,27 +2,18 @@
 
 import { MEDIA } from "@/lib/cloudinary";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 
 export function ContactCTA() {
   return (
     <section className="relative min-h-[85vh] overflow-hidden">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={MEDIA.contactPoster}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover"
-        loading="lazy"
-        decoding="async"
-        aria-hidden
-      />
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
+      <LazyVideoPlayer
         src={MEDIA.contact}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
+        poster={MEDIA.contactPoster}
+        className="absolute inset-0 h-full w-full"
+        playInView
+        showControls={false}
+        showPlayOverlay={false}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/55" />
       {/* Brand red atmosphere */}

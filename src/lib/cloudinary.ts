@@ -32,13 +32,13 @@ export function cldImage(
 }
 
 export const MEDIA = {
-  /** Hero — local studio reel */
+  /** Hero — local Subaru studio reel */
   hero: "/subaru-hero.mp4",
-  heroPoster: pxImg(3062541),
+  heroPoster: "/subaru-hero.jpg",
 
-  /** About studio — homepage who-we-are */
-  about: "/M8.mp4",
-  aboutPoster: pxImg(271624),
+  /** About studio — homepage who-we-are (Huawei Product Launch Africa) */
+  about: "/huawei-about.mp4",
+  aboutPoster: "/huawei-about.jpg",
 
   /** About page — physical studio / the floor */
   studioTour: "/the-floor.mp4",

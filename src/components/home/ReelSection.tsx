@@ -1,10 +1,77 @@
 "use client";
 
 import Link from "next/link";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MEDIA } from "@/lib/cloudinary";
+
+function ReelCardVideo({
+  src,
+  poster,
+  active,
+  warm,
+}: {
+  src: string;
+  poster: string;
+  active: boolean;
+  warm: boolean;
+}) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const shouldLoad = active || warm;
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video || !shouldLoad) return;
+
+    if (active) {
+      const play = () => {
+        video.muted = true;
+        void video.play().catch(() => {});
+      };
+      if (video.readyState >= 2) play();
+      else {
+        video.addEventListener("canplay", play);
+        video.addEventListener("loadeddata", play);
+      }
+      return () => {
+        video.removeEventListener("canplay", play);
+        video.removeEventListener("loadeddata", play);
+      };
+    }
+
+    video.pause();
+  }, [active, shouldLoad, src]);
+
+  return (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={poster}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+        loading="lazy"
+        decoding="async"
+        aria-hidden
+      />
+      {shouldLoad ? (
+        <video
+          ref={ref}
+          className={`h-full w-full object-cover transition duration-700 ${
+            active ? "scale-100 opacity-100" : "scale-[1.04] opacity-75"
+          }`}
+          src={src}
+          poster={poster}
+          muted
+          loop
+          playsInline
+          autoPlay={active}
+          preload="auto"
+        />
+      ) : null}
+    </>
+  );
+}
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -113,25 +180,11 @@ export function ReelSection() {
               >
                 {/* Media clipped; copy sits above with safe padding */}
                 <div className="absolute inset-0 overflow-hidden border border-white/10">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.poster}
-                    alt=""
-                    className="absolute inset-0 h-full w-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                    aria-hidden
-                  />
-                  <video
-                    className={`h-full w-full object-cover transition duration-700 ${
-                      isActive ? "scale-100 opacity-100" : "scale-[1.04] opacity-75"
-                    }`}
+                  <ReelCardVideo
                     src={item.video}
-                    autoPlay={isActive}
-                    muted
-                    loop
-                    playsInline
-                    preload={isActive ? "metadata" : "none"}
+                    poster={item.poster}
+                    active={isActive}
+                    warm={Math.abs(activeIndex - i) <= 1}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/35" />
                   <div

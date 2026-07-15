@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PAIR_SIZE = 2;
+const PAIR_SIZE = testimonials.length <= 3 ? testimonials.length : 2;
 const PAIR_DURATION_MS = 5000;
 const PAIR_COUNT = Math.ceil(testimonials.length / PAIR_SIZE);
 
@@ -137,8 +137,8 @@ export function TestimonialsSection() {
             data-testimonial-head
             className="max-w-xs text-sm leading-relaxed text-muted md:pb-1 md:text-right"
           >
-            From Autobox and Huawei to brands of every kind — voices from the
-            roster.
+            From Zona and Autobox to creators and brands of every kind — voices
+            from the roster.
           </p>
         </div>
 
@@ -160,11 +160,16 @@ export function TestimonialsSection() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -14 }}
                 transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                className="grid gap-5 md:grid-cols-2 lg:gap-6"
+                className={cn(
+                  "grid gap-5 lg:gap-6",
+                  visible.length >= 3
+                    ? "md:grid-cols-3"
+                    : "md:grid-cols-2",
+                )}
               >
                 {visible.map((item, i) => (
                   <TestimonialCard
-                    key={item.client}
+                    key={item.id}
                     item={item}
                     index={start + i}
                   />

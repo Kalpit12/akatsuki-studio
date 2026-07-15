@@ -4,6 +4,7 @@ import { useState } from "react";
 import { SITE } from "@/lib/constants";
 import { MEDIA } from "@/lib/cloudinary";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 import { BorderBeam } from "@/components/ui/BorderBeam";
 import { cn } from "@/lib/utils";
 
@@ -35,24 +36,13 @@ export default function ContactPage() {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden pt-28 md:pt-36">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={MEDIA.contactPoster}
-        alt=""
-        className="pointer-events-none fixed inset-0 -z-20 h-full w-full object-cover opacity-25"
-        loading="lazy"
-        decoding="async"
-        aria-hidden
-      />
-      <video
-        className="pointer-events-none fixed inset-0 -z-20 h-full w-full object-cover opacity-20"
+      <LazyVideoPlayer
         src={MEDIA.contact}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        aria-hidden
+        poster={MEDIA.contactPoster}
+        className="pointer-events-none fixed inset-0 -z-20 h-full w-full opacity-20"
+        playInView
+        showControls={false}
+        showPlayOverlay={false}
       />
       <div
         className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-b from-background via-background/85 to-background"

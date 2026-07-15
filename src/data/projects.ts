@@ -1,5 +1,11 @@
 import { MEDIA } from "@/lib/cloudinary";
 
+export type ProjectFilm = {
+  video: string;
+  poster: string;
+  label: string;
+};
+
 export type Project = {
   slug: string;
   title: string;
@@ -16,6 +22,8 @@ export type Project = {
   results: { label: string; value: string }[];
   credits: { role: string; name: string }[];
   gallery: string[];
+  /** Optional portrait / cutdown films shown on the case study */
+  films?: ProjectFilm[];
   featured?: boolean;
 };
 
@@ -29,9 +37,9 @@ export const projects: Project[] = [
     year: "2025",
     excerpt:
       "Premium metal, sharp presence — a brand film that makes every import feel inevitable.",
-    coverVideo: MEDIA.projects.motors.video,
-    coverImage: MEDIA.projects.motors.poster,
-    heroVideo: MEDIA.projects.motors.video,
+    coverVideo: "/Kyra/kyra-urus.mp4",
+    coverImage: "/Kyra/kyra-urus.jpg",
+    heroVideo: "/Kyra/kyra-urus.mp4",
     challenge:
       "Kyra Platinum Imports needed to look as exclusive online as the inventory feels on the floor — the feed was lagging behind the brand.",
     direction:
@@ -45,7 +53,26 @@ export const projects: Project[] = [
       { role: "Creative Direction", name: "Akatsuki Studio" },
       { role: "Client", name: "Kyra Platinum Imports" },
     ],
-    gallery: [...MEDIA.projects.motors.gallery],
+    gallery: [
+      "/Kyra/kyra-still-01.jpg",
+      "/Kyra/kyra-still-02.jpg",
+      "/Kyra/kyra-still-03.jpg",
+      "/Kyra/kyra-still-04.jpg",
+      "/Kyra/kyra-still-05.jpg",
+      "/Kyra/kyra-still-06.jpg",
+    ],
+    films: [
+      {
+        video: "/Kyra/kyra-x3m-reel.mp4",
+        poster: "/Kyra/kyra-x3m-reel.jpg",
+        label: "X3 M Reel",
+      },
+      {
+        video: "/Kyra/kyra-xm.mp4",
+        poster: "/Kyra/kyra-xm.jpg",
+        label: "XM Cut",
+      },
+    ],
     featured: true,
   },
   {
@@ -57,9 +84,9 @@ export const projects: Project[] = [
     year: "2025",
     excerpt:
       "Kinetic cuts and punchy sound — a feed that finally matches the pace of the brand.",
-    coverVideo: MEDIA.projects.automotive.video,
-    coverImage: MEDIA.projects.automotive.poster,
-    heroVideo: MEDIA.projects.automotive.video,
+    coverVideo: "/TVS/tvs-launch.mp4",
+    coverImage: "/TVS/tvs-launch.jpg",
+    heroVideo: "/TVS/tvs-launch.mp4",
     challenge:
       "TVS rides on energy. The social system needed motion that felt alive — not stock footage with a logo.",
     direction:
@@ -73,7 +100,14 @@ export const projects: Project[] = [
       { role: "Creative Direction", name: "Akatsuki Studio" },
       { role: "Client", name: "TVS" },
     ],
-    gallery: [...MEDIA.projects.automotive.gallery],
+    gallery: [
+      "/TVS/tvs-still-01.jpg",
+      "/TVS/tvs-still-02.jpg",
+      "/TVS/tvs-still-03.jpg",
+      "/TVS/tvs-still-04.jpg",
+      "/TVS/tvs-still-05.jpg",
+      "/TVS/tvs-still-06.jpg",
+    ],
     featured: true,
   },
   {
@@ -85,9 +119,9 @@ export const projects: Project[] = [
     year: "2025",
     excerpt:
       "Property sold on first impression — light, space, and finish that make enquiries more serious.",
-    coverVideo: MEDIA.projects.resort.video,
-    coverImage: MEDIA.projects.resort.poster,
-    heroVideo: MEDIA.projects.resort.video,
+    coverVideo: "/Macaash/macaash-cover.mp4",
+    coverImage: "/Macaash/macaash-cover.jpg",
+    heroVideo: "/Macaash/macaash-cover.mp4",
     challenge:
       "Developments need to feel inevitable on screen. Soft photography wasn't converting serious buyers.",
     direction:
@@ -101,7 +135,24 @@ export const projects: Project[] = [
       { role: "Creative Direction", name: "Akatsuki Studio" },
       { role: "Client", name: "Macaash Investments" },
     ],
-    gallery: [...MEDIA.projects.resort.gallery],
+    gallery: [
+      "/Macaash/macaash-still-01.jpg",
+      "/Macaash/macaash-still-02.jpg",
+      "/Macaash/macaash-still-03.jpg",
+      "/Macaash/macaash-still-04.jpg",
+    ],
+    films: [
+      {
+        video: "/Macaash/macaash-reel-01.mp4",
+        poster: "/Macaash/macaash-reel-01.jpg",
+        label: "Macaash Reel 01",
+      },
+      {
+        video: "/Macaash/macaash-reel-02.mp4",
+        poster: "/Macaash/macaash-reel-02.jpg",
+        label: "Macaash Reel 02",
+      },
+    ],
     featured: true,
   },
   {
@@ -129,7 +180,23 @@ export const projects: Project[] = [
       { role: "Creative Direction", name: "Akatsuki Studio" },
       { role: "Client", name: "Elias Jewelers" },
     ],
-    gallery: [...MEDIA.projects.elias.gallery],
+    gallery: [
+      "/ELIAS/elias-still-01.jpg",
+      "/ELIAS/elias-still-02.jpg",
+      "/ELIAS/elias-still-03.jpg",
+    ],
+    films: [
+      {
+        video: "/ELIAS/elias-diwali-reel.mp4",
+        poster: "/ELIAS/elias-diwali-reel.jpg",
+        label: "Diwali Reel",
+      },
+      {
+        video: "/ELIAS/elias-gold-sequence.mp4",
+        poster: "/ELIAS/elias-gold-sequence.jpg",
+        label: "Gold Sequence",
+      },
+    ],
     featured: true,
   },
 ];

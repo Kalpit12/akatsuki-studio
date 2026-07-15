@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type VideoBackgroundProps = {
@@ -9,6 +9,8 @@ type VideoBackgroundProps = {
   className?: string;
   overlay?: boolean;
   parallax?: number;
+  /** When true (default for hero), load and play immediately — no deferred src */
+  eager?: boolean;
 };
 
 export function VideoBackground({
@@ -17,8 +19,11 @@ export function VideoBackground({
   className,
   overlay = true,
   parallax = 0,
+  eager = true,
 }: VideoBackgroundProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [srcLoaded, setSrcLoaded] = useState(eager);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -33,29 +38,83 @@ export function VideoBackground({
     return () => window.removeEventListener("scroll", onScroll);
   }, [parallax]);
 
+  // Play once the video has a real src and can start
   useEffect(() => {
+    if (!srcLoaded) return;
     const video = videoRef.current;
     if (!video) return;
 
     video.muted = true;
     const play = () => {
-      const p = video.play();
-      if (p) void p.catch(() => {});
+      void video.play().catch(() => {});
     };
+
     if (video.readyState >= 2) play();
-    else video.addEventListener("canplay", play, { once: true });
-  }, [src]);
+    else {
+      video.addEventListener("canplay", play, { once: true });
+      video.addEventListener("loadeddata", play, { once: true });
+    }
+
+    return () => {
+      video.removeEventListener("canplay", play);
+      video.removeEventListener("loadeddata", play);
+    };
+  }, [src, srcLoaded]);
+
+  // Optional: defer load until near viewport (non-eager backgrounds)
+  useEffect(() => {
+    if (eager) return;
+    const root = rootRef.current;
+    if (!root) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setSrcLoaded(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.05, rootMargin: "200px 0px" },
+    );
+
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, [eager, src]);
+
+  // Pause when scrolled fully away (hero tall section)
+  useEffect(() => {
+    const root = rootRef.current;
+    const video = videoRef.current;
+    if (!root || !video || !srcLoaded) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          video.muted = true;
+          void video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, [srcLoaded]);
 
   return (
-    <div className={cn("absolute inset-0 overflow-hidden bg-background", className)}>
+    <div
+      ref={rootRef}
+      className={cn("absolute inset-0 overflow-hidden bg-background", className)}
+    >
       {poster && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={poster}
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-center"
-          // Avoid React 19 SSR <link rel="preload"> — loader delays paint and triggers console warnings
-          fetchPriority="low"
+          fetchPriority="high"
           decoding="async"
           aria-hidden
         />
@@ -63,11 +122,13 @@ export function VideoBackground({
       <video
         ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover object-center"
-        src={src}
+        src={srcLoaded ? src : undefined}
+        poster={poster}
         muted
         loop
         playsInline
-        preload="metadata"
+        autoPlay={eager}
+        preload={eager ? "auto" : "none"}
       />
       {overlay && (
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-background/90" />

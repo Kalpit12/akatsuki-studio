@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { services } from "@/data/services";
 import Link from "next/link";
+import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,25 +40,14 @@ export function ServicesPreview() {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        key={`poster-${current.id}`}
-        src={current.poster}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover"
-        loading="lazy"
-        decoding="async"
-        aria-hidden
-      />
-      <video
+      <LazyVideoPlayer
         key={current.id}
-        className="absolute inset-0 h-full w-full object-cover"
         src={current.video}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
+        poster={current.image}
+        className="absolute inset-0 h-full w-full"
+        playInView
+        showControls={false}
+        showPlayOverlay={false}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/50" />
 

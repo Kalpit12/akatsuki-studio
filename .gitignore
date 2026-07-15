@@ -45,7 +45,18 @@ next-env.d.ts
 # Local tooling (ffmpeg binaries, etc.)
 .tools/
 
-
-# Local tooling (ffmpeg binaries, etc.)
-.tools/
+# Large raw / source masters — site uses compressed web copies instead
+/public/HUAWEI Poduct Launch Africa.mp4 (Video 1)
+/public/E63 suspect .mp4
+/public/Kyra/Urus .mp4
+/public/Kyra/X3m Reel.mp4
+/public/Kyra/xm.mp4
+/public/TVS/TVS LAUNCH.mp4
+/public/TVS/DSC*.jpg
+/public/ELIAS/Elias Diwali Reel.mp4
+/public/ELIAS/Elias Gold Sequence .mp4
+/public/ELIAS/DSC*.jpg
+/public/Macaash/Macaash 1.mp4
+/public/Macaash/Macaash 2.mp4
+/public/Macaash/Macaash Cover.mp4
 

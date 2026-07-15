@@ -8,7 +8,7 @@ export const services = [
     description:
       "The best content is never just one video. We create end-to-end campaigns that bring your brand to life across every platform — from concept and strategy to production and delivery. Whether you're launching a product, building awareness, or telling your brand's story, we create campaigns that people remember.",
     video: MEDIA.services.campaigns.video,
-    poster: MEDIA.services.campaigns.poster,
+    image: MEDIA.services.campaigns.poster,
     tags: ["Concept", "Strategy", "Multi-platform"],
   },
   {
@@ -18,7 +18,7 @@ export const services = [
     description:
       "When it comes to commercial content, we don't follow the pack — we help set the bar. From product films and launch campaigns to branded storytelling, every frame is crafted to showcase design, emotion, and performance.",
     video: MEDIA.services.automotive.video,
-    poster: MEDIA.services.automotive.poster,
+    image: MEDIA.services.automotive.poster,
     tags: ["Launches", "Product", "Performance"],
   },
   {
@@ -28,7 +28,7 @@ export const services = [
     description:
       "Corporate conferences, product launches, networking events, and brand activations — we capture every moment with cinematic quality, delivering content that keeps the conversation going long after the event ends.",
     video: MEDIA.services.events.video,
-    poster: MEDIA.services.events.poster,
+    image: MEDIA.services.events.poster,
     tags: ["Launches", "Conferences", "Activations"],
   },
   {
@@ -38,7 +38,7 @@ export const services = [
     description:
       "Great businesses deserve to be discovered. Our SEO strategies improve your visibility, increase organic traffic, and help the right customers find you.",
     video: MEDIA.services.seo.video,
-    poster: MEDIA.services.seo.poster,
+    image: MEDIA.services.seo.poster,
     tags: ["Organic Traffic", "Visibility", "Discovery"],
   },
   {
@@ -48,7 +48,7 @@ export const services = [
     description:
       "Social media isn't about posting for the sake of it. We create strategies, produce engaging content, and manage your platforms to build a brand people trust, follow, and remember.",
     video: MEDIA.services.social.video,
-    poster: MEDIA.services.social.poster,
+    image: MEDIA.services.social.poster,
     tags: ["Strategy", "Content", "Community"],
   },
   {
@@ -58,7 +58,7 @@ export const services = [
     description:
       "Commercial films and branded content crafted to capture attention, tell compelling stories, and leave a lasting impression.",
     video: MEDIA.services.cinematic.video,
-    poster: MEDIA.services.cinematic.poster,
+    image: MEDIA.services.cinematic.poster,
     tags: ["Commercials", "Brand Films", "Story"],
   },
   {
@@ -68,7 +68,7 @@ export const services = [
     description:
       "Modern, responsive websites designed to reflect your brand, create exceptional user experiences, and turn visitors into customers.",
     video: MEDIA.services.websites.video,
-    poster: MEDIA.services.websites.poster,
+    image: MEDIA.services.websites.poster,
     tags: ["UX", "Responsive", "Conversion"],
   },
 ] as const;

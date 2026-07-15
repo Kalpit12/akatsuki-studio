@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { STATS } from "@/lib/constants";
 import { MEDIA } from "@/lib/cloudinary";
 import { CountUpStat } from "@/components/ui/CountUpStat";
+import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -31,6 +32,8 @@ type AboutSectionProps = {
   /** Video source for the media panel */
   videoSrc?: string;
   videoPoster?: string;
+  /** Label seated above the media frame */
+  videoCaption?: string | null;
   /** Homepage: media left. About page story can stay left. */
   mediaSide?: "left" | "right";
   showAboutLink?: boolean;
@@ -55,6 +58,7 @@ export function AboutSection({
   showHeader = true,
   videoSrc = MEDIA.about,
   videoPoster = MEDIA.aboutPoster,
+  videoCaption = "Huawei Africa Product Launch Video",
   mediaSide = "left",
   showAboutLink = true,
   showStudioFloor = false,
@@ -130,26 +134,35 @@ export function AboutSection({
   }, [showStats]);
 
   const mediaPanel = (
-    <div className="about-media relative lg:col-span-6">
-      <div className="about-media-frame relative aspect-[16/10] overflow-hidden border border-white/10 md:aspect-[4/3] lg:aspect-[5/4] lg:min-h-[28rem]">
-        <video
-          className="h-full w-full object-cover"
+    <div className="about-media relative min-w-0 lg:col-span-7">
+      {videoCaption ? (
+        <div className="mb-4 flex items-center gap-3 md:mb-5">
+          <span className="h-px w-6 shrink-0 bg-accent md:w-8" aria-hidden />
+          <p className="font-mono text-[10px] tracking-[0.22em] text-accent uppercase md:text-[11px]">
+            {videoCaption}
+          </p>
+        </div>
+      ) : null}
+      <div className="about-media-frame relative aspect-video w-full overflow-hidden border border-white/10">
+        <LazyVideoPlayer
           src={videoSrc}
           poster={videoPoster}
-          autoPlay
-          muted
-          loop
-          playsInline
+          className="h-full w-full"
+          videoClassName="object-cover object-center"
+          playInView
+          showMuteOnly
+          showControls={false}
+          showPlayOverlay={false}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-black/15" />
         <div className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/50 to-transparent" />
 
-        <div className="absolute right-0 bottom-0 left-0 flex items-end justify-between gap-4 p-6 md:p-8">
+        <div className="absolute right-0 bottom-0 left-0 flex items-end justify-between gap-4 px-5 py-5 sm:px-6 sm:py-6 md:px-8 md:py-8">
           <div>
             <p className="font-mono text-[10px] tracking-[0.22em] text-accent">EST.</p>
             <p className="mt-1 font-display text-2xl text-white">Nairobi</p>
           </div>
-          <p className="max-w-[10rem] text-right text-[11px] uppercase leading-relaxed tracking-[0.16em] text-white/55">
+          <p className="max-w-[10rem] shrink-0 text-right text-[11px] uppercase leading-relaxed tracking-[0.16em] text-white/55">
             Film · Brand · Digital
           </p>
         </div>
@@ -160,8 +173,8 @@ export function AboutSection({
   const copyPanel = (
     <div
       className={cn(
-        "about-copy flex flex-col justify-center",
-        mediaOnRight ? "lg:col-span-6" : "lg:col-span-6",
+        "about-copy flex min-w-0 flex-col justify-center",
+        "lg:col-span-5",
       )}
     >
       {showTruth ? (
@@ -290,14 +303,13 @@ export function AboutSection({
 
             <div className="about-media relative lg:col-span-7">
               <div className="about-media-frame relative aspect-[16/10] overflow-hidden border border-white/10 md:aspect-[16/9]">
-                <video
-                  className="h-full w-full object-cover"
+                <LazyVideoPlayer
                   src={MEDIA.studioTour}
                   poster={MEDIA.studioTourPoster}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
+                  className="h-full w-full"
+                  playInView
+                  showControls={false}
+                  showPlayOverlay={false}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-black/10" />
                 <div className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent" />

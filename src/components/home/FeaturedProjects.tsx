@@ -11,39 +11,41 @@ gsap.registerPlugin(ScrollTrigger);
 function FeaturedProjectVideo({
   src,
   active,
+  warm,
 }: {
   src: string;
   active: boolean;
+  /** Preload neighbors so the next panel starts without buffering lag */
+  warm: boolean;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
+  const shouldLoad = active || warm;
 
   useEffect(() => {
     const video = ref.current;
-    if (!video) return;
+    if (!video || !shouldLoad) return;
 
     if (active) {
-      // Ensure source is ready, then play — React `autoPlay` alone is unreliable
-      // when panels toggle or when the file is large / below the fold.
       const play = () => {
         video.muted = true;
-        const p = video.play();
-        if (p) void p.catch(() => {});
+        void video.play().catch(() => {});
       };
 
       if (video.readyState >= 2) play();
       else {
-        video.addEventListener("loadeddata", play, { once: true });
-        video.load();
+        video.addEventListener("canplay", play);
+        video.addEventListener("loadeddata", play);
       }
-    } else {
-      video.pause();
-      try {
-        video.currentTime = 0;
-      } catch {
-        /* ignore seek before ready */
-      }
+      return () => {
+        video.removeEventListener("canplay", play);
+        video.removeEventListener("loadeddata", play);
+      };
     }
-  }, [active, src]);
+
+    video.pause();
+  }, [active, shouldLoad, src]);
+
+  if (!shouldLoad) return null;
 
   return (
     <video
@@ -53,7 +55,8 @@ function FeaturedProjectVideo({
       muted
       loop
       playsInline
-      preload={active ? "auto" : "none"}
+      autoPlay={active}
+      preload="auto"
     />
   );
 }
@@ -149,6 +152,7 @@ export function FeaturedProjects() {
             <FeaturedProjectVideo
               src={project.coverVideo}
               active={activeIndex === i}
+              warm={Math.abs(activeIndex - i) <= 1}
             />
             <div className="absolute inset-0 bg-black/40 transition-colors duration-700 group-hover:bg-black/25" />
 
