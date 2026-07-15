@@ -11,10 +11,14 @@ import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { StudioGallery } from "@/components/home/StudioGallery";
 import { CraftSection } from "@/components/home/CraftSection";
 import { ContactCTA } from "@/components/home/ContactCTA";
+import { MEDIA } from "@/lib/cloudinary";
 
 export default function HomePage() {
   return (
     <>
+      {/* Hero-only: give the first reel exclusive early bandwidth */}
+      <link rel="preload" as="video" href={MEDIA.hero} type="video/mp4" />
+      <link rel="preload" as="image" href={MEDIA.heroPoster} />
       <HeroSection />
       <AboutSection />
       <LogoWall />

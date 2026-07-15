@@ -5,43 +5,47 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MEDIA } from "@/lib/cloudinary";
+import { useIntroReady } from "@/hooks/useIntroReady";
+import { useNearViewport } from "@/hooks/useNearViewport";
 
 function ReelCardVideo({
   src,
   poster,
   active,
-  warm,
+  allowLoad,
 }: {
   src: string;
   poster: string;
   active: boolean;
-  warm: boolean;
+  allowLoad: boolean;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
-  const shouldLoad = active || warm;
+  const shouldLoad = allowLoad && active;
 
   useEffect(() => {
     const video = ref.current;
     if (!video || !shouldLoad) return;
 
-    if (active) {
-      const play = () => {
-        video.muted = true;
-        void video.play().catch(() => {});
-      };
-      if (video.readyState >= 2) play();
-      else {
-        video.addEventListener("canplay", play);
-        video.addEventListener("loadeddata", play);
-      }
-      return () => {
-        video.removeEventListener("canplay", play);
-        video.removeEventListener("loadeddata", play);
-      };
+    const play = () => {
+      video.muted = true;
+      void video.play().catch(() => {});
+    };
+    if (video.readyState >= 2) play();
+    else {
+      video.addEventListener("canplay", play);
+      video.addEventListener("loadeddata", play);
     }
+    return () => {
+      video.removeEventListener("canplay", play);
+      video.removeEventListener("loadeddata", play);
+    };
+  }, [shouldLoad, src]);
 
-    video.pause();
-  }, [active, shouldLoad, src]);
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    if (!active) video.pause();
+  }, [active]);
 
   return (
     <>
@@ -65,7 +69,7 @@ function ReelCardVideo({
           muted
           loop
           playsInline
-          autoPlay={active}
+          autoPlay
           preload="auto"
         />
       ) : null}
@@ -89,6 +93,9 @@ export function ReelSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const introReady = useIntroReady();
+  const sectionNear = useNearViewport(sectionRef, "300px 0px");
+  const allowLoad = introReady && sectionNear;
 
   useLayoutEffect(() => {
     const track = trackRef.current;
@@ -184,7 +191,7 @@ export function ReelSection() {
                     src={item.video}
                     poster={item.poster}
                     active={isActive}
-                    warm={Math.abs(activeIndex - i) <= 1}
+                    allowLoad={allowLoad}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/35" />
                   <div

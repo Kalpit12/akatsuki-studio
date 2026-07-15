@@ -5,45 +5,48 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getFeaturedProjects } from "@/data/projects";
+import { useIntroReady } from "@/hooks/useIntroReady";
+import { useNearViewport } from "@/hooks/useNearViewport";
 
 gsap.registerPlugin(ScrollTrigger);
 
 function FeaturedProjectVideo({
   src,
   active,
-  warm,
+  allowLoad,
 }: {
   src: string;
   active: boolean;
-  /** Preload neighbors so the next panel starts without buffering lag */
-  warm: boolean;
+  allowLoad: boolean;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
-  const shouldLoad = active || warm;
+  const shouldLoad = allowLoad && active;
 
   useEffect(() => {
     const video = ref.current;
     if (!video || !shouldLoad) return;
 
-    if (active) {
-      const play = () => {
-        video.muted = true;
-        void video.play().catch(() => {});
-      };
+    const play = () => {
+      video.muted = true;
+      void video.play().catch(() => {});
+    };
 
-      if (video.readyState >= 2) play();
-      else {
-        video.addEventListener("canplay", play);
-        video.addEventListener("loadeddata", play);
-      }
-      return () => {
-        video.removeEventListener("canplay", play);
-        video.removeEventListener("loadeddata", play);
-      };
+    if (video.readyState >= 2) play();
+    else {
+      video.addEventListener("canplay", play);
+      video.addEventListener("loadeddata", play);
     }
+    return () => {
+      video.removeEventListener("canplay", play);
+      video.removeEventListener("loadeddata", play);
+    };
+  }, [shouldLoad, src]);
 
-    video.pause();
-  }, [active, shouldLoad, src]);
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    if (!active) video.pause();
+  }, [active]);
 
   if (!shouldLoad) return null;
 
@@ -55,7 +58,7 @@ function FeaturedProjectVideo({
       muted
       loop
       playsInline
-      autoPlay={active}
+      autoPlay
       preload="auto"
     />
   );
@@ -65,6 +68,9 @@ export function FeaturedProjects() {
   const projects = getFeaturedProjects();
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const introReady = useIntroReady();
+  const sectionNear = useNearViewport(containerRef, "300px 0px");
+  const allowLoad = introReady && sectionNear;
 
   useEffect(() => {
     const el = containerRef.current;
@@ -152,7 +158,7 @@ export function FeaturedProjects() {
             <FeaturedProjectVideo
               src={project.coverVideo}
               active={activeIndex === i}
-              warm={Math.abs(activeIndex - i) <= 1}
+              allowLoad={allowLoad}
             />
             <div className="absolute inset-0 bg-black/40 transition-colors duration-700 group-hover:bg-black/25" />
 

@@ -209,46 +209,46 @@ export function AboutSection({
           {closing}
         </p>
       ) : null}
-
-      {showTruth ? (
-        <ul className="mt-12 grid grid-cols-2 gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-4">
-          {PILLARS.map((pillar) => (
-            <li
-              key={pillar.label}
-              className={cn(
-                "flex min-w-0 flex-col justify-between px-3 py-5 sm:px-4 md:min-h-[7.5rem] md:px-5 md:py-6",
-                pillar.accent ? "bg-white/[0.03]" : "bg-background",
-              )}
-            >
-              <p
-                className={cn(
-                  "font-display text-lg leading-none tracking-tight sm:text-xl md:text-[1.35rem] lg:text-2xl",
-                  pillar.accent ? "text-accent" : "text-white",
-                )}
-              >
-                {pillar.label}
-              </p>
-              <p className="mt-3 max-w-[11rem] text-[11px] leading-relaxed tracking-[0.04em] text-muted md:mt-4">
-                {pillar.detail}
-              </p>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-
-      {showAboutLink && showTruth ? (
-        <div className="mt-10">
-          <Link
-            href="/about"
-            data-magnetic
-            className="label link-underline text-accent hover:text-accent-hover"
-          >
-            More about the studio →
-          </Link>
-        </div>
-      ) : null}
     </div>
   );
+
+  const pillarsBlock = showTruth ? (
+    <ul className="mt-14 grid grid-cols-2 gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-4">
+      {PILLARS.map((pillar) => (
+        <li
+          key={pillar.label}
+          className={cn(
+            "flex min-w-0 flex-col justify-between px-4 py-5 md:min-h-[7.5rem] md:px-5 md:py-6 lg:px-6",
+            pillar.accent ? "bg-white/[0.03]" : "bg-background",
+          )}
+        >
+          <p
+            className={cn(
+              "font-display text-xl leading-none tracking-tight md:text-2xl",
+              pillar.accent ? "text-accent" : "text-white",
+            )}
+          >
+            {pillar.label}
+          </p>
+          <p className="mt-3 text-[11px] leading-relaxed tracking-[0.04em] text-muted md:mt-4">
+            {pillar.detail}
+          </p>
+        </li>
+      ))}
+    </ul>
+  ) : null;
+
+  const aboutLink = showAboutLink && showTruth ? (
+    <div className="mt-10">
+      <Link
+        href="/about"
+        data-magnetic
+        className="label link-underline text-accent hover:text-accent-hover"
+      >
+        More about the studio →
+      </Link>
+    </div>
+  ) : null;
 
   return (
     <section ref={ref} className="relative overflow-hidden py-28 md:py-36">
@@ -277,6 +277,9 @@ export function AboutSection({
             </>
           )}
         </div>
+
+        {pillarsBlock}
+        {aboutLink}
       </div>
 
       {showStudioFloor ? (

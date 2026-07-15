@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useIntroReady } from "@/hooks/useIntroReady";
 
 /** Shared studio control chrome — accent red, mono labels, film edges */
 const controlBase =
@@ -140,6 +141,8 @@ export function LazyVideoPlayer({
   const [srcLoaded, setSrcLoaded] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
+  const [deepPreload, setDeepPreload] = useState(false);
+  const introReady = useIntroReady();
 
   const tryPlay = useCallback(() => {
     const video = videoRef.current;
@@ -177,9 +180,9 @@ export function LazyVideoPlayer({
     };
   }, [src, srcLoaded, tryPlay]);
 
-  // Ambient homepage: warm buffer early, autoplay in view
+  // Ambient: attach + play only when near / in view (after intro)
   useEffect(() => {
-    if (!playInView) return;
+    if (!playInView || !introReady) return;
     const root = rootRef.current;
     if (!root) return;
 
@@ -190,20 +193,22 @@ export function LazyVideoPlayer({
           warm.disconnect();
         }
       },
-      { rootMargin: "80% 0px", threshold: 0 },
+      { rootMargin: "220px 0px", threshold: 0 },
     );
 
     const playObs = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
           wantPlay.current = true;
+          setDeepPreload(true);
           setSrcLoaded(true);
           tryPlay();
         } else {
+          setDeepPreload(false);
           pause();
         }
       },
-      { threshold: 0.2, rootMargin: "10% 0px" },
+      { threshold: 0.25, rootMargin: "0px" },
     );
 
     warm.observe(root);
@@ -212,7 +217,7 @@ export function LazyVideoPlayer({
       warm.disconnect();
       playObs.disconnect();
     };
-  }, [playInView, tryPlay, pause]);
+  }, [playInView, introReady, tryPlay, pause]);
 
   const play = useCallback(async () => {
     setSrcLoaded(true);
@@ -290,7 +295,7 @@ export function LazyVideoPlayer({
         loop={loop}
         playsInline
         autoPlay={playInView}
-        preload={playInView || srcLoaded ? "auto" : "none"}
+        preload={srcLoaded ? (deepPreload || playing ? "auto" : "metadata") : "none"}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
       />
