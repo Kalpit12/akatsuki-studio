@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { AboutSection } from "@/components/home/AboutSection";
 import { ProcessTimeline } from "@/components/home/ProcessTimeline";
 import { TeamSection } from "@/components/home/TeamSection";
-import { StudioGallery } from "@/components/home/StudioGallery";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export const metadata: Metadata = {
@@ -35,7 +34,6 @@ export default function AboutPage() {
         showStudioFloor
       />
       <ProcessTimeline />
-      <StudioGallery />
       <TeamSection />
       <div className="section-padding pb-32 text-center">
         <MagneticButton href="/contact">Work With Us</MagneticButton>

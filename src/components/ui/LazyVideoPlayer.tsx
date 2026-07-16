@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { MOBILE_MQ } from "@/lib/gsap-mobile";
 import { cn } from "@/lib/utils";
 import { useIntroReady } from "@/hooks/useIntroReady";
 
@@ -154,7 +155,16 @@ export function LazyVideoPlayer({
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   const [deepPreload, setDeepPreload] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const introReady = useIntroReady();
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_MQ);
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const tryPlay = useCallback(() => {
     const video = videoRef.current;
@@ -384,8 +394,18 @@ export function LazyVideoPlayer({
     }
   }
 
-  const showMute = showControls || showMuteOnly;
-  const showPlayButton = showControls && !showMuteOnly;
+  const showMobilePlaybackControls =
+    isMobile &&
+    showPlayOverlay &&
+    !showControls &&
+    !showMuteOnly &&
+    !playInView &&
+    !alwaysPlay &&
+    playing;
+
+  const showMute = showControls || showMuteOnly || showMobilePlaybackControls;
+  const showPlayButton =
+    (showControls && !showMuteOnly) || showMobilePlaybackControls;
 
   return (
     <div ref={rootRef} className={cn("relative overflow-hidden bg-black", className)}>
