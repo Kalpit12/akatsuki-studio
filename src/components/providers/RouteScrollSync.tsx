@@ -4,6 +4,11 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { killAllScrollTriggers } from "@/lib/gsap-cleanup";
+import {
+  consumeReturnScroll,
+  getHashSectionId,
+} from "@/lib/scroll-anchor";
+import { scrollToSection, scrollToY } from "@/lib/scroll-bridge";
 
 function isInternalNavLink(anchor: HTMLAnchorElement) {
   if (anchor.target === "_blank" || anchor.hasAttribute("download")) return false;
@@ -17,6 +22,30 @@ function isInternalNavLink(anchor: HTMLAnchorElement) {
   } catch {
     return false;
   }
+}
+
+function restoreHomeSection() {
+  const returnId = consumeReturnScroll();
+  const hashId = getHashSectionId();
+  const sectionId = returnId ?? hashId;
+
+  if (!sectionId) return false;
+
+  const attempt = (tries = 0) => {
+    if (scrollToSection(sectionId)) {
+      ScrollTrigger.refresh();
+      return;
+    }
+    if (tries < 16) {
+      window.setTimeout(() => attempt(tries + 1), 50);
+    }
+  };
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => attempt());
+  });
+
+  return true;
 }
 
 /**
@@ -53,13 +82,20 @@ export function RouteScrollSync() {
   }, []);
 
   useLayoutEffect(() => {
-    if (isFirstPath.current) {
+    killAllScrollTriggers();
+
+    if (pathname === "/") {
+      if (isFirstPath.current) {
+        isFirstPath.current = false;
+        if (restoreHomeSection()) return;
+      } else if (restoreHomeSection()) {
+        return;
+      }
+    } else {
       isFirstPath.current = false;
-      return;
     }
 
-    killAllScrollTriggers();
-    window.scrollTo(0, 0);
+    scrollToY(0, true);
     requestAnimationFrame(() => {
       ScrollTrigger.refresh();
     });

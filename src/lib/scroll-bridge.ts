@@ -3,6 +3,7 @@ type ScrollListener = (scrollY: number, delta: number) => void;
 type ScrollController = {
   stop: () => void;
   start: () => void;
+  scrollTo: (y: number, options?: { immediate?: boolean }) => void;
 };
 
 const listeners = new Set<ScrollListener>();
@@ -44,6 +45,23 @@ export function notifyScroll(scrollY: number) {
   const delta = scrollY - lastScrollY;
   lastScrollY = scrollY;
   listeners.forEach((listener) => listener(scrollY, delta));
+}
+
+export function scrollToY(y: number, immediate = true) {
+  if (controller?.scrollTo) {
+    controller.scrollTo(y, { immediate });
+  } else {
+    window.scrollTo({ top: y, behavior: immediate ? "instant" : "smooth" });
+  }
+  resetScrollBridge(y);
+}
+
+export function scrollToSection(id: string, offset = 96) {
+  const el = document.getElementById(id);
+  if (!el) return false;
+  const y = Math.max(0, el.getBoundingClientRect().top + window.scrollY - offset);
+  scrollToY(y, true);
+  return true;
 }
 
 export function resetScrollBridge(scrollY = 0) {

@@ -114,6 +114,12 @@ export type LazyVideoPlayerProps = {
   videoClassName?: string;
   /** Muted autoplay when in view; starts buffering early to avoid lag */
   playInView?: boolean;
+  /** Minimum visible ratio before autoplay (default 0.25) */
+  playInViewMinRatio?: number;
+  /** Drop video src when fully out of view to free decoders */
+  unloadWhenHidden?: boolean;
+  /** When playInView: only autoplay while true (e.g. dominant story in a section) */
+  ambientActive?: boolean;
   /** Show play/pause + mute controls */
   showControls?: boolean;
   /** Mute only (no play/pause). Useful for autoplay sections. */
@@ -129,6 +135,9 @@ export function LazyVideoPlayer({
   className,
   videoClassName,
   playInView = false,
+  playInViewMinRatio = 0.25,
+  unloadWhenHidden = false,
+  ambientActive = true,
   showControls = true,
   showMuteOnly = false,
   loop = true,
@@ -151,6 +160,16 @@ export function LazyVideoPlayer({
     void video.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
   }, []);
 
+  const attachSrc = useCallback(
+    (video: HTMLVideoElement) => {
+      if (!video.currentSrc && src) {
+        video.src = src;
+        video.load();
+      }
+    },
+    [src],
+  );
+
   const pause = useCallback(() => {
     wantPlay.current = false;
     const video = videoRef.current;
@@ -165,6 +184,7 @@ export function LazyVideoPlayer({
     const video = videoRef.current;
     if (!video) return;
 
+    attachSrc(video);
     video.muted = mutedRef.current;
     const onReady = () => tryPlay();
 
@@ -178,7 +198,7 @@ export function LazyVideoPlayer({
       video.removeEventListener("canplay", onReady);
       video.removeEventListener("loadeddata", onReady);
     };
-  }, [src, srcLoaded, tryPlay]);
+  }, [src, srcLoaded, tryPlay, attachSrc]);
 
   // Ambient: attach + play only when near / in view (after intro)
   useEffect(() => {
@@ -193,22 +213,41 @@ export function LazyVideoPlayer({
           warm.disconnect();
         }
       },
-      { rootMargin: "220px 0px", threshold: 0 },
+      { rootMargin: "100px 0px", threshold: 0 },
     );
 
     const playObs = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting) {
+        const ratio = entry?.intersectionRatio ?? 0;
+        const visibleEnough =
+          !!entry?.isIntersecting && ratio >= playInViewMinRatio;
+        const shouldPlay = visibleEnough && ambientActive;
+
+        if (shouldPlay) {
           wantPlay.current = true;
           setDeepPreload(true);
           setSrcLoaded(true);
           tryPlay();
-        } else {
-          setDeepPreload(false);
-          pause();
+          return;
+        }
+
+        setDeepPreload(false);
+        pause();
+
+        if (unloadWhenHidden && !entry?.isIntersecting) {
+          const video = videoRef.current;
+          if (video) {
+            video.removeAttribute("src");
+            video.load();
+          }
+          setSrcLoaded(false);
+          setPlaying(false);
         }
       },
-      { threshold: 0.25, rootMargin: "0px" },
+      {
+        threshold: [0, 0.15, 0.35, 0.5, 0.55, 0.7, 0.85, 1],
+        rootMargin: "0px",
+      },
     );
 
     warm.observe(root);
@@ -217,26 +256,74 @@ export function LazyVideoPlayer({
       warm.disconnect();
       playObs.disconnect();
     };
-  }, [playInView, introReady, tryPlay, pause]);
+  }, [playInView, playInViewMinRatio, unloadWhenHidden, ambientActive, introReady, tryPlay, pause]);
+
+  useEffect(() => {
+    if (!playInView || ambientActive) return;
+    pause();
+  }, [playInView, ambientActive, pause]);
+
+  // Warm metadata when play overlay is shown so the first tap can play immediately.
+  useEffect(() => {
+    if (playInView || !showPlayOverlay || !introReady) return;
+    const root = rootRef.current;
+    if (!root) return;
+
+    const warm = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setSrcLoaded(true);
+          warm.disconnect();
+        }
+      },
+      { rootMargin: "280px 0px", threshold: 0 },
+    );
+
+    warm.observe(root);
+    return () => warm.disconnect();
+  }, [playInView, showPlayOverlay, introReady]);
 
   const play = useCallback(async () => {
-    setSrcLoaded(true);
     wantPlay.current = true;
+    setSrcLoaded(true);
+    setDeepPreload(true);
+
     const video = videoRef.current;
     if (!video) return;
 
-    if (!video.getAttribute("src") && !video.currentSrc) {
-      return;
+    attachSrc(video);
+
+    // User-initiated play should include sound; ambient autoplay stays muted.
+    if (!playInView) {
+      mutedRef.current = false;
+      setMuted(false);
+      video.muted = false;
+      video.volume = 1;
+    } else {
+      video.muted = mutedRef.current;
     }
 
     try {
-      video.muted = mutedRef.current;
       await video.play();
       setPlaying(true);
+      return;
     } catch {
-      setPlaying(false);
+      /* retry once media is ready */
     }
-  }, []);
+
+    const onReady = () => {
+      if (!playInView) {
+        video.muted = false;
+        video.volume = 1;
+      } else {
+        video.muted = mutedRef.current;
+      }
+      void video.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    };
+
+    if (video.readyState >= 2) onReady();
+    else video.addEventListener("canplay", onReady, { once: true });
+  }, [attachSrc, playInView]);
 
   const togglePlay = useCallback(() => {
     if (playing) pause();

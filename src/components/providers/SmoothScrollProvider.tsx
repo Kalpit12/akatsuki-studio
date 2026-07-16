@@ -13,16 +13,20 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 0.9,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 1.5,
+      touchMultiplier: 1.35,
+      wheelMultiplier: 0.95,
     });
 
     lenisRef.current = lenis;
     registerScrollController({
       stop: () => lenis.stop(),
       start: () => lenis.start(),
+      scrollTo: (y, options) => {
+        lenis.scrollTo(y, { immediate: options?.immediate ?? false });
+      },
     });
 
     lenis.on("scroll", (e) => {

@@ -6,13 +6,13 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getFeaturedProjects } from "@/data/projects";
 import { useIntroReady } from "@/hooks/useIntroReady";
-import { useNearViewport } from "@/hooks/useNearViewport";
+import { useInViewport } from "@/hooks/useInViewport";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const CROSSFADE =
-  "transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]";
+  "transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]";
 
 function FeaturedProjectVideo({
   src,
@@ -30,7 +30,7 @@ function FeaturedProjectVideo({
   const ref = useRef<HTMLVideoElement>(null);
   const [videoReady, setVideoReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
-  const shouldMount = allowLoad && !videoFailed;
+  const shouldMount = allowLoad && (active || warm) && !videoFailed;
   const shouldPlay = allowLoad && active && !videoFailed;
   const showVideo = shouldPlay && videoReady;
 
@@ -54,8 +54,8 @@ function FeaturedProjectVideo({
       onReady();
       play();
     } else {
-      video.addEventListener("canplay", play);
-      video.addEventListener("loadeddata", onReady);
+      video.addEventListener("canplay", play, { once: true });
+      video.addEventListener("loadeddata", onReady, { once: true });
     }
 
     return () => {
@@ -66,10 +66,10 @@ function FeaturedProjectVideo({
 
   useEffect(() => {
     const video = ref.current;
-    if (!video) return;
+    if (!video || active) return;
 
-    if (!active) {
-      video.pause();
+    video.pause();
+    if (!warm) {
       setVideoReady(false);
       try {
         video.currentTime = 0;
@@ -77,9 +77,7 @@ function FeaturedProjectVideo({
         /* ignore */
       }
     }
-  }, [active]);
-
-  if (!shouldMount) return null;
+  }, [active, warm]);
 
   return (
     <>
@@ -97,22 +95,24 @@ function FeaturedProjectVideo({
         fetchPriority={active ? "high" : warm ? "low" : "auto"}
         aria-hidden
       />
-      <video
-        ref={ref}
-        className={cn(
-          "absolute inset-0 h-full w-full object-cover",
-          CROSSFADE,
-          showVideo ? "scale-[1.02] opacity-100" : "scale-100 opacity-0",
-        )}
-        src={src}
-        poster={poster}
-        muted
-        loop
-        playsInline
-        autoPlay={shouldPlay}
-        preload={shouldPlay || warm ? "auto" : "metadata"}
-        onError={() => setVideoFailed(true)}
-      />
+      {shouldMount ? (
+        <video
+          ref={ref}
+          className={cn(
+            "absolute inset-0 h-full w-full object-cover",
+            CROSSFADE,
+            showVideo ? "scale-[1.02] opacity-100" : "scale-100 opacity-0",
+          )}
+          src={src}
+          poster={poster}
+          muted
+          loop
+          playsInline
+          autoPlay={shouldPlay}
+          preload={shouldPlay ? "auto" : "metadata"}
+          onError={() => setVideoFailed(true)}
+        />
+      ) : null}
     </>
   );
 }
@@ -120,10 +120,11 @@ function FeaturedProjectVideo({
 export function FeaturedProjects() {
   const projects = getFeaturedProjects();
   const containerRef = useRef<HTMLDivElement>(null);
+  const activeIndexRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const introReady = useIntroReady();
-  const sectionNear = useNearViewport(containerRef, "400px 0px");
-  const allowLoad = introReady && sectionNear;
+  const sectionInView = useInViewport(containerRef, "250px 0px");
+  const allowLoad = introReady && sectionInView;
 
   useEffect(() => {
     const el = containerRef.current;
@@ -138,11 +139,13 @@ export function FeaturedProjects() {
           start: "top 55%",
           end: "bottom 45%",
           onEnter: () => {
-            if (!mounted) return;
+            if (!mounted || activeIndexRef.current === i) return;
+            activeIndexRef.current = i;
             setActiveIndex(i);
           },
           onEnterBack: () => {
-            if (!mounted) return;
+            if (!mounted || activeIndexRef.current === i) return;
+            activeIndexRef.current = i;
             setActiveIndex(i);
           },
         });
@@ -163,7 +166,7 @@ export function FeaturedProjects() {
   }, [introReady]);
 
   useEffect(() => {
-    if (!sectionNear) return;
+    if (!sectionInView) return;
 
     const posters = projects.map((p) => p.coverImage);
     const run = () => {
@@ -176,22 +179,22 @@ export function FeaturedProjects() {
 
     const idle = window.requestIdleCallback;
     if (typeof idle === "function") {
-      const id = idle.call(window, run, { timeout: 1500 });
+      const id = idle.call(window, run, { timeout: 2000 });
       return () => window.cancelIdleCallback(id);
     }
 
-    const t = window.setTimeout(run, 400);
+    const t = window.setTimeout(run, 500);
     return () => window.clearTimeout(t);
-  }, [sectionNear, projects]);
+  }, [sectionInView, projects]);
 
   return (
     <section ref={containerRef} data-featured-section className="relative">
       <div
-        className="pointer-events-none absolute top-10 right-[6%] z-0 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(225,6,0,0.16)_0%,transparent_70%)] blur-3xl"
+        className="pointer-events-none absolute top-10 right-[6%] z-0 hidden h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(225,6,0,0.16)_0%,transparent_70%)] blur-3xl md:block"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute top-40 left-[-3%] z-0 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(225,6,0,0.1)_0%,transparent_70%)] blur-3xl"
+        className="pointer-events-none absolute top-40 left-[-3%] z-0 hidden h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(225,6,0,0.1)_0%,transparent_70%)] blur-3xl md:block"
         aria-hidden
       />
 
@@ -242,7 +245,7 @@ export function FeaturedProjects() {
                 warm={isWarm}
                 allowLoad={allowLoad}
               />
-              <div className="absolute inset-0 bg-black/40 transition-colors duration-700 group-hover:bg-black/25" />
+              <div className="absolute inset-0 bg-black/40 transition-colors duration-500 group-hover:bg-black/25" />
 
               <div className="section-padding relative flex h-full flex-col justify-end pb-20 md:pb-28">
                 <p className="label mb-4">{project.category}</p>

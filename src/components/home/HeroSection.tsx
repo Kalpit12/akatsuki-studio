@@ -46,15 +46,17 @@ export function HeroSection() {
         },
       );
 
-      gsap.to(".hero-video-wrap", {
-        scale: 1.15,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+      if (!mobile) {
+        gsap.to(".hero-video-wrap", {
+          scale: 1.12,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 0.45,
+          },
+        });
+      }
 
       gsap.to(".hero-content", {
         y: mobile ? -40 : -80,
@@ -63,7 +65,7 @@ export function HeroSection() {
           trigger: sectionRef.current,
           start: "top top",
           end: "55% top",
-          scrub: true,
+          scrub: mobile ? 0.35 : 0.45,
         },
       });
     }, sectionRef);
@@ -76,8 +78,13 @@ export function HeroSection() {
   return (
     <section ref={sectionRef} className="relative h-[200vh] overflow-x-clip">
       <div className="sticky top-0 h-screen overflow-x-clip overflow-y-hidden">
-        <div className="hero-video-wrap absolute inset-0 scale-105 will-change-transform">
-          <VideoBackground src={MEDIA.hero} poster={MEDIA.heroPoster} overlay />
+        <div className="hero-video-wrap absolute inset-0 scale-105 md:will-change-transform">
+          <VideoBackground
+            src={MEDIA.hero}
+            poster={MEDIA.heroPoster}
+            overlay
+            alwaysPlay
+          />
         </div>
 
         <div

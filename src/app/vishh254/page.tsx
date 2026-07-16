@@ -2,88 +2,88 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { VISHH254, VISHH254_PLACEHOLDERS, type VishhWork } from "@/data/vishh254";
+import { Vishh254BackLink } from "@/components/vishh254/Vishh254BackLink";
+import { Vishh254ScrollMark } from "@/components/vishh254/Vishh254ScrollMark";
+import { VISHH254, type VishhFilm } from "@/data/vishh254";
 
 export const metadata: Metadata = {
   title: "Vishh254 — Creating Stories. Chasing Bigger Dreams.",
   description: VISHH254.lead,
 };
 
-function WorkCard({ work }: { work: VishhWork }) {
-  const hasMedia = Boolean(work.video);
-
+function WorkCard({
+  work,
+  className = "",
+}: {
+  work: VishhFilm;
+  className?: string;
+}) {
   return (
-    <article className="group relative overflow-hidden border border-white/10 bg-white/[0.02]">
-      <div className="relative aspect-[9/16] bg-black sm:aspect-[3/4]">
-        {hasMedia && work.video ? (
-          <LazyVideoPlayer
-            src={work.video}
-            poster={work.poster}
-            className="h-full w-full"
-            showPlayOverlay
-            showControls
-          />
-        ) : (
-          <div className="absolute inset-0 flex flex-col justify-between bg-gradient-to-br from-white/[0.04] via-black to-accent/10 p-5 md:p-6">
-            <span className="font-mono text-[10px] tracking-[0.22em] text-accent">
-              {work.tag}
-            </span>
-            <div>
-              <p className="font-display text-2xl text-white/80 md:text-3xl">
-                {work.title}
-              </p>
-              <p className="mt-2 text-xs uppercase tracking-[0.18em] text-white/35">
-                Film slot ready
-              </p>
-            </div>
-            <div
-              className="pointer-events-none absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent"
-              aria-hidden
-            />
-          </div>
-        )}
+    <article
+      className={`group relative overflow-hidden border border-white/10 bg-white/[0.02] ${className}`}
+    >
+      <div className="relative aspect-[9/16] bg-black sm:aspect-[3/4] lg:aspect-[9/16]">
+        <LazyVideoPlayer
+          src={work.video}
+          poster={work.poster}
+          className="h-full w-full"
+          showPlayOverlay
+          showControls
+        />
       </div>
-      {hasMedia ? (
-        <div className="border-t border-white/10 px-4 py-3">
-          <p className="font-mono text-[10px] tracking-[0.2em] text-white/45">
-            {work.tag}
-          </p>
-          <p className="mt-1 font-display text-lg text-white">{work.title}</p>
-        </div>
-      ) : null}
+      <div className="border-t border-white/10 px-4 py-3 md:px-5 md:py-4">
+        <p className="font-mono text-[10px] tracking-[0.2em] text-white/45">
+          {work.tag}
+        </p>
+        <p className="mt-1 font-display text-lg text-white md:text-xl">
+          {work.title}
+        </p>
+      </div>
     </article>
   );
 }
 
 export default function Vishh254Page() {
-  const works =
-    VISHH254.works.length > 0 ? VISHH254.works : VISHH254_PLACEHOLDERS;
+  const works = VISHH254.works;
+  const [leadA, leadB, ...tail] = works;
 
   return (
-    <div className="pt-32 md:pt-40">
-      <section className="section-padding relative pb-16 md:pb-20">
-        <div
-          className="pointer-events-none absolute top-0 right-0 h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle,rgba(225,6,0,0.16)_0%,transparent_70%)] blur-2xl"
-          aria-hidden
+    <article>
+      <Vishh254ScrollMark />
+      <div className="section-padding pt-32 md:pt-40">
+        <Vishh254BackLink />
+      </div>
+      <section className="relative -mt-16 h-[85vh] min-h-[500px] md:-mt-20">
+        <LazyVideoPlayer
+          src={VISHH254.heroVideo}
+          poster={VISHH254.heroPoster}
+          className="absolute inset-0 h-full w-full"
+          playInView
+          showControls={false}
+          showPlayOverlay={false}
         />
-        <p className="label mb-4 text-accent">{VISHH254.eyebrow}</p>
-        <p className="mb-3 font-mono text-[10px] tracking-[0.22em] text-white/45">
-          @{VISHH254.handle} · {VISHH254.role}
-        </p>
-        <h1 className="heading-xl max-w-4xl text-balance">
-          Creating Stories.{" "}
-          <span className="text-accent">Chasing Bigger Dreams.</span>
-          <span
-            className="ml-1.5 inline-block h-2.5 w-2.5 rounded-full bg-accent align-middle shadow-[0_0_14px_rgba(225,6,0,0.7)]"
-            aria-hidden
-          />
-        </h1>
-        <div className="mt-5 h-px w-16 bg-accent/80" aria-hidden />
-        <p className="mt-8 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
-          {VISHH254.lead}
-        </p>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-black/35 to-black/20" />
+        <div className="section-padding pointer-events-none relative flex h-full flex-col justify-end pb-16 pt-32 md:pb-20">
+          <p className="label mb-4 text-accent">{VISHH254.eyebrow}</p>
+          <p className="mb-3 font-mono text-[10px] tracking-[0.22em] text-white/45">
+            @{VISHH254.handle} · {VISHH254.role}
+          </p>
+          <h1 className="heading-xl max-w-4xl text-balance">
+            Creating Stories.{" "}
+            <span className="text-accent">Chasing Bigger Dreams.</span>
+            <span
+              className="ml-1.5 inline-block h-2.5 w-2.5 rounded-full bg-accent align-middle shadow-[0_0_14px_rgba(225,6,0,0.7)]"
+              aria-hidden
+            />
+          </h1>
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
+            {VISHH254.lead}
+          </p>
+        </div>
+      </section>
 
-        <div className="mt-10 flex flex-wrap items-center gap-5">
+      <section className="section-padding border-b border-white/10 py-10 md:py-12">
+        <div className="flex flex-wrap items-center gap-5">
           <MagneticButton href="/work">Studio Work →</MagneticButton>
           <div className="flex items-center gap-3" role="group" aria-label="Social">
             <Link
@@ -162,15 +162,15 @@ export default function Vishh254Page() {
             </h2>
           </div>
           <p className="max-w-sm text-sm leading-relaxed text-muted">
-            {VISHH254.works.length === 0
-              ? "Personal cuts will land here — the grid is ready for new films."
-              : "A living collection that keeps growing with every chapter."}
+            A living collection that keeps growing with every chapter.
           </p>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {works.map((work) => (
-            <WorkCard key={work.id} work={work} />
+        <div className="grid gap-5 lg:grid-cols-6 lg:gap-6">
+          {leadA ? <WorkCard work={leadA} className="lg:col-span-3" /> : null}
+          {leadB ? <WorkCard work={leadB} className="lg:col-span-3" /> : null}
+          {tail.map((work) => (
+            <WorkCard key={work.id} work={work} className="lg:col-span-2" />
           ))}
         </div>
       </section>
@@ -189,6 +189,6 @@ export default function Vishh254Page() {
           </div>
         </div>
       </section>
-    </div>
+    </article>
   );
 }

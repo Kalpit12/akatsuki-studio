@@ -139,6 +139,11 @@ export const projects: Project[] = [
       "/ELIAS/elias-still-01.jpg",
       "/ELIAS/elias-still-02.jpg",
       "/ELIAS/elias-still-03.jpg",
+      "/ELIAS/elias-still-04.jpg",
+      "/ELIAS/elias-still-05.jpg",
+      "/ELIAS/elias-still-06.jpg",
+      "/ELIAS/elias-still-07.jpg",
+      "/ELIAS/elias-still-08.jpg",
     ],
     films: [
       {

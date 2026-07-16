@@ -6,17 +6,25 @@ type ReachStoryVideoProps = {
   src: string;
   poster: string;
   index: number;
+  active: boolean;
 };
 
-export function ReachStoryVideo({ src, poster, index }: ReachStoryVideoProps) {
+export function ReachStoryVideo({
+  src,
+  poster,
+  index,
+  active,
+}: ReachStoryVideoProps) {
   return (
-    <div className="flex justify-center lg:col-span-5 lg:justify-start">
+    <div className="reach-media flex justify-center lg:col-span-5 lg:justify-start">
       <div className="relative w-full max-w-[16rem] sm:max-w-[18rem] md:max-w-[20rem]">
         <LazyVideoPlayer
           src={src}
           poster={poster}
           className="aspect-[9/16] border border-white/10"
           playInView
+          playInViewMinRatio={0.35}
+          ambientActive={active}
           showMuteOnly
           showControls={false}
           showPlayOverlay={false}

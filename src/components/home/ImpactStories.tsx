@@ -1,5 +1,13 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { REACH_STORIES, REACH_TOTAL } from "@/data/reachStories";
 import { ReachStoryVideo } from "@/components/home/ReachStoryVideo";
+import { useVisibilityRatio } from "@/hooks/useVisibilityRatio";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function formatViews(value: number): string {
   if (value >= 1_000_000) {
@@ -29,7 +37,7 @@ function StoryCopy({
   index: number;
 }) {
   return (
-    <div className="flex flex-col justify-center lg:col-span-7">
+    <div className="reach-copy flex flex-col justify-center lg:col-span-7">
       <p className="font-mono text-xs tracking-[0.2em] text-accent">
         {String(index + 1).padStart(2, "0")} — FILM
       </p>
@@ -62,22 +70,37 @@ function StoryFrame({
   story,
   index,
   mediaRight,
+  isDominant,
+  onRatioChange,
 }: {
   story: (typeof REACH_STORIES)[number];
   index: number;
   mediaRight: boolean;
+  isDominant: boolean;
+  onRatioChange: (index: number, ratio: number) => void;
 }) {
+  const articleRef = useRef<HTMLElement>(null);
+  const ratio = useVisibilityRatio(articleRef);
+
+  useEffect(() => {
+    onRatioChange(index, ratio);
+  }, [index, ratio, onRatioChange]);
+
   const video = (
     <ReachStoryVideo
       src={story.video}
       poster={story.poster}
       index={index}
+      active={isDominant}
     />
   );
   const copy = <StoryCopy story={story} index={index} />;
 
   return (
-    <article className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-16">
+    <article
+      ref={articleRef}
+      className="reach-story grid items-center gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-16"
+    >
       {mediaRight ? (
         <>
           {copy}
@@ -94,8 +117,64 @@ function StoryFrame({
 }
 
 export function ImpactStories() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const ratioMapRef = useRef<Map<number, number>>(new Map());
+  const dominantIndexRef = useRef(0);
+  const [dominantIndex, setDominantIndex] = useState(0);
+
+  const handleRatioChange = useCallback((index: number, ratio: number) => {
+    ratioMapRef.current.set(index, ratio);
+
+    let bestIndex = 0;
+    let bestRatio = 0;
+    ratioMapRef.current.forEach((value, key) => {
+      if (value > bestRatio) {
+        bestRatio = value;
+        bestIndex = key;
+      }
+    });
+
+    if (bestRatio < 0.1 || bestIndex === dominantIndexRef.current) return;
+    dominantIndexRef.current = bestIndex;
+    setDominantIndex(bestIndex);
+  }, []);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      el.querySelectorAll(".reach-story").forEach((story) => {
+        const copy = story.querySelector(".reach-copy");
+        if (!copy) return;
+
+        gsap.fromTo(
+          copy.children,
+          { y: 28, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.85,
+            stagger: 0.07,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: story,
+              start: "top 82%",
+              once: true,
+            },
+          },
+        );
+      });
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative overflow-hidden border-y border-white/10 py-20 md:py-28">
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden border-y border-white/10 py-20 md:py-28"
+    >
       <div className="section-padding relative z-10">
         <div className="mb-12 flex flex-col gap-8 border-b border-white/10 pb-10 md:mb-14 md:flex-row md:items-end md:justify-between md:gap-12 md:pb-12">
           <div className="max-w-2xl">
@@ -129,6 +208,8 @@ export function ImpactStories() {
               story={story}
               index={i}
               mediaRight={i % 2 === 1}
+              isDominant={dominantIndex === i}
+              onRatioChange={handleRatioChange}
             />
           ))}
         </div>

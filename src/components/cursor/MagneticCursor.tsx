@@ -22,9 +22,19 @@ export function MagneticCursor() {
     mounted.current = true;
     setVisible(true);
 
+    let rafId = 0;
+    let lastX = -100;
+    let lastY = -100;
+
     const move = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
+      lastX = e.clientX;
+      lastY = e.clientY;
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        cursorX.set(lastX);
+        cursorY.set(lastY);
+        rafId = 0;
+      });
     };
 
     const onEnter = (e: Event) => {
@@ -49,6 +59,7 @@ export function MagneticCursor() {
     document.addEventListener("mouseout", onLeave);
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener("mousemove", move);
       document.removeEventListener("mouseover", onEnter);
       document.removeEventListener("mouseout", onLeave);

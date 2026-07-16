@@ -11,6 +11,8 @@ type VideoBackgroundProps = {
   parallax?: number;
   /** When true (default for hero), load and play immediately — no deferred src */
   eager?: boolean;
+  /** Never pause — for homepage hero and other always-on backgrounds */
+  alwaysPlay?: boolean;
 };
 
 export function VideoBackground({
@@ -20,6 +22,7 @@ export function VideoBackground({
   overlay = true,
   parallax = 0,
   eager = true,
+  alwaysPlay = false,
 }: VideoBackgroundProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -81,8 +84,9 @@ export function VideoBackground({
     return () => observer.disconnect();
   }, [eager, src]);
 
-  // Pause when scrolled fully away (hero tall section)
+  // Pause when scrolled fully away (skip for always-on backgrounds)
   useEffect(() => {
+    if (alwaysPlay) return;
     const root = rootRef.current;
     const video = videoRef.current;
     if (!root || !video || !srcLoaded) return;
@@ -101,7 +105,7 @@ export function VideoBackground({
 
     observer.observe(root);
     return () => observer.disconnect();
-  }, [srcLoaded]);
+  }, [srcLoaded, alwaysPlay]);
 
   return (
     <div

@@ -103,7 +103,7 @@ export function AboutSection({
               trigger: el.querySelector(".about-media"),
               start: "top bottom",
               end: "bottom top",
-              scrub: true,
+              scrub: 0.5,
             },
           },
         );
