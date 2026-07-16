@@ -64,11 +64,19 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
     resetScrollBridge(lenis.scroll);
 
+    const refresh = () => {
+      window.requestAnimationFrame(() => ScrollTrigger.refresh());
+    };
+    window.addEventListener("resize", refresh);
+    window.addEventListener("orientationchange", refresh);
+
     return () => {
       registerScrollController(null);
       lenis.destroy();
       lenisRef.current = null;
       resetScrollBridge(0);
+      window.removeEventListener("resize", refresh);
+      window.removeEventListener("orientationchange", refresh);
       ScrollTrigger.getAll().forEach((t) => t.kill(true));
     };
   }, []);

@@ -2,18 +2,18 @@
 
 import { MEDIA } from "@/lib/cloudinary";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 
 export function ContactCTA() {
   return (
     <section className="relative min-h-[85vh] overflow-hidden">
-      <LazyVideoPlayer
-        src={MEDIA.contact}
-        poster={MEDIA.contactPoster}
-        className="absolute inset-0 h-full w-full"
-        playInView
-        showControls={false}
-        showPlayOverlay={false}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={MEDIA.contactImage}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover object-center"
+        loading="lazy"
+        decoding="async"
+        aria-hidden
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/55" />
       {/* Brand red atmosphere */}
@@ -30,7 +30,7 @@ export function ContactCTA() {
         aria-hidden
       />
 
-      <div className="section-padding relative flex min-h-[85vh] flex-col items-center justify-center py-32 text-center">
+      <div className="section-padding relative flex min-h-[85vh] flex-col items-center justify-center max-md:py-24 md:py-32 text-center">
         <p className="label mb-6 text-accent">Next chapter</p>
         <h2 className="heading-xl max-w-4xl text-balance">
           Anyone Can Create{" "}

@@ -265,7 +265,7 @@ export function Vishh254Teaser() {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(225,6,0,0.14)_0%,transparent_55%)]"
         aria-hidden
       />
-      <div className="section-padding relative py-20 md:py-28">
+      <div className="section-padding relative max-md:py-16 md:py-28">
         <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <p className="label mb-4 text-accent">vishh254</p>
@@ -308,7 +308,7 @@ export function Vishh254Teaser() {
             </p>
           </div>
 
-          <div className="mx-auto flex max-w-6xl flex-wrap items-end justify-center gap-3 sm:gap-4 md:gap-6">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-end justify-center gap-3 sm:gap-4 md:gap-6 max-md:flex-col max-md:items-stretch max-md:gap-5">
             {films.map((film, i) => {
               const isFeatured = film.featured === true;
 
@@ -318,8 +318,8 @@ export function Vishh254Teaser() {
                 className={cn(
                   "group relative overflow-hidden border bg-black transition duration-500",
                   isFeatured
-                    ? "w-[13.5rem] border-accent/35 shadow-[0_0_50px_rgba(225,6,0,0.12)] hover:border-accent/55 sm:w-[15.5rem] md:w-[17rem] lg:w-[18rem]"
-                    : "w-[9.75rem] self-end border-white/10 hover:border-white/25 sm:w-[10.75rem] md:w-[12rem]",
+                    ? "w-[13.5rem] border-accent/35 shadow-[0_0_50px_rgba(225,6,0,0.12)] hover:border-accent/55 sm:w-[15.5rem] md:w-[17rem] lg:w-[18rem] max-md:w-full"
+                    : "w-[9.75rem] self-end border-white/10 max-md:border-white/20 hover:border-white/25 sm:w-[10.75rem] md:w-[12rem] max-md:w-full max-md:self-stretch",
                 )}
               >
                 <div className="relative aspect-[9/16]">
@@ -328,7 +328,7 @@ export function Vishh254Teaser() {
                   <div
                     className={cn(
                       "pointer-events-none absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent transition-opacity duration-500",
-                      isFeatured ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+                      isFeatured ? "opacity-100" : "max-md:opacity-70 opacity-0 group-hover:opacity-100",
                     )}
                     aria-hidden
                   />
@@ -342,7 +342,7 @@ export function Vishh254Teaser() {
                   </div>
                   <div className="pointer-events-none absolute right-4 bottom-4 left-4">
                     <div
-                      className="mb-2 h-px w-10 origin-left scale-x-0 bg-accent transition duration-500 group-hover:scale-x-100"
+                      className="mb-2 h-px w-10 origin-left max-md:scale-x-100 scale-x-0 bg-accent transition duration-500 group-hover:scale-x-100"
                       aria-hidden
                     />
                     <p

@@ -21,7 +21,7 @@ function TestimonialCard({
   index: number;
 }) {
   return (
-    <article className="group relative flex h-full min-h-[22rem] flex-col border border-white/10 bg-white/[0.02] transition duration-500 hover:border-accent/35 hover:bg-accent/[0.03] md:min-h-[24rem]">
+    <article className="group relative flex h-full min-h-[22rem] flex-col border border-white/10 bg-white/[0.02] transition duration-500 max-md:border-accent/20 hover:border-accent/35 hover:bg-accent/[0.03] md:min-h-[24rem]">
       <span
         className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-accent via-accent/50 to-transparent"
         aria-hidden
@@ -109,7 +109,7 @@ export function TestimonialsSection() {
   return (
     <section
       ref={rootRef}
-      className="relative overflow-hidden border-y border-white/10 py-28 md:py-36"
+      className="relative overflow-hidden border-y border-white/10 max-md:py-20 md:py-36"
     >
       <div
         className="pointer-events-none absolute top-0 right-0 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(225,6,0,0.14)_0%,transparent_70%)] blur-3xl"
@@ -145,6 +145,8 @@ export function TestimonialsSection() {
         <div
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
+          onTouchStart={() => setPaused(true)}
+          onTouchEnd={() => setPaused(false)}
           onFocusCapture={() => setPaused(true)}
           onBlurCapture={(e) => {
             if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {

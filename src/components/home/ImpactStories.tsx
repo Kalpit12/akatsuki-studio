@@ -142,6 +142,7 @@ export function ImpactStories() {
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
       el.querySelectorAll(".reach-story").forEach((story) => {
@@ -173,7 +174,7 @@ export function ImpactStories() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden border-y border-white/10 py-20 md:py-28"
+      className="relative overflow-hidden border-y border-white/10 max-md:py-20 md:py-28"
     >
       <div className="section-padding relative z-10">
         <div className="mb-12 flex flex-col gap-8 border-b border-white/10 pb-10 md:mb-14 md:flex-row md:items-end md:justify-between md:gap-12 md:pb-12">

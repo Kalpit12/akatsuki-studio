@@ -44,9 +44,8 @@ export const MEDIA = {
   studioTour: "/the-floor.mp4",
   studioTourPoster: pxImg(2034335),
 
-  /** Contact / CTA — cinematic energy */
-  contact: coverr("coverr-drone-shot-of-a-highway-at-sunset-5633"),
-  contactPoster: pxImg(1402787),
+  /** Contact / CTA — Kyra Platinum Imports (client still) */
+  contactImage: "/Kyra/kyra-still-01.jpg",
 
   /** Footer atmosphere */
   footer: pxVid(1409899, "1409899-uhd_2560_1440_25fps.mp4"),

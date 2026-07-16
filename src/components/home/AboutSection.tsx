@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { STATS } from "@/lib/constants";
 import { MEDIA } from "@/lib/cloudinary";
+import { DESKTOP_MQ, MOBILE_MQ } from "@/lib/gsap-mobile";
 import { CountUpStat } from "@/components/ui/CountUpStat";
 import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 import { cn } from "@/lib/utils";
@@ -71,43 +72,56 @@ export function AboutSection({
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        el.querySelectorAll(".about-media, .about-copy > *"),
-        { y: 48, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.08,
-          duration: 0.95,
-          ease: "power3.out",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: el,
-            start: "top 72%",
-            once: true,
-          },
-        },
-      );
+      const mm = gsap.matchMedia();
 
-      const mediaImg = el.querySelector<HTMLElement>(
-        ".about-media-frame video, .about-media-frame img",
-      );
-      if (mediaImg) {
+      const fadeCopy = () => {
         gsap.fromTo(
-          mediaImg,
-          { scale: 1.12 },
+          el.querySelectorAll(".about-media, .about-copy > *"),
+          { y: 48, opacity: 0 },
           {
-            scale: 1,
-            ease: "none",
+            y: 0,
+            opacity: 1,
+            stagger: 0.08,
+            duration: 0.95,
+            ease: "power3.out",
+            immediateRender: false,
             scrollTrigger: {
-              trigger: el.querySelector(".about-media"),
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.5,
+              trigger: el,
+              start: "top 72%",
+              once: true,
             },
           },
         );
-      }
+      };
+
+      mm.add(MOBILE_MQ, () => {
+        fadeCopy();
+      });
+
+      mm.add(DESKTOP_MQ, () => {
+        fadeCopy();
+
+        const mediaImg = el.querySelector<HTMLElement>(
+          ".about-media-frame video, .about-media-frame img",
+        );
+        if (mediaImg) {
+          gsap.fromTo(
+            mediaImg,
+            { scale: 1.12 },
+            {
+              scale: 1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: el.querySelector(".about-media"),
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 0.5,
+                invalidateOnRefresh: true,
+              },
+            },
+          );
+        }
+      });
 
       if (showStats) {
         gsap.fromTo(
@@ -251,7 +265,7 @@ export function AboutSection({
   ) : null;
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-28 md:py-36">
+    <section ref={ref} className="relative overflow-hidden max-md:py-20 md:py-36">
       <div className="section-padding">
         {showHeader ? (
           <div className="mb-14 flex flex-col gap-4 border-b border-white/10 pb-10 md:mb-16 md:pb-12">

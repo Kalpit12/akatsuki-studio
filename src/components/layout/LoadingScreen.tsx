@@ -9,12 +9,23 @@ export function LoadingScreen() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mobile = window.matchMedia("(max-width: 767px)").matches;
+
+    if (reducedMotion) {
+      setProgress(100);
+      setDone(true);
+      document.body.style.overflow = "";
+      window.dispatchEvent(new Event(INTRO_DONE_EVENT));
+      return;
+    }
+
     document.body.style.overflow = "hidden";
 
     let frame = 0;
     let doneTimer = 0;
     let cancelled = false;
-    const duration = 3200;
+    const duration = mobile ? 2000 : 3200;
     const start = performance.now();
 
     const tick = (now: number) => {
@@ -29,7 +40,7 @@ export function LoadingScreen() {
           if (cancelled) return;
           setDone(true);
           document.body.style.overflow = "";
-        }, 700);
+        }, mobile ? 400 : 700);
       }
     };
 

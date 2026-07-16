@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getFeaturedProjects } from "@/data/projects";
+import { MOBILE_MQ, DESKTOP_MQ } from "@/lib/gsap-mobile";
 import { useIntroReady } from "@/hooks/useIntroReady";
 import { useInViewport } from "@/hooks/useInViewport";
 import { cn } from "@/lib/utils";
@@ -133,21 +134,45 @@ export function FeaturedProjects() {
     let mounted = true;
 
     const ctx = gsap.context(() => {
-      projects.forEach((_, i) => {
-        ScrollTrigger.create({
-          trigger: `.project-panel-${i}`,
-          start: "top 55%",
-          end: "bottom 45%",
-          onEnter: () => {
-            if (!mounted || activeIndexRef.current === i) return;
-            activeIndexRef.current = i;
-            setActiveIndex(i);
-          },
-          onEnterBack: () => {
-            if (!mounted || activeIndexRef.current === i) return;
-            activeIndexRef.current = i;
-            setActiveIndex(i);
-          },
+      const mm = gsap.matchMedia();
+
+      mm.add(MOBILE_MQ, () => {
+        projects.forEach((_, i) => {
+          ScrollTrigger.create({
+            trigger: `.project-panel-${i}`,
+            start: "top 68%",
+            end: "bottom 32%",
+            onEnter: () => {
+              if (!mounted || activeIndexRef.current === i) return;
+              activeIndexRef.current = i;
+              setActiveIndex(i);
+            },
+            onEnterBack: () => {
+              if (!mounted || activeIndexRef.current === i) return;
+              activeIndexRef.current = i;
+              setActiveIndex(i);
+            },
+          });
+        });
+      });
+
+      mm.add(DESKTOP_MQ, () => {
+        projects.forEach((_, i) => {
+          ScrollTrigger.create({
+            trigger: `.project-panel-${i}`,
+            start: "top 55%",
+            end: "bottom 45%",
+            onEnter: () => {
+              if (!mounted || activeIndexRef.current === i) return;
+              activeIndexRef.current = i;
+              setActiveIndex(i);
+            },
+            onEnterBack: () => {
+              if (!mounted || activeIndexRef.current === i) return;
+              activeIndexRef.current = i;
+              setActiveIndex(i);
+            },
+          });
         });
       });
     }, el);
@@ -198,7 +223,7 @@ export function FeaturedProjects() {
         aria-hidden
       />
 
-      <div className="section-padding relative z-10 py-24 md:py-28">
+      <div className="section-padding relative z-10 max-md:py-16 md:py-28">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="label mb-4 text-accent">The work</p>

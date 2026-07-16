@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MEDIA } from "@/lib/cloudinary";
+import { DESKTOP_MQ, MOBILE_MQ } from "@/lib/gsap-mobile";
 import { VideoBackground } from "@/components/ui/VideoBackground";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { RotatingText } from "@/components/ui/RotatingText";
@@ -17,67 +18,103 @@ export function HeroSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const ctx = gsap.context(() => {
-      const mobile = window.matchMedia("(max-width: 767px)").matches;
+      const mm = gsap.matchMedia();
 
-      gsap.fromTo(
-        ".hero-line",
-        { y: mobile ? 18 : 48, opacity: 0 },
-        {
-          y: 0,
+      const runEntrance = (mobile: boolean) => {
+        gsap.fromTo(
+          ".hero-line",
+          { y: mobile ? 18 : 48, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: mobile ? 0.85 : 1.1,
+            stagger: mobile ? 0.08 : 0.1,
+            ease: "power4.out",
+            delay: mobile ? 2.2 : 2.8,
+          },
+        );
+
+        gsap.fromTo(
+          ".hero-eyebrow, .hero-support, .hero-cta",
+          { opacity: 0, y: mobile ? 12 : 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            delay: mobile ? 2.6 : 3.2,
+            ease: "power3.out",
+            stagger: 0.1,
+          },
+        );
+      };
+
+      if (reducedMotion) {
+        gsap.set(".hero-line, .hero-eyebrow, .hero-support, .hero-cta", {
           opacity: 1,
-          duration: mobile ? 0.85 : 1.1,
-          stagger: mobile ? 0.08 : 0.1,
-          ease: "power4.out",
-          delay: 2.8,
-        },
-      );
-
-      gsap.fromTo(
-        ".hero-eyebrow, .hero-support, .hero-cta",
-        { opacity: 0, y: mobile ? 12 : 20 },
-        {
-          opacity: 1,
           y: 0,
-          duration: 0.9,
-          delay: 3.2,
-          ease: "power3.out",
-          stagger: 0.1,
-        },
-      );
+        });
+        return;
+      }
 
-      if (!mobile) {
+      mm.add(MOBILE_MQ, () => {
+        runEntrance(true);
+
+        gsap.to(".hero-content", {
+          y: -28,
+          opacity: 0,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "45% top",
+            scrub: 0.25,
+            invalidateOnRefresh: true,
+          },
+        });
+      });
+
+      mm.add(DESKTOP_MQ, () => {
+        runEntrance(false);
+
         gsap.to(".hero-video-wrap", {
           scale: 1.12,
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: section,
             start: "top top",
             end: "bottom top",
             scrub: 0.45,
+            invalidateOnRefresh: true,
           },
         });
-      }
 
-      gsap.to(".hero-content", {
-        y: mobile ? -40 : -80,
-        opacity: 0,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "55% top",
-          scrub: mobile ? 0.35 : 0.45,
-        },
+        gsap.to(".hero-content", {
+          y: -80,
+          opacity: 0,
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "55% top",
+            scrub: 0.45,
+            invalidateOnRefresh: true,
+          },
+        });
       });
-    }, sectionRef);
+    }, section);
 
-    return () => {
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-[200vh] overflow-x-clip">
-      <div className="sticky top-0 h-screen overflow-x-clip overflow-y-hidden">
+    <section
+      ref={sectionRef}
+      className="relative max-md:h-[130vh] max-md:overflow-visible md:h-[200vh] md:overflow-x-clip"
+    >
+      <div className="sticky top-0 h-screen max-md:overflow-visible md:overflow-x-clip md:overflow-y-hidden">
         <div className="hero-video-wrap absolute inset-0 scale-105 md:will-change-transform">
           <VideoBackground
             src={MEDIA.hero}
@@ -105,7 +142,6 @@ export function HeroSection() {
             <span className="hero-line mt-[0.06em] block md:mt-[0.08em]">
               Quiet feed.
             </span>
-            {/* Desktop keeps one locked line; mobile allows natural spacing */}
             <span className="hero-line mt-[0.06em] block md:mt-[0.08em]">
               <span className="inline max-md:inline md:whitespace-nowrap">
                 Let&apos;s{" "}
@@ -137,7 +173,7 @@ export function HeroSection() {
             </MagneticButton>
           </div>
 
-          <span className="hero-cta mt-7 animate-pulse-glow text-[10px] uppercase tracking-[0.3em] text-white/55 sm:mt-10 sm:text-xs">
+          <span className="hero-cta mt-7 max-md:animate-none animate-pulse-glow text-[10px] uppercase tracking-[0.3em] text-white/55 sm:mt-10 sm:text-xs">
             Scroll
           </span>
         </div>

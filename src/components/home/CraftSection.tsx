@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
 import { useIntroReady } from "@/hooks/useIntroReady";
+import { useMobileCenterActive } from "@/hooks/useMobileCenterActive";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,6 +62,11 @@ export function CraftSection() {
   const [active, setActive] = useState(0);
   const current = CRAFT[active];
   const introReady = useIntroReady();
+  const { lockScrollSelection } = useMobileCenterActive(
+    ref,
+    'button[class*="craft-row-"]',
+    setActive,
+  );
 
   // Prefetch craft stills after intro so hover swaps stay snappy
   useEffect(() => {
@@ -193,40 +199,49 @@ export function CraftSection() {
                 role="listitem"
                 onMouseEnter={() => setActive(i)}
                 onFocus={() => setActive(i)}
-                onClick={() => setActive(i)}
-                className={`craft-row group flex w-full items-baseline gap-5 border-b border-white/15 py-5 text-left transition-colors duration-300 md:gap-8 md:py-6 ${
-                  isActive ? "border-accent" : "hover:border-white/35"
-                }`}
+                onClick={() => {
+                  setActive(i);
+                  lockScrollSelection();
+                }}
+                className={cn(
+                  "craft-row group flex w-full items-baseline gap-5 border-b py-5 text-left transition-colors duration-300 md:gap-8 md:py-6",
+                  `craft-row-${i}`,
+                  isActive ? "border-accent" : "border-white/15 hover:border-white/35",
+                )}
               >
                 <span
-                  className={`font-mono text-xs tracking-[0.2em] transition-colors ${
-                    isActive ? "text-accent" : "text-white/35"
-                  }`}
+                  className={cn(
+                    "font-mono text-xs tracking-[0.2em] transition-colors duration-300",
+                    isActive ? "text-accent" : "text-white/35",
+                  )}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
                   <span
-                    className={`font-display text-2xl tracking-tight transition-colors duration-300 sm:text-3xl md:text-4xl ${
-                      isActive ? "text-white" : "text-white/40 group-hover:text-white/70"
-                    }`}
+                    className={cn(
+                      "font-display text-2xl tracking-tight transition-colors duration-300 sm:text-3xl md:text-4xl",
+                      isActive ? "text-white" : "text-white/40 group-hover:text-white/70",
+                    )}
                   >
                     {item.title}
                   </span>
                   <span
-                    className={`max-w-xs text-sm transition-opacity duration-300 md:text-right ${
+                    className={cn(
+                      "max-w-xs text-sm transition-opacity duration-300 md:text-right",
                       isActive
                         ? "text-white/70 opacity-100"
-                        : "opacity-0 md:opacity-40 md:group-hover:opacity-70"
-                    }`}
+                        : "opacity-0 md:opacity-40 md:group-hover:opacity-70",
+                    )}
                   >
                     {item.line}
                   </span>
                 </span>
                 <span
-                  className={`hidden h-2 w-2 shrink-0 rounded-full bg-accent transition-transform duration-300 md:block ${
-                    isActive ? "scale-100" : "scale-0"
-                  }`}
+                  className={cn(
+                    "h-2 w-2 shrink-0 rounded-full bg-accent transition-transform duration-300",
+                    isActive ? "scale-100" : "scale-0",
+                  )}
                   aria-hidden
                 />
               </button>

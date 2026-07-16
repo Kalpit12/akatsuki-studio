@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { services } from "@/data/services";
 import Link from "next/link";
+import { useMobileCenterActive } from "@/hooks/useMobileCenterActive";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,6 +13,11 @@ gsap.registerPlugin(ScrollTrigger);
 export function ServicesPreview() {
   const [active, setActive] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
+  const { lockScrollSelection } = useMobileCenterActive(
+    sectionRef,
+    'button[class*="service-item-"]',
+    setActive,
+  );
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -84,30 +90,43 @@ export function ServicesPreview() {
                 <li key={service.id}>
                   <button
                     type="button"
-                    className="service-item group flex w-full items-center gap-5 border-b border-white/20 py-5 text-left transition-colors duration-300 hover:border-accent md:py-6"
+                    className={cn(
+                      "service-item group flex w-full items-center gap-5 border-b py-5 text-left transition-colors duration-300 md:py-6",
+                      isActive
+                        ? "border-accent"
+                        : "border-white/20 hover:border-accent",
+                      `service-item-${i}`,
+                    )}
                     onMouseEnter={() => setActive(i)}
                     onFocus={() => setActive(i)}
-                    onClick={() => setActive(i)}
+                    onClick={() => {
+                      setActive(i);
+                      lockScrollSelection();
+                    }}
                     aria-current={isActive ? "true" : undefined}
                   >
                     <span
-                      className={`font-mono text-xs tabular-nums transition-colors ${
-                        isActive ? "text-accent" : "text-white/40"
-                      }`}
+                      className={cn(
+                        "font-mono text-xs tabular-nums transition-colors duration-300",
+                        isActive ? "text-accent" : "text-white/40",
+                      )}
                     >
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span
-                      className={`font-display flex-1 text-2xl transition-colors duration-300 md:text-3xl lg:text-4xl ${
-                        isActive ? "text-white" : "text-white/55"
-                      }`}
+                      className={cn(
+                        "font-display flex-1 text-2xl transition-colors duration-300 md:text-3xl lg:text-4xl",
+                        isActive ? "text-white" : "text-white/55",
+                      )}
                     >
                       {service.title}
                     </span>
                     <span
-                      className={`hidden text-[10px] uppercase tracking-[0.18em] transition-opacity sm:block ${
-                        isActive ? "text-white/70 opacity-100" : "opacity-0"
-                      }`}
+                      className={cn(
+                        "text-[10px] uppercase tracking-[0.18em] transition-opacity duration-300",
+                        isActive ? "text-white/70 opacity-100" : "opacity-0",
+                        "max-md:inline-block hidden sm:inline-block",
+                      )}
                     >
                       {service.tags[0]}
                     </span>

@@ -17,7 +17,7 @@ export function ReachStoryVideo({
 }: ReachStoryVideoProps) {
   return (
     <div className="reach-media flex justify-center lg:col-span-5 lg:justify-start">
-      <div className="relative w-full max-w-[16rem] sm:max-w-[18rem] md:max-w-[20rem]">
+      <div className="relative w-full max-md:max-w-[min(88vw,22rem)] max-w-[16rem] sm:max-w-[18rem] md:max-w-[20rem]">
         <LazyVideoPlayer
           src={src}
           poster={poster}

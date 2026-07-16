@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MEDIA } from "@/lib/cloudinary";
 import { useIntroReady } from "@/hooks/useIntroReady";
 import { useInViewport } from "@/hooks/useInViewport";
 import { useVisibilityRatio } from "@/hooks/useVisibilityRatio";
+import { DESKTOP_MQ, MOBILE_MQ } from "@/lib/gsap-mobile";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -53,16 +54,18 @@ function ReelCardVideo({
   poster,
   ratio,
   allowLoad,
+  mobileReel,
 }: {
   src: string;
   poster: string;
   ratio: number;
   allowLoad: boolean;
+  mobileReel: boolean;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
   const failedRef = useRef(false);
-  const isActive = ratio >= 0.52;
-  const isWarm = ratio >= 0.12;
+  const isActive = ratio >= (mobileReel ? 0.35 : 0.52);
+  const isWarm = ratio >= (mobileReel ? 0.05 : 0.12) || (mobileReel && allowLoad);
   const shouldMount = allowLoad && isWarm && !failedRef.current;
   const shouldPlay = allowLoad && isActive && !failedRef.current;
 
@@ -148,16 +151,25 @@ function ReelCard({
 }) {
   const cardRef = useRef<HTMLElement>(null);
   const ratio = useVisibilityRatio(cardRef);
-  const isActive = ratio >= 0.52;
+  const [mobileReel, setMobileReel] = useState(false);
+  const isActive = ratio >= (mobileReel ? 0.35 : 0.52);
 
   useEffect(() => {
     onRatioChange(index, ratio);
   }, [index, ratio, onRatioChange]);
 
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_MQ);
+    const sync = () => setMobileReel(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   return (
     <article
       ref={cardRef}
-      className="group relative h-full w-[78vw] shrink-0 md:w-[52vw] lg:w-[42vw]"
+      className="group relative h-full w-[88vw] max-md:min-w-[88vw] max-md:flex-[0_0_88vw] shrink-0 md:w-[52vw] lg:w-[42vw]"
       data-cursor-label="Play"
     >
       <div className="absolute inset-0 overflow-hidden border border-white/10">
@@ -166,6 +178,7 @@ function ReelCard({
           poster={item.poster}
           ratio={ratio}
           allowLoad={allowLoad}
+          mobileReel={mobileReel}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/35" />
         <div
@@ -225,6 +238,17 @@ export function ReelSection() {
   const sectionInView = useInViewport(sectionRef, "200px 0px");
   const allowLoad = introReady && sectionInView;
 
+  useEffect(() => {
+    if (!allowLoad) return;
+    const refresh = () => ScrollTrigger.refresh();
+    const id = requestAnimationFrame(refresh);
+    const t = window.setTimeout(refresh, 120);
+    return () => {
+      cancelAnimationFrame(id);
+      window.clearTimeout(t);
+    };
+  }, [allowLoad]);
+
   const updateCounter = useCallback((index: number, ratio: number) => {
     ratiosRef.current.set(index, ratio);
 
@@ -251,29 +275,60 @@ export function ReelSection() {
     if (!track || !section) return;
 
     const ctx = gsap.context(() => {
-      const isMobile = window.matchMedia("(max-width: 767px)").matches;
-      const travel = () =>
-        Math.max(track.scrollWidth - window.innerWidth, window.innerHeight * 0.75);
+      const mm = gsap.matchMedia();
 
-      gsap.to(track, {
-        x: () => -travel(),
-        ease: "none",
-        force3D: true,
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${travel()}`,
-          pin: !isMobile,
-          scrub: isMobile ? 0.15 : 0.2,
-          fastScrollEnd: true,
-          invalidateOnRefresh: true,
-          anticipatePin: isMobile ? 0 : 0.5,
-          onUpdate: (self) => {
-            if (progressRef.current) {
-              progressRef.current.style.transform = `scaleX(${self.progress})`;
-            }
+      mm.add(MOBILE_MQ, () => {
+        const travel = () =>
+          Math.max(track.scrollWidth - window.innerWidth, window.innerHeight * 0.75);
+
+        gsap.to(track, {
+          x: () => -travel(),
+          ease: "none",
+          force3D: true,
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: () => `+=${travel()}`,
+            pin: true,
+            pinType: "transform",
+            scrub: 0.2,
+            fastScrollEnd: true,
+            invalidateOnRefresh: true,
+            anticipatePin: 0.5,
+            onUpdate: (self) => {
+              if (progressRef.current) {
+                progressRef.current.style.transform = `scaleX(${self.progress})`;
+              }
+            },
           },
-        },
+        });
+      });
+
+      mm.add(DESKTOP_MQ, () => {
+        const travel = () =>
+          Math.max(track.scrollWidth - window.innerWidth, window.innerHeight * 0.75);
+
+        gsap.to(track, {
+          x: () => -travel(),
+          ease: "none",
+          force3D: true,
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: () => `+=${travel()}`,
+            pin: true,
+            pinType: "transform",
+            scrub: 0.2,
+            fastScrollEnd: true,
+            invalidateOnRefresh: true,
+            anticipatePin: 0.5,
+            onUpdate: (self) => {
+              if (progressRef.current) {
+                progressRef.current.style.transform = `scaleX(${self.progress})`;
+              }
+            },
+          },
+        });
       });
     }, section);
 
@@ -286,12 +341,15 @@ export function ReelSection() {
       data-reel-section
       className="relative flex h-screen flex-col overflow-hidden bg-background"
     >
-      <div className="section-padding relative z-20 flex shrink-0 items-end justify-between gap-8 pt-28 pb-6 md:pt-32 md:pb-8">
+      <div className="section-padding relative z-20 flex shrink-0 items-end justify-between gap-8 max-md:pt-20 max-md:pb-4 md:pt-32 md:pb-8">
         <div>
           <p className="label mb-4">Studio reel</p>
           <h2 className="heading-lg max-w-xl text-balance">
             Motion in every direction.
           </h2>
+          <p className="mt-3 text-xs text-muted md:hidden">
+            Scroll to scrub the reel →
+          </p>
         </div>
         <div className="hidden max-w-[14rem] text-right md:block">
           <p className="text-sm text-muted">
@@ -316,11 +374,11 @@ export function ReelSection() {
         </div>
       </div>
 
-      <div className="relative min-h-0 flex-1 pb-8 md:pb-10">
+      <div className="relative min-h-0 flex-1 max-md:min-h-[58vh] max-md:overflow-hidden max-md:pb-14 pb-8 md:pb-10">
         <div
           ref={trackRef}
           className={cn(
-            "flex h-full items-stretch gap-4 px-6 md:gap-5 md:px-12 lg:gap-6 lg:px-20",
+            "flex h-full items-stretch gap-4 px-6 max-md:w-max max-md:max-w-none max-md:overflow-visible md:gap-5 md:px-12 lg:gap-6 lg:px-20",
             sectionInView && "will-change-transform",
           )}
         >
@@ -337,7 +395,7 @@ export function ReelSection() {
           <Link
             href="/clients"
             data-magnetic
-            className="group relative flex h-full w-[70vw] shrink-0 flex-col justify-between border border-white/15 bg-white/[0.03] p-8 md:w-[40vw] md:p-10"
+            className="group relative flex h-full w-[80vw] max-md:min-w-[80vw] max-md:flex-[0_0_80vw] shrink-0 flex-col justify-between border border-white/15 bg-white/[0.03] p-8 md:w-[40vw] md:p-10"
           >
             <p className="label text-accent">Continue</p>
             <div>
