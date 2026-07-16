@@ -4,6 +4,8 @@ export type ProjectFilm = {
   video: string;
   poster: string;
   label: string;
+  /** Center highlight in the films grid (case study) */
+  featured?: boolean;
 };
 
 export type Project = {
@@ -37,9 +39,9 @@ export const projects: Project[] = [
     year: "2025",
     excerpt:
       "Kinetic cuts and punchy sound — a feed that finally matches the pace of the brand.",
-    coverVideo: "/TVS/tvs-launch.mp4",
-    coverImage: "/TVS/tvs-launch.jpg",
-    heroVideo: "/TVS/tvs-launch.mp4",
+    coverVideo: "/TVS/tvs-draft1.mp4",
+    coverImage: "/TVS/tvs-draft1.jpg",
+    heroVideo: "/TVS/tvs-draft1.mp4",
     challenge:
       "TVS Motors rides on pace and presence. The social system needed motion that felt alive — not stock footage with a logo.",
     direction:
@@ -60,6 +62,28 @@ export const projects: Project[] = [
       "/TVS/tvs-still-04.jpg",
       "/TVS/tvs-still-05.jpg",
       "/TVS/tvs-still-06.jpg",
+    ],
+    films: [
+      {
+        video: "/TVS/tvs-meru-day.mp4",
+        poster: "/TVS/tvs-meru-day.jpg",
+        label: "Meru Day",
+      },
+      {
+        video: "/TVS/tvs-mt-saturday.mp4",
+        poster: "/TVS/tvs-mt-saturday.jpg",
+        label: "MT Saturday",
+      },
+      {
+        video: "/TVS/tvs-mea-awards.mp4",
+        poster: "/TVS/tvs-mea-awards.jpg",
+        label: "MEA Awards",
+      },
+      {
+        video: "/TVS/tvs-motor-show.mp4",
+        poster: "/TVS/tvs-motor-show.jpg",
+        label: "Motor Show",
+      },
     ],
     featured: true,
   },
@@ -187,14 +211,29 @@ export const projects: Project[] = [
     gallery: [],
     films: [
       {
-        video: "/Macaash/macaash-reel-01.mp4",
-        poster: "/Macaash/macaash-reel-01.jpg",
-        label: "Macaash Reel 01",
+        video: "/Macaash/macaash-film-01.mp4",
+        poster: "/Macaash/macaash-film-01.jpg",
+        label: "Property Film 1",
       },
       {
-        video: "/Macaash/macaash-reel-02.mp4",
-        poster: "/Macaash/macaash-reel-02.jpg",
-        label: "Macaash Reel 02",
+        video: "/Macaash/macaash-film-02.mp4",
+        poster: "/Macaash/macaash-film-02.jpg",
+        label: "Property Film 2",
+      },
+      {
+        video: "/Macaash/macaash-reel-01.mp4",
+        poster: "/Macaash/macaash-reel-01.jpg",
+        label: "Property Film 3",
+      },
+      {
+        video: "/Macaash/macaash-film-03.mp4",
+        poster: "/Macaash/macaash-film-03.jpg",
+        label: "Property Film 4",
+      },
+      {
+        video: "/Macaash/macaash-film-04.mp4",
+        poster: "/Macaash/macaash-film-04.jpg",
+        label: "Property Film 5",
       },
     ],
     featured: true,

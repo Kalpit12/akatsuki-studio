@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import type { Project } from "@/data/projects";
 import { useWorkMorph } from "@/components/work/WorkMorphProvider";
 import { cn } from "@/lib/utils";
@@ -13,42 +13,11 @@ export function WorkProjectTile({
   project: Project;
   index: number;
 }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLAnchorElement>(null);
   const { startMorph, activeSlug, lockHero } = useWorkMorph();
-  const [inView, setInView] = useState(false);
-  const [hovered, setHovered] = useState(false);
 
   const morphingAway = activeSlug === project.slug && lockHero;
-
-  useEffect(() => {
-    const root = rootRef.current;
-    const video = videoRef.current;
-    if (!root || !video) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const visible = Boolean(entry?.isIntersecting);
-        setInView(visible);
-        if (visible) {
-          video.muted = true;
-          void video.play().catch(() => undefined);
-        } else {
-          video.pause();
-          try {
-            video.currentTime = 0;
-          } catch {
-            /* ignore */
-          }
-        }
-      },
-      { threshold: 0.35, rootMargin: "0px 0px -8% 0px" },
-    );
-
-    observer.observe(root);
-    return () => observer.disconnect();
-  }, []);
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
@@ -72,8 +41,6 @@ export function WorkProjectTile({
     });
   }
 
-  const showVideo = inView || hovered;
-
   return (
     <Link
       ref={rootRef}
@@ -81,10 +48,6 @@ export function WorkProjectTile({
       data-work-tile
       data-cursor-label="View"
       onClick={handleClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocus={() => setHovered(true)}
-      onBlur={() => setHovered(false)}
       className="group block"
     >
       <div
@@ -97,35 +60,14 @@ export function WorkProjectTile({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={project.coverImage}
-          alt=""
-          className={cn(
-            "absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-            showVideo ? "scale-[1.02] opacity-0" : "scale-100 opacity-100",
-          )}
+          alt={project.client}
+          className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
           loading="lazy"
           decoding="async"
-          aria-hidden
-        />
-        <video
-          ref={videoRef}
-          className={cn(
-            "absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-            showVideo ? "scale-[1.02] opacity-100" : "scale-100 opacity-0",
-          )}
-          src={project.coverVideo}
-          muted
-          loop
-          playsInline
-          preload="metadata"
         />
 
         <span
-          className={cn(
-            "pointer-events-none absolute inset-0 border transition-all duration-500",
-            hovered
-              ? "border-accent/55 shadow-[inset_0_0_28px_rgba(225,6,0,0.1)]"
-              : "border-transparent",
-          )}
+          className="pointer-events-none absolute inset-0 border border-transparent transition-all duration-500 group-hover:border-accent/55 group-hover:shadow-[inset_0_0_28px_rgba(225,6,0,0.1)]"
           aria-hidden
         />
       </div>
@@ -145,12 +87,7 @@ export function WorkProjectTile({
           </p>
         </div>
 
-        <span
-          className={cn(
-            "label shrink-0 pt-1 text-accent transition-all duration-500",
-            hovered ? "translate-x-0 opacity-100" : "translate-x-2 opacity-0",
-          )}
-        >
+        <span className="label shrink-0 pt-1 text-accent opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100 translate-x-2">
           View project →
         </span>
       </div>

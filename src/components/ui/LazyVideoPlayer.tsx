@@ -114,6 +114,8 @@ export type LazyVideoPlayerProps = {
   videoClassName?: string;
   /** Muted autoplay when in view; starts buffering early to avoid lag */
   playInView?: boolean;
+  /** Muted autoplay immediately and keep playing (hero backgrounds) */
+  alwaysPlay?: boolean;
   /** Minimum visible ratio before autoplay (default 0.25) */
   playInViewMinRatio?: number;
   /** Drop video src when fully out of view to free decoders */
@@ -135,6 +137,7 @@ export function LazyVideoPlayer({
   className,
   videoClassName,
   playInView = false,
+  alwaysPlay = false,
   playInViewMinRatio = 0.25,
   unloadWhenHidden = false,
   ambientActive = true,
@@ -200,9 +203,37 @@ export function LazyVideoPlayer({
     };
   }, [src, srcLoaded, tryPlay, attachSrc]);
 
+  // Hero: always-on muted autoplay (never pause on scroll)
+  useEffect(() => {
+    if (!alwaysPlay || !introReady) return;
+    wantPlay.current = true;
+    setSrcLoaded(true);
+    setDeepPreload(true);
+    mutedRef.current = true;
+    setMuted(true);
+
+    const video = videoRef.current;
+    if (!video) return;
+
+    attachSrc(video);
+    video.muted = true;
+    const onReady = () => tryPlay();
+
+    if (video.readyState >= 2) onReady();
+    else {
+      video.addEventListener("canplay", onReady);
+      video.addEventListener("loadeddata", onReady);
+    }
+
+    return () => {
+      video.removeEventListener("canplay", onReady);
+      video.removeEventListener("loadeddata", onReady);
+    };
+  }, [alwaysPlay, introReady, tryPlay, attachSrc, src]);
+
   // Ambient: attach + play only when near / in view (after intro)
   useEffect(() => {
-    if (!playInView || !introReady) return;
+    if (alwaysPlay || !playInView || !introReady) return;
     const root = rootRef.current;
     if (!root) return;
 
@@ -256,16 +287,16 @@ export function LazyVideoPlayer({
       warm.disconnect();
       playObs.disconnect();
     };
-  }, [playInView, playInViewMinRatio, unloadWhenHidden, ambientActive, introReady, tryPlay, pause]);
+  }, [playInView, playInViewMinRatio, unloadWhenHidden, ambientActive, introReady, tryPlay, pause, alwaysPlay]);
 
   useEffect(() => {
-    if (!playInView || ambientActive) return;
+    if (alwaysPlay || !playInView || ambientActive) return;
     pause();
-  }, [playInView, ambientActive, pause]);
+  }, [playInView, ambientActive, pause, alwaysPlay]);
 
   // Warm metadata when play overlay is shown so the first tap can play immediately.
   useEffect(() => {
-    if (playInView || !showPlayOverlay || !introReady) return;
+    if (alwaysPlay || playInView || !showPlayOverlay || !introReady) return;
     const root = rootRef.current;
     if (!root) return;
 
@@ -281,7 +312,7 @@ export function LazyVideoPlayer({
 
     warm.observe(root);
     return () => warm.disconnect();
-  }, [playInView, showPlayOverlay, introReady]);
+  }, [playInView, showPlayOverlay, introReady, alwaysPlay]);
 
   const play = useCallback(async () => {
     wantPlay.current = true;
@@ -293,8 +324,8 @@ export function LazyVideoPlayer({
 
     attachSrc(video);
 
-    // User-initiated play should include sound; ambient autoplay stays muted.
-    if (!playInView) {
+    // User-initiated play should include sound; ambient/hero autoplay stays muted.
+    if (!playInView && !alwaysPlay) {
       mutedRef.current = false;
       setMuted(false);
       video.muted = false;
@@ -367,7 +398,7 @@ export function LazyVideoPlayer({
             "pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500",
             playing && srcLoaded ? "opacity-0" : "opacity-100",
           )}
-          loading={playInView ? "eager" : "lazy"}
+          loading={playInView || alwaysPlay ? "eager" : "lazy"}
           decoding="async"
           aria-hidden
         />
@@ -381,13 +412,13 @@ export function LazyVideoPlayer({
         muted={muted}
         loop={loop}
         playsInline
-        autoPlay={playInView}
-        preload={srcLoaded ? (deepPreload || playing ? "auto" : "metadata") : "none"}
+        autoPlay={playInView || alwaysPlay}
+        preload={srcLoaded ? (deepPreload || playing || alwaysPlay ? "auto" : "metadata") : "none"}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
       />
 
-      {showPlayOverlay && !playing && !playInView ? (
+      {showPlayOverlay && !playing && !playInView && !alwaysPlay ? (
         <button
           type="button"
           onClick={() => void play()}

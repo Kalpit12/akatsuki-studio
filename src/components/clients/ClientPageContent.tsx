@@ -28,7 +28,7 @@ export function ClientPageContent({
             src={work.heroVideo}
             poster={work.heroPoster}
             className="absolute inset-0 h-full w-full"
-            playInView
+            alwaysPlay
             showControls={false}
             showPlayOverlay={false}
           />

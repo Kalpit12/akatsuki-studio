@@ -58,7 +58,7 @@ export default function Vishh254Page() {
           src={VISHH254.heroVideo}
           poster={VISHH254.heroPoster}
           className="absolute inset-0 h-full w-full"
-          playInView
+          alwaysPlay
           showControls={false}
           showPlayOverlay={false}
         />

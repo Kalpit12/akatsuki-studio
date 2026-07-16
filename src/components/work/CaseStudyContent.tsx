@@ -3,11 +3,42 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import type { Project } from "@/data/projects";
+import type { Project, ProjectFilm } from "@/data/projects";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 import { useWorkMorph } from "@/components/work/WorkMorphProvider";
 import { cn } from "@/lib/utils";
+
+const workFilmPlayerClass =
+  "aspect-[9/16] border border-white/10 transition-all duration-500 hover:border-accent/55 hover:shadow-[0_0_18px_rgba(225,6,0,0.35),inset_0_0_28px_rgba(225,6,0,0.1)]";
+
+function WorkFilmFigure({
+  film,
+  className,
+}: {
+  film: ProjectFilm;
+  className?: string;
+}) {
+  return (
+    <figure className={cn("w-full max-w-[22rem] shrink-0", className)}>
+      <LazyVideoPlayer
+        src={film.video}
+        poster={film.poster}
+        className={workFilmPlayerClass}
+        showControls={false}
+        showPlayOverlay
+      />
+      <figcaption
+        className={cn(
+          "mt-3 font-mono text-[10px] tracking-[0.2em]",
+          film.featured ? "text-accent" : "text-white/45",
+        )}
+      >
+        {film.label}
+      </figcaption>
+    </figure>
+  );
+}
 
 export function CaseStudyContent({
   project,
@@ -46,7 +77,7 @@ export function CaseStudyContent({
             src={project.heroVideo}
             poster={project.coverImage}
             className="absolute inset-0 h-full w-full"
-            playInView
+            alwaysPlay
             showControls={false}
             showPlayOverlay={false}
           />
@@ -85,22 +116,40 @@ export function CaseStudyContent({
         {project.films && project.films.length > 0 ? (
           <section className="section-padding py-16">
             <p className="label mb-8">Films</p>
-            <div className="grid justify-items-center gap-8 sm:grid-cols-2">
-              {project.films.map((film) => (
-                <figure key={film.video} className="w-full max-w-[22rem]">
-                  <LazyVideoPlayer
-                    src={film.video}
-                    poster={film.poster}
-                    className="aspect-[9/16] border border-white/10"
-                    showPlayOverlay
-                    showControls
+            {project.slug === "macaash-investments" ? (
+              <div className="flex flex-col gap-10">
+                <div className="mx-auto flex w-full max-w-3xl flex-wrap justify-center gap-8 lg:max-w-6xl">
+                  {project.films.slice(0, 3).map((film) => (
+                    <WorkFilmFigure key={film.video} film={film} />
+                  ))}
+                </div>
+                <div className="mx-auto flex w-full max-w-3xl flex-wrap justify-center gap-8">
+                  {project.films.slice(3).map((film) => (
+                    <WorkFilmFigure key={film.video} film={film} />
+                  ))}
+                </div>
+              </div>
+            ) : project.slug === "tvs-energy" ? (
+              <div className="flex flex-nowrap justify-center gap-6 overflow-x-auto pb-2">
+                {project.films.map((film) => (
+                  <WorkFilmFigure
+                    key={film.video}
+                    film={film}
+                    className="max-w-[18rem]"
                   />
-                  <figcaption className="mt-3 font-mono text-[10px] tracking-[0.2em] text-white/45">
-                    {film.label}
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid justify-items-center gap-8 sm:grid-cols-2">
+                {project.films.map((film) => (
+                  <WorkFilmFigure
+                    key={film.video}
+                    film={film}
+                    className={cn(film.featured && "sm:col-span-2 sm:max-w-[26rem]")}
+                  />
+                ))}
+              </div>
+            )}
           </section>
         ) : null}
 
@@ -144,27 +193,14 @@ export function CaseStudyContent({
                 href={`/work/${p.slug}`}
                 className="group overflow-hidden rounded-2xl"
               >
-                <div className="relative aspect-[16/10]">
+                <div className="relative aspect-[16/10] overflow-hidden border border-transparent transition-all duration-500 group-hover:border-accent/55 group-hover:shadow-[0_0_18px_rgba(225,6,0,0.35),inset_0_0_28px_rgba(225,6,0,0.1)]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={p.coverImage}
                     alt={p.title}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                     loading="lazy"
                     decoding="async"
-                  />
-                  <video
-                    className="relative h-full w-full object-cover transition group-hover:scale-105"
-                    src={p.coverVideo}
-                    muted
-                    loop
-                    playsInline
-                    preload="none"
-                    onMouseEnter={(e) => void e.currentTarget.play()}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.pause();
-                      e.currentTarget.currentTime = 0;
-                    }}
                   />
                 </div>
                 <div className="p-6">

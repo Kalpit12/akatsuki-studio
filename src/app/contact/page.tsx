@@ -40,7 +40,7 @@ export default function ContactPage() {
         src={MEDIA.contact}
         poster={MEDIA.contactPoster}
         className="pointer-events-none fixed inset-0 -z-20 h-full w-full opacity-20"
-        playInView
+        alwaysPlay
         showControls={false}
         showPlayOverlay={false}
       />
