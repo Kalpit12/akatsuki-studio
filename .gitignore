@@ -71,3 +71,42 @@ next-env.d.ts
 /public/Craft/*.png
 /public/services/*.jpg
 
+# Client source masters — homepage uses compressed kebab-case copies
+/public/Connect Coffee/Coffee tasting Testimonial .mp4
+/public/Connect Coffee/Connect Tour (South Korean Guest).mp4 Video 3
+/public/Autobox/CROWN V2.mp4
+/public/Autobox/lC30 aUTO.mp4
+/public/Autobox/Lexus VIP Black .mp4
+/public/Autobox/Vogue 2023 Autobox.mp4
+/public/Autobox/x6 short .mp4
+/public/BTS Vids/Airball.mp4
+/public/BTS Vids/Akatsuki AUtobox.mp4
+/public/BTS Vids/C1295_2.mp4
+/public/BTS Vids/Rollers m8 .mp4
+/public/BTS Vids/Suction Dont know  (1).mp4
+/public/11 Motors/11MOTORS G63 REVIEW.mp4
+/public/11 Motors/CX5 SHADES (Logo).mp4
+/public/11 Motors/Gle53 1.mp4
+/public/11 Motors/Range Rover Vogue 11 motors.mp4
+/public/Kyra/ASTON MARTIN PPF_1.mp4
+/public/Kyra/C5043.mp4
+/public/Kyra/M340i B roll.mp4
+/public/TVS/MEA AWARDS 2 REVIEW VERSION.mp4
+/public/TVS/TIGONI RIDE APACHE V2.mp4
+/public/TVS/TVS DRAFT1.mp4
+/public/TVS/TVS MT SATURDAY.mp4
+/public/TVS/motor show tiktok linked in fb .mp4
+/public/TVS/tvs meru day.mp4
+
+# Raw client folders not yet integrated into the site
+/public/Bambino/
+/public/Bao Box/
+/public/INTI/
+/public/Personal Vids/
+/public/Posh Auto Body/
+/public/Slate/
+/public/Stiltz Lifts/
+
+# Compression logs
+scripts/compress-reel.log
+

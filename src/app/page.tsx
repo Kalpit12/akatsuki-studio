@@ -7,26 +7,20 @@ import { Vishh254Teaser } from "@/components/home/Vishh254Teaser";
 import { ReelSection } from "@/components/home/ReelSection";
 import { ServicesPreview } from "@/components/home/ServicesPreview";
 import { PrefetchServiceImages } from "@/components/home/PrefetchServiceImages";
+import { PrefetchReelPosters } from "@/components/home/PrefetchReelPosters";
 import { ProcessTimeline } from "@/components/home/ProcessTimeline";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CraftSection } from "@/components/home/CraftSection";
 import { ContactCTA } from "@/components/home/ContactCTA";
 import { MEDIA } from "@/lib/cloudinary";
-import { services } from "@/data/services";
 
 export default function HomePage() {
   return (
     <>
-      {/* Hero first — then warm the lead What-we-create still */}
-      <link rel="preload" as="video" href={MEDIA.hero} type="video/mp4" />
+      {/* Hero poster only — video preload uses unsupported `as=video` in Chrome */}
       <link rel="preload" as="image" href={MEDIA.heroPoster} />
-      <link
-        rel="preload"
-        as="image"
-        href={services[0].image}
-        type="image/webp"
-      />
       <PrefetchServiceImages />
+      <PrefetchReelPosters />
       <HeroSection />
       <AboutSection />
       <LogoWall />

@@ -13,18 +13,27 @@ function ReelCardVideo({
   poster,
   active,
   allowLoad,
+  warm,
 }: {
   src: string;
   poster: string;
   active: boolean;
   allowLoad: boolean;
+  /** Preload metadata for the next card to reduce scrub lag */
+  warm?: boolean;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
-  const shouldLoad = allowLoad && active;
+  const [videoFailed, setVideoFailed] = useState(false);
+  const shouldMount = allowLoad && (active || warm) && !videoFailed;
+  const shouldPlay = allowLoad && active && !videoFailed;
+
+  useEffect(() => {
+    setVideoFailed(false);
+  }, [src]);
 
   useEffect(() => {
     const video = ref.current;
-    if (!video || !shouldLoad) return;
+    if (!video || !shouldPlay) return;
 
     const play = () => {
       video.muted = true;
@@ -39,13 +48,23 @@ function ReelCardVideo({
       video.removeEventListener("canplay", play);
       video.removeEventListener("loadeddata", play);
     };
-  }, [shouldLoad, src]);
+  }, [shouldPlay, src]);
 
   useEffect(() => {
     const video = ref.current;
     if (!video) return;
-    if (!active) video.pause();
-  }, [active]);
+
+    if (!active) {
+      video.pause();
+      if (!warm) {
+        try {
+          video.currentTime = 0;
+        } catch {
+          /* ignore */
+        }
+      }
+    }
+  }, [active, warm]);
 
   return (
     <>
@@ -53,24 +72,28 @@ function ReelCardVideo({
       <img
         src={poster}
         alt=""
-        className="absolute inset-0 h-full w-full object-cover"
-        loading="lazy"
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+          shouldPlay ? "opacity-0" : "opacity-100"
+        }`}
+        loading={active || warm ? "eager" : "lazy"}
         decoding="async"
+        fetchPriority={active ? "high" : warm ? "low" : "auto"}
         aria-hidden
       />
-      {shouldLoad ? (
+      {shouldMount ? (
         <video
           ref={ref}
           className={`h-full w-full object-cover transition duration-700 ${
-            active ? "scale-100 opacity-100" : "scale-[1.04] opacity-75"
+            active ? "scale-100 opacity-100" : "scale-[1.04] opacity-0"
           }`}
           src={src}
           poster={poster}
           muted
           loop
           playsInline
-          autoPlay
-          preload="auto"
+          autoPlay={shouldPlay}
+          preload={shouldPlay ? "auto" : "metadata"}
+          onError={() => setVideoFailed(true)}
         />
       ) : null}
     </>
@@ -167,6 +190,7 @@ export function ReelSection() {
   return (
     <section
       ref={sectionRef}
+      data-reel-section
       className="relative flex h-screen flex-col overflow-hidden bg-background"
     >
       <div className="section-padding relative z-20 flex shrink-0 items-end justify-between gap-8 pt-28 pb-6 md:pt-32 md:pb-8">
@@ -204,6 +228,7 @@ export function ReelSection() {
         >
           {REELS.map((item, i) => {
             const isActive = activeIndex === i;
+            const isWarm = Math.abs(activeIndex - i) === 1;
             return (
               <article
                 key={item.label}
@@ -217,6 +242,7 @@ export function ReelSection() {
                     poster={item.poster}
                     active={isActive}
                     allowLoad={allowLoad}
+                    warm={isWarm}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/35" />
                   <div

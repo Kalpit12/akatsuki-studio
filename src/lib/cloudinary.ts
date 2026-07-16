@@ -52,12 +52,12 @@ export const MEDIA = {
   footer: pxVid(1409899, "1409899-uhd_2560_1440_25fps.mp4"),
   footerPoster: pxImg(189296),
 
-  /** Horizontal reel cuts */
+  /** Horizontal reel cuts — local compressed studio productions */
   reel: [
     {
-      video: coverr("coverr-slow-motion-of-a-chef-cooking-5584"),
-      poster: pxImg(1267320, 1280),
-      label: "Kitchen Fire",
+      video: "/Connect Coffee/connect-coffee-tour.mp4",
+      poster: "/Connect Coffee/connect-coffee-tour.jpg",
+      label: "Connect Coffee",
     },
     {
       video: pxVid(3571264, "3571264-uhd_2560_1440_30fps.mp4"),
@@ -65,19 +65,19 @@ export const MEDIA = {
       label: "Lifestyle Light",
     },
     {
-      video: coverr("coverr-drone-shot-of-a-highway-at-sunset-5633"),
-      poster: pxImg(1545743, 1280),
-      label: "Night Drive",
+      video: "/Autobox/autobox-x6.mp4",
+      poster: "/Autobox/autobox-x6.jpg",
+      label: "Autobox",
     },
     {
-      video: pxVid(1409899, "1409899-uhd_2560_1440_25fps.mp4"),
-      poster: pxImg(189296, 1280),
-      label: "Coast Arrival",
+      video: "/11 Motors/11-motors-gle53.mp4",
+      poster: "/11 Motors/11-motors-gle53.jpg",
+      label: "11 Motors",
     },
     {
-      video: pxVid(2169880, "2169880-uhd_2560_1440_30fps.mp4"),
-      poster: pxImg(3802510, 1280),
-      label: "Metal & Glass",
+      video: "/BTS Vids/bts-suction.mp4",
+      poster: "/BTS Vids/bts-suction.jpg",
+      label: "BTS",
     },
     {
       video: pxVid(5752729, "5752729-uhd_2560_1440_30fps.mp4"),
