@@ -7,7 +7,7 @@ import { Vishh254ScrollMark } from "@/components/vishh254/Vishh254ScrollMark";
 import { VISHH254, type VishhFilm } from "@/data/vishh254";
 
 export const metadata: Metadata = {
-  title: "Vishh254 — Creating Stories. Chasing Bigger Dreams.",
+  title: `Vishh254 — ${VISHH254.title} ${VISHH254.titleAccent}`,
   description: VISHH254.lead,
 };
 
@@ -69,8 +69,8 @@ export default function Vishh254Page() {
             @{VISHH254.handle} · {VISHH254.role}
           </p>
           <h1 className="heading-xl max-w-4xl text-balance">
-            Creating Stories.{" "}
-            <span className="text-accent">Chasing Bigger Dreams.</span>
+            {VISHH254.title}{" "}
+            <span className="text-accent">{VISHH254.titleAccent}</span>
             <span
               className="ml-1.5 inline-block h-2.5 w-2.5 rounded-full bg-accent align-middle shadow-[0_0_14px_rgba(225,6,0,0.7)]"
               aria-hidden

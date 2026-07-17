@@ -26,6 +26,8 @@ export type Project = {
   excerpt: string;
   coverVideo: string;
   coverImage: string;
+  /** Native aspect for homepage work cards (default vertical) */
+  coverOrientation?: FilmOrientation;
   heroVideo: string;
   challenge: string;
   direction: string;
@@ -49,6 +51,7 @@ export const projects: Project[] = [
       "Kinetic cuts and punchy sound — a feed that finally matches the pace of the brand.",
     coverVideo: "/TVS/tvs-mt-saturday.mp4",
     coverImage: "/TVS/tvs-mt-saturday.jpg",
+    coverOrientation: "horizontal",
     heroVideo: "/TVS/tvs-mt-saturday.mp4",
     challenge:
       "TVS rides on pace and presence. The social system needed motion that felt alive — not stock footage with a logo.",
@@ -233,6 +236,7 @@ export const projects: Project[] = [
       "A quiet, light-led film where every stone and silhouette gets space to breathe — built to stop the scroll for luxury jewellery.",
     coverVideo: MEDIA.projects.elias.video,
     coverImage: MEDIA.projects.elias.poster,
+    coverOrientation: "horizontal",
     heroVideo: MEDIA.projects.elias.video,
     challenge:
       "Fine jewellery dies in noisy feeds. Elias needed a campaign that felt as intentional as the craft — macro craft, soft light, zero visual clutter.",

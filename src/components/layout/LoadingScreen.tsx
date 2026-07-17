@@ -1,40 +1,55 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LOADER_LOGO_SRC, INTRO_DONE_EVENT } from "@/components/brand/Logo";
 
+const INTRO_READY_KEY = "akatsuki-intro-ready";
+
+function readIntroSkipped() {
+  try {
+    return sessionStorage.getItem(INTRO_READY_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markIntroDone() {
+  try {
+    sessionStorage.setItem(INTRO_READY_KEY, "1");
+  } catch {
+    /* ignore */
+  }
+  document.body.style.overflow = "";
+  window.dispatchEvent(new Event(INTRO_DONE_EVENT));
+}
+
 export function LoadingScreen() {
   const [progress, setProgress] = useState(0);
-  const [done, setDone] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const finishedRef = useRef(false);
+
+  const finishIntro = useCallback(() => {
+    if (finishedRef.current) return;
+    finishedRef.current = true;
+    markIntroDone();
+  }, []);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const mobile = window.matchMedia("(max-width: 767px)").matches;
 
-    try {
-      if (sessionStorage.getItem("akatsuki-intro-ready") === "1") {
-        setProgress(100);
-        setDone(true);
-        document.body.style.overflow = "";
-        return;
-      }
-    } catch {
-      /* ignore */
-    }
-
-    if (reducedMotion) {
-      setProgress(100);
-      setDone(true);
-      document.body.style.overflow = "";
-      window.dispatchEvent(new Event(INTRO_DONE_EVENT));
+    if (readIntroSkipped() || reducedMotion) {
+      finishIntro();
       return;
     }
 
+    setVisible(true);
     document.body.style.overflow = "hidden";
 
     let frame = 0;
-    let doneTimer = 0;
+    let hideTimer = 0;
+    let forceTimer = 0;
     let cancelled = false;
     const duration = mobile ? 2000 : 3200;
     const start = performance.now();
@@ -47,33 +62,35 @@ export function LoadingScreen() {
       if (elapsed < duration) {
         frame = requestAnimationFrame(tick);
       } else {
-        doneTimer = window.setTimeout(() => {
+        hideTimer = window.setTimeout(() => {
           if (cancelled) return;
-          setDone(true);
-          document.body.style.overflow = "";
+          setVisible(false);
         }, mobile ? 400 : 700);
       }
     };
+
+    // Never block the site if exit animation fails to complete.
+    forceTimer = window.setTimeout(() => {
+      if (cancelled) return;
+      setVisible(false);
+      finishIntro();
+    }, 6500);
 
     frame = requestAnimationFrame(tick);
     return () => {
       cancelled = true;
       cancelAnimationFrame(frame);
-      window.clearTimeout(doneTimer);
+      window.clearTimeout(hideTimer);
+      window.clearTimeout(forceTimer);
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [finishIntro]);
 
   return (
-    <AnimatePresence
-      onExitComplete={() => {
-        // Fire only after the overlay is fully gone — otherwise header smoke
-        // plays behind the loader and looks like it never ran.
-        window.dispatchEvent(new Event(INTRO_DONE_EVENT));
-      }}
-    >
-      {!done && (
+    <AnimatePresence onExitComplete={finishIntro}>
+      {visible ? (
         <motion.div
+          key="akatsuki-loader"
           className="fixed inset-0 z-[10001] flex flex-col items-center justify-center bg-black"
           exit={{
             opacity: 0,
@@ -138,7 +155,7 @@ export function LoadingScreen() {
             </div>
           </div>
         </motion.div>
-      )}
+      ) : null}
     </AnimatePresence>
   );
 }

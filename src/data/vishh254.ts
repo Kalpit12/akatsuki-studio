@@ -15,9 +15,10 @@ export const VISHH254 = {
   name: "Vishal Singh",
   role: "Founder · Filmmaker · Creative Director",
   eyebrow: "Personal",
-  title: "Creating Stories. Chasing Bigger Dreams.",
+  title: "One Story at a Time.",
+  titleAccent: "One Dream at a Time.",
   lead:
-    "Every project is another step toward building something bigger than myself. Vishh254 is a collection of the films, experiences, and moments that continue to shape that journey.",
+    "I'm Vish—a filmmaker and founder of Akatsuki Studio, documenting the machines, people, and places that inspire me while building the life I've always dreamed of.",
   social: {
     instagram: "https://www.instagram.com/vishh254",
     youtube: "https://www.youtube.com/@Vish254",

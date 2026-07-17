@@ -32,9 +32,9 @@ export function cldImage(
 }
 
 export const MEDIA = {
-  /** Hero — TVS MT Saturday */
-  hero: "/TVS/tvs-mt-saturday.mp4",
-  heroPoster: "/TVS/tvs-mt-saturday.jpg",
+  /** Hero — Vishh254 bike chase */
+  hero: "/Personal Vids/chase-scene.mp4",
+  heroPoster: "/Personal Vids/chase-scene.jpg",
 
   /** About studio — homepage who-we-are (Huawei Product Launch Africa) */
   about: "/huawei-about.mp4",

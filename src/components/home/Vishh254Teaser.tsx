@@ -73,8 +73,8 @@ function TeaserFilmCard({
       className={cn(
         "group relative overflow-hidden border bg-black transition duration-500",
         isFeatured
-          ? "w-[13.5rem] shrink-0 border-accent/35 shadow-[0_0_50px_rgba(225,6,0,0.12)] hover:border-accent/55 sm:w-[15.5rem] md:w-[15rem] lg:w-[16.5rem] xl:w-[17rem] max-md:w-full"
-          : "w-[9.75rem] shrink-0 self-end border-white/10 max-md:border-white/20 hover:border-white/25 sm:w-[10.75rem] md:w-[10.25rem] lg:w-[11rem] xl:w-[11.5rem] max-md:w-full max-md:self-stretch",
+          ? "w-[14rem] shrink-0 border-accent/35 shadow-[0_0_50px_rgba(225,6,0,0.12)] hover:border-accent/55 sm:w-[16rem] md:w-[15.75rem] lg:w-[17rem] xl:w-[18rem] max-md:w-full"
+          : "w-[12.75rem] shrink-0 self-end border-white/10 max-md:border-white/20 hover:border-white/25 sm:w-[13.75rem] md:w-[13.5rem] lg:w-[14.5rem] xl:w-[15.25rem] max-md:w-full max-md:self-stretch",
       )}
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
@@ -126,7 +126,7 @@ function TeaserFilmCard({
               "pointer-events-auto font-body flex items-center gap-2 font-medium leading-snug tracking-[0.04em] text-white/90 transition duration-500 hover:text-accent",
               isFeatured
                 ? "text-base sm:text-lg md:text-xl"
-                : "text-[0.85rem] sm:text-[0.9rem]",
+                : "text-sm sm:text-[0.95rem] md:text-base lg:text-[1.05rem]",
             )}
           >
             <TeaserTitleIcon icon={film.icon} />
@@ -171,13 +171,11 @@ export function Vishh254Teaser() {
           <div className="lg:col-span-7">
             <p className="label mb-4 text-accent">vishh254</p>
             <h2 className="heading-lg max-w-3xl text-balance">
-              Creating Stories.{" "}
-              <span className="text-accent">Chasing Bigger Dreams.</span>
+              {VISHH254.title}{" "}
+              <span className="text-accent">{VISHH254.titleAccent}</span>
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
-              Every project is another step toward building something bigger
-              than myself. Vishh254 is a collection of the films, experiences,
-              and moments that continue to shape that journey.
+              {VISHH254.lead}
             </p>
           </div>
 
@@ -220,7 +218,7 @@ export function Vishh254Teaser() {
             ))}
           </div>
 
-          <div className="mx-auto hidden max-w-[76rem] flex-nowrap items-end justify-center gap-3 md:flex lg:gap-4 xl:gap-5">
+          <div className="mx-auto hidden w-full max-w-[92rem] flex-nowrap items-end justify-center gap-2 md:flex lg:gap-3 xl:gap-3.5">
             {displayOrder.map((film) => (
               <TeaserFilmCard
                 key={film.id}

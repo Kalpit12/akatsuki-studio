@@ -1,23 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useLayoutEffect, useRef, useState, type MouseEvent } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getHomeWorkCards, type HomeWorkCard } from "@/data/homeWork";
 import { MOBILE_MQ, DESKTOP_MQ } from "@/lib/gsap-mobile";
 import { useIntroReady } from "@/hooks/useIntroReady";
 import { useInViewport } from "@/hooks/useInViewport";
-import { useWorkMorph } from "@/components/work/WorkMorphProvider";
 import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
-
-function workSlugFromHref(href: string) {
-  const match = href.match(/^\/work\/([^/?#]+)/);
-  return match?.[1] ?? null;
-}
 
 /** Compact stack offsets beside the heading */
 const STACK = [
@@ -93,59 +87,29 @@ function WorkStackCard({
   index: number;
   allowVideo: boolean;
 }) {
-  const mediaRef = useRef<HTMLDivElement>(null);
-  const { startMorph, activeSlug, lockHero } = useWorkMorph();
-  const workSlug = workSlugFromHref(card.href);
-  const morphingAway = Boolean(workSlug && activeSlug === workSlug && lockHero);
-
-  function handleClick(event: MouseEvent<HTMLAnchorElement>) {
-    if (!workSlug || !mediaRef.current) return;
-
-    if (
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey ||
-      event.button !== 0
-    ) {
-      return;
-    }
-
-    if (window.matchMedia(MOBILE_MQ).matches) return;
-
-    event.preventDefault();
-    const rect = mediaRef.current.getBoundingClientRect();
-    startMorph({
-      slug: workSlug,
-      coverImage: card.poster,
-      from: {
-        top: rect.top,
-        left: rect.left,
-        width: rect.width,
-        height: rect.height,
-      },
-    });
-  }
-
   return (
     <Link
       href={card.href}
       className={cn(
         "work-stack-card group block w-full [backface-visibility:hidden] [contain:layout_style_paint] [transform:translateZ(0)]",
-        morphingAway && "opacity-0",
+        card.orientation === "horizontal" && "col-span-2",
       )}
       data-cursor-label="View"
-      onClick={handleClick}
     >
       <div
-        ref={mediaRef}
-        className="relative aspect-[9/14] overflow-hidden rounded-xl border border-white/15 bg-black shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/5 transition-[border-color,box-shadow] duration-500 group-hover:border-accent/50 group-hover:shadow-[0_24px_60px_rgba(225,6,0,0.16)]"
+        className={cn(
+          "relative overflow-hidden rounded-xl border border-white/15 bg-black shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/5 transition-[border-color,box-shadow] duration-500 group-hover:border-accent/50 group-hover:shadow-[0_24px_60px_rgba(225,6,0,0.16)]",
+          card.orientation === "horizontal"
+            ? "aspect-[16/10] sm:aspect-video"
+            : "aspect-[9/14]",
+        )}
       >
         {card.video ? (
           <LazyVideoPlayer
             src={card.video}
             poster={card.poster}
             className="absolute inset-0 h-full w-full"
+            videoClassName="object-cover object-center"
             playOnHover={allowVideo}
             showMuteOnly
             showControls={false}
@@ -326,12 +290,6 @@ export function FeaturedProjects() {
               aria-hidden
             />
           ) : null}
-          <Link
-            href="/work"
-            className="label link-underline shrink-0 border-l border-accent/35 pl-4 text-accent hover:text-accent-hover"
-          >
-            All case studies →
-          </Link>
         </div>
       </div>
     </div>

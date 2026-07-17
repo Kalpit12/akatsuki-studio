@@ -13,7 +13,7 @@ export type ReachStory = {
 export const REACH_STORIES: ReachStory[] = [
   {
     id: "shiksha-bmw",
-    title: "Shiksha's BMW",
+    title: "Shiksha Arora's BMW",
     views: 1_100_000,
     viewsLabel: "Instagram Views",
     description:
@@ -25,7 +25,7 @@ export const REACH_STORIES: ReachStory[] = [
   },
   {
     id: "radhika-durham",
-    title: "Radhika × Durham",
+    title: "Radhika Kaur X Durham",
     views: 1_200_000,
     viewsLabel: "Instagram Views",
     description:
@@ -37,7 +37,7 @@ export const REACH_STORIES: ReachStory[] = [
   },
   {
     id: "luqmaan-picasso",
-    title: "Luqmaan's Picasso",
+    title: "Luqmaan Hasham's E63s",
     views: 300_000,
     viewsLabel: "Instagram Views",
     description: "A closer look at one of Nairobi's most recognizable cars.",

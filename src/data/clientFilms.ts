@@ -1,3 +1,5 @@
+import type { FilmOrientation } from "@/data/projects";
+
 export type ClientFilm = {
   video: string;
   poster: string;
@@ -9,6 +11,8 @@ export type ClientWork = {
   slug: string;
   heroVideo?: string;
   heroPoster?: string;
+  /** Native aspect of hero/cover film for homepage cards */
+  heroOrientation?: FilmOrientation;
   /** Image-only hero when no cover film exists */
   heroImage?: string;
   excerpt: string;
@@ -124,6 +128,7 @@ export const clientWorks: ClientWork[] = [
     slug: "bambino",
     heroVideo: "/Bambino/bambino-pasta.mp4",
     heroPoster: "/Bambino/bambino-pasta.jpg",
+    heroOrientation: "horizontal",
     excerpt:
       "Restaurant energy, dish-led reels, and social cuts built for appetite and atmosphere.",
     films: [
@@ -276,6 +281,7 @@ export const clientWorks: ClientWork[] = [
     slug: "huawei",
     heroVideo: "/huawei-about.mp4",
     heroPoster: "/huawei-about.jpg",
+    heroOrientation: "horizontal",
     excerpt:
       "Product launch film for Huawei Africa — cinematic energy built for stage, screen, and social.",
     films: [
