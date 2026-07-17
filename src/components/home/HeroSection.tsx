@@ -15,6 +15,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -61,6 +62,31 @@ export function HeroSection() {
         return;
       }
 
+      const dismissHero = () => {
+        const sticky = stickyRef.current;
+        if (!sticky) return;
+        gsap.set(sticky, { autoAlpha: 0, pointerEvents: "none" });
+        sticky.querySelector("video")?.pause();
+      };
+
+      const restoreHero = () => {
+        const sticky = stickyRef.current;
+        if (!sticky) return;
+        gsap.set(sticky, { autoAlpha: 1, pointerEvents: "auto" });
+        const video = sticky.querySelector("video");
+        if (video instanceof HTMLVideoElement) {
+          video.muted = true;
+          void video.play().catch(() => {});
+        }
+      };
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "bottom top",
+        onEnter: dismissHero,
+        onLeaveBack: restoreHero,
+      });
+
       mm.add(MOBILE_MQ, () => {
         runEntrance(true);
 
@@ -71,7 +97,7 @@ export function HeroSection() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "45% top",
+            end: "55% top",
             scrub: 0.25,
             invalidateOnRefresh: true,
           },
@@ -98,7 +124,7 @@ export function HeroSection() {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "55% top",
+            end: "70% top",
             scrub: 0.45,
             invalidateOnRefresh: true,
           },
@@ -112,9 +138,9 @@ export function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative max-md:h-[130vh] max-md:overflow-visible md:h-[200vh] md:overflow-x-clip"
+      className="relative isolate z-0 max-md:h-[108vh] max-md:overflow-hidden md:h-[120vh] md:overflow-hidden"
     >
-      <div className="sticky top-0 h-screen max-md:overflow-visible md:overflow-x-clip md:overflow-y-hidden">
+      <div ref={stickyRef} className="sticky top-0 isolate h-screen overflow-hidden">
         <div className="hero-video-wrap absolute inset-0 scale-105 md:will-change-transform">
           <VideoBackground
             src={MEDIA.hero}
@@ -162,7 +188,7 @@ export function HeroSection() {
 
           <div className="hero-cta mt-6 flex w-full max-w-sm flex-col items-stretch gap-3 sm:mt-10 sm:max-w-none sm:w-auto sm:flex-row sm:items-center sm:gap-6">
             <MagneticButton href="/contact" className="justify-center">
-              Start a Project →
+              Start the Project →
             </MagneticButton>
             <MagneticButton
               href="/work"

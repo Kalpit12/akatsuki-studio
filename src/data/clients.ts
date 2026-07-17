@@ -83,13 +83,13 @@ export const sectorMeta: Record<
 
 export const clientRoster: Client[] = [
   {
-    name: "TVS Motors",
+    name: "TVS",
     slug: "tvs",
     sector: "automotive",
     detail: "Mobility",
     logo: "/clients/wall/tvs.webp",
     workSlug: "tvs-energy",
-    workTitle: "TVS Motors",
+    workTitle: "TVS",
   },
   {
     name: "Kyra Platinum Imports",

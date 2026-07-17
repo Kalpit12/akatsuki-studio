@@ -287,6 +287,25 @@ export const clientWorks: ClientWork[] = [
     ],
   },
   {
+    slug: "craydel-kenya",
+    heroVideo: "/Craydel/craydel-dan-scholarship.mp4",
+    heroPoster: "/Craydel/craydel-dan-scholarship.jpg",
+    excerpt:
+      "EdTech storytelling for Craydel — scholarship and programme films built to inspire students and parents across Kenya.",
+    films: [
+      {
+        video: "/Craydel/craydel-dan-scholarship.mp4",
+        poster: "/Craydel/craydel-dan-scholarship.jpg",
+        label: "Dan Scholarship",
+      },
+      {
+        video: "/Craydel/craydel-emi-programmes.mp4",
+        poster: "/Craydel/craydel-emi-programmes.jpg",
+        label: "EMI Programmes",
+      },
+    ],
+  },
+  {
     slug: "durham-school",
     heroVideo: "/durham-x-radhika.mp4",
     heroPoster: "/durham-x-radhika.jpg",

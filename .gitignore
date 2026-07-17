@@ -139,6 +139,10 @@ next-env.d.ts
 /public/Posh Auto Body/Final Version 1  Aston .mp4
 /public/Posh Auto Body/PPF Re Edited Range Rover Sv.mp4
 
+# Craydel — raw sources (web copies: craydel-*.mp4)
+/public/Craydel/DAN SCHOLARSHIP.mp4
+/public/Craydel/EMI PROGRAMMES.mp4
+
 # Personal Vids source masters — site uses compressed kebab-case copies
 /public/Personal Vids/11MOTORS G63 REVIEW.mp4
 /public/Personal Vids/AKatsuki BIke chase BTSmp4.mp4

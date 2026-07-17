@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { REACH_STORIES, REACH_TOTAL } from "@/data/reachStories";
 import { ReachStoryVideo } from "@/components/home/ReachStoryVideo";
-import { useVisibilityRatio } from "@/hooks/useVisibilityRatio";
+import { useIntroReady } from "@/hooks/useIntroReady";
+import { useInViewport } from "@/hooks/useInViewport";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,37 +71,25 @@ function StoryFrame({
   story,
   index,
   mediaRight,
-  isDominant,
-  onRatioChange,
+  mediaReady,
 }: {
   story: (typeof REACH_STORIES)[number];
   index: number;
   mediaRight: boolean;
-  isDominant: boolean;
-  onRatioChange: (index: number, ratio: number) => void;
+  mediaReady: boolean;
 }) {
-  const articleRef = useRef<HTMLElement>(null);
-  const ratio = useVisibilityRatio(articleRef);
-
-  useEffect(() => {
-    onRatioChange(index, ratio);
-  }, [index, ratio, onRatioChange]);
-
   const video = (
     <ReachStoryVideo
       src={story.video}
       poster={story.poster}
       index={index}
-      active={isDominant}
+      mediaReady={mediaReady}
     />
   );
   const copy = <StoryCopy story={story} index={index} />;
 
   return (
-    <article
-      ref={articleRef}
-      className="reach-story grid items-center gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-16"
-    >
+    <article className="reach-story grid items-center gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-16">
       {mediaRight ? (
         <>
           {copy}
@@ -118,26 +107,9 @@ function StoryFrame({
 
 export function ImpactStories() {
   const sectionRef = useRef<HTMLElement>(null);
-  const ratioMapRef = useRef<Map<number, number>>(new Map());
-  const dominantIndexRef = useRef(0);
-  const [dominantIndex, setDominantIndex] = useState(0);
-
-  const handleRatioChange = useCallback((index: number, ratio: number) => {
-    ratioMapRef.current.set(index, ratio);
-
-    let bestIndex = 0;
-    let bestRatio = 0;
-    ratioMapRef.current.forEach((value, key) => {
-      if (value > bestRatio) {
-        bestRatio = value;
-        bestIndex = key;
-      }
-    });
-
-    if (bestRatio < 0.1 || bestIndex === dominantIndexRef.current) return;
-    dominantIndexRef.current = bestIndex;
-    setDominantIndex(bestIndex);
-  }, []);
+  const introReady = useIntroReady();
+  const sectionInView = useInViewport(sectionRef, "0px 0px");
+  const mediaReady = introReady && sectionInView;
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -174,7 +146,7 @@ export function ImpactStories() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden border-y border-white/10 max-md:py-20 md:py-28"
+      className="relative isolate z-[1] overflow-hidden border-y border-white/10 bg-background max-md:py-20 md:py-28"
     >
       <div className="section-padding relative z-10">
         <div className="mb-12 flex flex-col gap-8 border-b border-white/10 pb-10 md:mb-14 md:flex-row md:items-end md:justify-between md:gap-12 md:pb-12">
@@ -209,8 +181,7 @@ export function ImpactStories() {
               story={story}
               index={i}
               mediaRight={i % 2 === 1}
-              isDominant={dominantIndex === i}
-              onRatioChange={handleRatioChange}
+              mediaReady={mediaReady}
             />
           ))}
         </div>

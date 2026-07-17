@@ -115,6 +115,10 @@ export type LazyVideoPlayerProps = {
   videoClassName?: string;
   /** Muted autoplay when in view; starts buffering early to avoid lag */
   playInView?: boolean;
+  /** Muted play while pointer is over the player (homepage sections) */
+  playOnHover?: boolean;
+  /** Parent-controlled hover (use when overlays sit above the player root) */
+  hoverActive?: boolean;
   /** Muted autoplay immediately and keep playing (hero backgrounds) */
   alwaysPlay?: boolean;
   /** Minimum visible ratio before autoplay (default 0.25) */
@@ -141,6 +145,8 @@ export function LazyVideoPlayer({
   className,
   videoClassName,
   playInView = false,
+  playOnHover = false,
+  hoverActive,
   alwaysPlay = false,
   playInViewMinRatio = 0.25,
   unloadWhenHidden = false,
@@ -161,7 +167,10 @@ export function LazyVideoPlayer({
   const [muted, setMuted] = useState(true);
   const [deepPreload, setDeepPreload] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const introReady = useIntroReady();
+  const pointerHover = hoverActive ?? hovered;
+  const hoverControlled = hoverActive !== undefined;
 
   useEffect(() => {
     const mq = window.matchMedia(MOBILE_MQ);
@@ -246,9 +255,42 @@ export function LazyVideoPlayer({
     };
   }, [alwaysPlay, introReady, tryPlay, attachSrc, src]);
 
+  // Hover: play only while pointer is over the player (or parent sets hoverActive)
+  useEffect(() => {
+    if (alwaysPlay || !playOnHover || !introReady) return;
+
+    if (pointerHover) {
+      wantPlay.current = true;
+      setSrcLoaded(true);
+      setDeepPreload(true);
+      tryPlay();
+      return;
+    }
+
+    setDeepPreload(false);
+    pause();
+
+    if (unloadWhenHidden) {
+      const video = videoRef.current;
+      if (video) {
+        video.removeAttribute("src");
+        video.load();
+      }
+      setSrcLoaded(false);
+    }
+  }, [
+    playOnHover,
+    pointerHover,
+    introReady,
+    tryPlay,
+    pause,
+    unloadWhenHidden,
+    alwaysPlay,
+  ]);
+
   // Ambient: attach + play only when near / in view (after intro)
   useEffect(() => {
-    if (alwaysPlay || !playInView || !introReady) return;
+    if (alwaysPlay || playOnHover || !playInView || !introReady) return;
     const root = rootRef.current;
     if (!root) return;
 
@@ -311,7 +353,7 @@ export function LazyVideoPlayer({
 
   // Warm metadata when play overlay is shown so the first tap can play immediately.
   useEffect(() => {
-    if (alwaysPlay || playInView || !showPlayOverlay || !introReady) return;
+    if (alwaysPlay || playOnHover || !playInView || !showPlayOverlay || !introReady) return;
     const root = rootRef.current;
     if (!root) return;
 
@@ -417,15 +459,29 @@ export function LazyVideoPlayer({
     !showControls &&
     !showMuteOnly &&
     !playInView &&
+    !playOnHover &&
     !alwaysPlay &&
     playing;
 
-  const showMute = showControls || showMuteOnly || showMobilePlaybackControls;
+  const showMute =
+    showControls ||
+    showMuteOnly ||
+    showMobilePlaybackControls ||
+    (playOnHover && (pointerHover || playing));
   const showPlayButton =
     (showControls && !showMuteOnly) || showMobilePlaybackControls;
 
   return (
-    <div ref={rootRef} className={cn("relative overflow-hidden bg-black", className)}>
+    <div
+      ref={rootRef}
+      className={cn("relative overflow-hidden bg-black", className)}
+      onPointerEnter={
+        playOnHover && !hoverControlled ? () => setHovered(true) : undefined
+      }
+      onPointerLeave={
+        playOnHover && !hoverControlled ? () => setHovered(false) : undefined
+      }
+    >
       {poster ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -449,13 +505,13 @@ export function LazyVideoPlayer({
         muted={muted}
         loop={loop}
         playsInline
-        autoPlay={playInView || alwaysPlay}
+        autoPlay={alwaysPlay}
         preload={srcLoaded ? (deepPreload || playing || alwaysPlay ? "auto" : "metadata") : "none"}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
       />
 
-      {showPlayOverlay && !playing && !playInView && !alwaysPlay ? (
+      {showPlayOverlay && !playing && !playInView && !playOnHover && !alwaysPlay ? (
         <button
           type="button"
           onClick={() => void play()}

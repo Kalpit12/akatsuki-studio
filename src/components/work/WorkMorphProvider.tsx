@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
+import { scrollToY } from "@/lib/scroll-bridge";
 import { AnimatePresence, motion } from "framer-motion";
 
 export type MorphRect = {
@@ -94,7 +95,7 @@ export function WorkMorphProvider({ children }: { children: ReactNode }) {
       setLockHero(true);
       setOverlayVisible(true);
       router.push(`/work/${slug}`);
-      window.scrollTo(0, 0);
+      scrollToY(0, true);
     },
     [router],
   );

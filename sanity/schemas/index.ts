@@ -63,18 +63,4 @@ export const clientLogo = defineType({
   ],
 });
 
-export const journalPost = defineType({
-  name: "journalPost",
-  title: "Journal Post",
-  type: "document",
-  fields: [
-    defineField({ name: "title", type: "string" }),
-    defineField({ name: "slug", type: "slug", options: { source: "title" } }),
-    defineField({ name: "excerpt", type: "text" }),
-    defineField({ name: "date", type: "date" }),
-    defineField({ name: "category", type: "string" }),
-    defineField({ name: "image", type: "url" }),
-  ],
-});
-
-export const schemas = [project, clientLogo, journalPost];
+export const schemas = [project, clientLogo];

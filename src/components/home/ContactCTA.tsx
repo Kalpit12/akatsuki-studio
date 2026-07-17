@@ -50,7 +50,7 @@ export function ContactCTA() {
         </p>
         <div className="mt-4 h-px w-16 bg-accent/80 shadow-[0_0_12px_rgba(225,6,0,0.6)]" aria-hidden />
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:gap-5">
-          <MagneticButton href="/contact">Let&apos;s Talk →</MagneticButton>
+          <MagneticButton href="/contact">Start the Project</MagneticButton>
         </div>
       </div>
     </section>

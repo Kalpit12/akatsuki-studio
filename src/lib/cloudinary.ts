@@ -32,9 +32,9 @@ export function cldImage(
 }
 
 export const MEDIA = {
-  /** Hero — local Subaru studio reel */
-  hero: "/subaru-hero.mp4",
-  heroPoster: "/subaru-hero.jpg",
+  /** Hero — TVS MT Saturday */
+  hero: "/TVS/tvs-mt-saturday.mp4",
+  heroPoster: "/TVS/tvs-mt-saturday.jpg",
 
   /** About studio — homepage who-we-are (Huawei Product Launch Africa) */
   about: "/huawei-about.mp4",
@@ -167,6 +167,4 @@ export const MEDIA = {
       gallery: [pxImg(3802510), pxImg(244206), pxImg(210019), pxImg(2365572)],
     },
   },
-
-  journal: [pxImg(258154), pxImg(1545743), pxImg(2034335)],
 } as const;

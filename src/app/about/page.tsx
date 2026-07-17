@@ -36,7 +36,7 @@ export default function AboutPage() {
       <ProcessTimeline />
       <TeamSection />
       <div className="section-padding pb-32 text-center">
-        <MagneticButton href="/contact">Work With Us</MagneticButton>
+        <MagneticButton href="/contact">Start the Project</MagneticButton>
       </div>
     </div>
   );

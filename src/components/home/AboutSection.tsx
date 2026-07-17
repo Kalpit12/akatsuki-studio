@@ -163,10 +163,11 @@ export function AboutSection({
           poster={videoPoster}
           className="h-full w-full"
           videoClassName="object-cover object-center"
-          playInView
+          playOnHover
           showMuteOnly
           showControls={false}
           showPlayOverlay={false}
+          unloadWhenHidden
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-black/15" />
         <div className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/50 to-transparent" />
@@ -265,7 +266,7 @@ export function AboutSection({
   ) : null;
 
   return (
-    <section ref={ref} className="relative overflow-hidden max-md:py-20 md:py-36">
+    <section ref={ref} className="relative overflow-hidden max-md:pt-14 max-md:pb-20 md:pt-20 md:pb-28">
       <div className="section-padding">
         {showHeader ? (
           <div className="mb-14 flex flex-col gap-4 border-b border-white/10 pb-10 md:mb-16 md:pb-12">
@@ -324,9 +325,11 @@ export function AboutSection({
                   src={MEDIA.studioTour}
                   poster={MEDIA.studioTourPoster}
                   className="h-full w-full"
-                  playInView
+                  playOnHover
+                  showMuteOnly
                   showControls={false}
                   showPlayOverlay={false}
+                  unloadWhenHidden
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-black/10" />
                 <div className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent" />

@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MEDIA } from "@/lib/cloudinary";
+import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 import { useIntroReady } from "@/hooks/useIntroReady";
 import { useInViewport } from "@/hooks/useInViewport";
 import { useVisibilityRatio } from "@/hooks/useVisibilityRatio";
@@ -49,95 +50,6 @@ const REELS = [
 
 type ReelItem = (typeof REELS)[number];
 
-function ReelCardVideo({
-  src,
-  poster,
-  ratio,
-  allowLoad,
-  mobileReel,
-}: {
-  src: string;
-  poster: string;
-  ratio: number;
-  allowLoad: boolean;
-  mobileReel: boolean;
-}) {
-  const ref = useRef<HTMLVideoElement>(null);
-  const failedRef = useRef(false);
-  const isActive = ratio >= (mobileReel ? 0.35 : 0.52);
-  const isWarm = ratio >= (mobileReel ? 0.05 : 0.12) || (mobileReel && allowLoad);
-  const shouldMount = allowLoad && isWarm && !failedRef.current;
-  const shouldPlay = allowLoad && isActive && !failedRef.current;
-
-  useEffect(() => {
-    failedRef.current = false;
-  }, [src]);
-
-  useEffect(() => {
-    const video = ref.current;
-    if (!video || !shouldPlay) return;
-
-    const play = () => {
-      video.muted = true;
-      void video.play().catch(() => {});
-    };
-    if (video.readyState >= 2) play();
-    else {
-      video.addEventListener("canplay", play, { once: true });
-      video.addEventListener("loadeddata", play, { once: true });
-    }
-  }, [shouldPlay, src]);
-
-  useEffect(() => {
-    const video = ref.current;
-    if (!video || shouldPlay) return;
-    video.pause();
-    if (!isWarm) {
-      try {
-        video.currentTime = 0;
-      } catch {
-        /* ignore */
-      }
-    }
-  }, [shouldPlay, isWarm]);
-
-  return (
-    <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={poster}
-        alt=""
-        className={cn(
-          "absolute inset-0 h-full w-full object-cover transition-opacity duration-500",
-          shouldPlay ? "opacity-0" : "opacity-100",
-        )}
-        loading={isWarm ? "eager" : "lazy"}
-        decoding="async"
-        fetchPriority={isActive ? "high" : "low"}
-        aria-hidden
-      />
-      {shouldMount ? (
-        <video
-          ref={ref}
-          className={cn(
-            "h-full w-full object-cover transition duration-500",
-            isActive ? "scale-100 opacity-100" : "scale-[1.03] opacity-0",
-          )}
-          src={src}
-          poster={poster}
-          muted
-          loop
-          playsInline
-          preload={shouldPlay ? "auto" : "metadata"}
-          onError={() => {
-            failedRef.current = true;
-          }}
-        />
-      ) : null}
-    </>
-  );
-}
-
 function ReelCard({
   item,
   index,
@@ -151,20 +63,10 @@ function ReelCard({
 }) {
   const cardRef = useRef<HTMLElement>(null);
   const ratio = useVisibilityRatio(cardRef);
-  const [mobileReel, setMobileReel] = useState(false);
-  const isActive = ratio >= (mobileReel ? 0.35 : 0.52);
 
   useEffect(() => {
     onRatioChange(index, ratio);
   }, [index, ratio, onRatioChange]);
-
-  useEffect(() => {
-    const mq = window.matchMedia(MOBILE_MQ);
-    const sync = () => setMobileReel(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
 
   return (
     <article
@@ -173,19 +75,20 @@ function ReelCard({
       data-cursor-label="Play"
     >
       <div className="absolute inset-0 overflow-hidden border border-white/10">
-        <ReelCardVideo
+        <LazyVideoPlayer
           src={item.video}
           poster={item.poster}
-          ratio={ratio}
-          allowLoad={allowLoad}
-          mobileReel={mobileReel}
+          className="absolute inset-0 h-full w-full"
+          playOnHover={allowLoad}
+          showMuteOnly
+          showControls={false}
+          showPlayOverlay={false}
+          unloadWhenHidden
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/35" />
         <div
-          className={cn(
-            "absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent transition-opacity duration-500",
-            isActive ? "opacity-100" : "opacity-0",
-          )}
+          className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          aria-hidden
         />
       </div>
 
@@ -200,25 +103,13 @@ function ReelCard({
 
       <div className="pointer-events-none absolute right-0 bottom-0 left-0 z-10 p-5 pb-6 md:p-7 md:pb-8">
         <div
-          className={cn(
-            "mb-3 h-px w-12 origin-left bg-accent transition duration-500 md:mb-4",
-            isActive ? "scale-x-100" : "scale-x-0",
-          )}
+          className="mb-3 h-px w-12 origin-left scale-x-0 bg-accent transition duration-500 group-hover:scale-x-100 md:mb-4"
+          aria-hidden
         />
-        <h3
-          className={cn(
-            "font-display text-3xl leading-[1.05] tracking-tight transition duration-500 md:text-4xl lg:text-5xl",
-            isActive ? "text-white" : "text-white/65",
-          )}
-        >
+        <h3 className="font-display text-3xl leading-[1.05] tracking-tight text-white/65 transition duration-500 group-hover:text-white md:text-4xl lg:text-5xl">
           {item.label}
         </h3>
-        <p
-          className={cn(
-            "mt-2 text-sm leading-normal transition duration-500",
-            isActive ? "text-white/65" : "text-white/35",
-          )}
-        >
+        <p className="mt-2 text-sm leading-normal text-white/35 transition duration-500 group-hover:text-white/65">
           {item.meta}
         </p>
       </div>
@@ -237,17 +128,6 @@ export function ReelSection() {
   const introReady = useIntroReady();
   const sectionInView = useInViewport(sectionRef, "200px 0px");
   const allowLoad = introReady && sectionInView;
-
-  useEffect(() => {
-    if (!allowLoad) return;
-    const refresh = () => ScrollTrigger.refresh();
-    const id = requestAnimationFrame(refresh);
-    const t = window.setTimeout(refresh, 120);
-    return () => {
-      cancelAnimationFrame(id);
-      window.clearTimeout(t);
-    };
-  }, [allowLoad]);
 
   const updateCounter = useCallback((index: number, ratio: number) => {
     ratiosRef.current.set(index, ratio);
@@ -294,7 +174,7 @@ export function ReelSection() {
             scrub: 0.2,
             fastScrollEnd: true,
             invalidateOnRefresh: true,
-            anticipatePin: 0.5,
+            anticipatePin: 0,
             onUpdate: (self) => {
               if (progressRef.current) {
                 progressRef.current.style.transform = `scaleX(${self.progress})`;
@@ -321,7 +201,7 @@ export function ReelSection() {
             scrub: 0.2,
             fastScrollEnd: true,
             invalidateOnRefresh: true,
-            anticipatePin: 0.5,
+            anticipatePin: 0,
             onUpdate: (self) => {
               if (progressRef.current) {
                 progressRef.current.style.transform = `scaleX(${self.progress})`;
@@ -339,7 +219,7 @@ export function ReelSection() {
     <section
       ref={sectionRef}
       data-reel-section
-      className="relative flex h-screen flex-col overflow-hidden bg-background"
+      className="relative isolate z-[2] flex h-screen flex-col overflow-hidden bg-background"
     >
       <div className="section-padding relative z-20 flex shrink-0 items-end justify-between gap-8 max-md:pt-20 max-md:pb-4 md:pt-32 md:pb-8">
         <div>

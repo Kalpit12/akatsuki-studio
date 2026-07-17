@@ -181,7 +181,7 @@ export function Header() {
                     className="relative isolate hidden overflow-visible rounded-full border border-white/20 px-5 py-2 text-[10px] uppercase tracking-[0.2em] transition hover:border-accent hover:text-accent md:inline-flex lg:px-6 lg:py-2.5 lg:text-xs"
                   >
                     <MoonSplash active={ctaHovered} />
-                    <span className="relative z-10">Start a Project</span>
+                    <span className="relative z-10">Start the Project</span>
                   </Link>
                   {menuButton}
                 </motion.div>
@@ -246,7 +246,7 @@ export function Header() {
               >
                 <MobileMenuLink
                   href="/contact"
-                  label="Start a Project"
+                  label="Start the Project"
                   accent
                   onNavigate={() => setOpen(false)}
                 />

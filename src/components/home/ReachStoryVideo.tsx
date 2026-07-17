@@ -6,14 +6,14 @@ type ReachStoryVideoProps = {
   src: string;
   poster: string;
   index: number;
-  active: boolean;
+  mediaReady: boolean;
 };
 
 export function ReachStoryVideo({
   src,
   poster,
   index,
-  active,
+  mediaReady,
 }: ReachStoryVideoProps) {
   return (
     <div className="reach-media flex justify-center lg:col-span-5 lg:justify-start">
@@ -22,12 +22,11 @@ export function ReachStoryVideo({
           src={src}
           poster={poster}
           className="aspect-[9/16] border border-white/10"
-          playInView
-          playInViewMinRatio={0.35}
-          ambientActive={active}
+          playOnHover={mediaReady}
           showMuteOnly
           showControls={false}
           showPlayOverlay={false}
+          unloadWhenHidden
         />
         <div
           className="pointer-events-none absolute top-0 left-0 z-10 h-full w-px bg-gradient-to-b from-accent via-accent/45 to-transparent"

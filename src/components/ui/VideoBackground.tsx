@@ -84,28 +84,34 @@ export function VideoBackground({
     return () => observer.disconnect();
   }, [eager, src]);
 
-  // Pause when scrolled fully away (skip for always-on backgrounds)
+  // Pause off-screen backgrounds (skip always-on hero — dismissed via HeroSection ScrollTrigger)
   useEffect(() => {
     if (alwaysPlay) return;
     const root = rootRef.current;
     const video = videoRef.current;
-    if (!root || !video || !srcLoaded) return;
+    if (!root || !video) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting) {
-          video.muted = true;
-          void video.play().catch(() => {});
-        } else {
+        if (!entry?.isIntersecting) {
           video.pause();
+          return;
         }
+
+        if (!srcLoaded) {
+          if (eager) setSrcLoaded(true);
+          return;
+        }
+
+        video.muted = true;
+        void video.play().catch(() => {});
       },
-      { threshold: 0.1 },
+      { threshold: 0, rootMargin: "0px" },
     );
 
     observer.observe(root);
     return () => observer.disconnect();
-  }, [srcLoaded, alwaysPlay]);
+  }, [srcLoaded, eager, alwaysPlay]);
 
   return (
     <div

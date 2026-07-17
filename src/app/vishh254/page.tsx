@@ -182,7 +182,7 @@ export default function Vishh254Page() {
             Ready to build the next chapter together?
           </h2>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <MagneticButton href="/contact">Start a Project</MagneticButton>
+            <MagneticButton href="/contact">Start the Project</MagneticButton>
             <MagneticButton href="/work" variant="outline">
               See Studio Work
             </MagneticButton>

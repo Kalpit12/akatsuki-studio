@@ -40,18 +40,18 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "tvs-energy",
-    title: "TVS Motors",
-    client: "TVS Motors",
+    title: "TVS",
+    client: "TVS",
     category: "Commercial",
     industry: "Commercial",
     year: "2025",
     excerpt:
       "Kinetic cuts and punchy sound — a feed that finally matches the pace of the brand.",
-    coverVideo: "/TVS/tvs-draft1.mp4",
-    coverImage: "/TVS/tvs-draft1.jpg",
-    heroVideo: "/TVS/tvs-draft1.mp4",
+    coverVideo: "/TVS/tvs-mt-saturday.mp4",
+    coverImage: "/TVS/tvs-mt-saturday.jpg",
+    heroVideo: "/TVS/tvs-mt-saturday.mp4",
     challenge:
-      "TVS Motors rides on pace and presence. The social system needed motion that felt alive — not stock footage with a logo.",
+      "TVS rides on pace and presence. The social system needed motion that felt alive — not stock footage with a logo.",
     direction:
       "High-tempo edits, strong sound design, and social assets the brand team can actually ship week after week.",
     results: [
@@ -61,7 +61,7 @@ export const projects: Project[] = [
     ],
     credits: [
       { role: "Creative Direction", name: "Akatsuki Studio" },
-      { role: "Client", name: "TVS Motors" },
+      { role: "Client", name: "TVS" },
     ],
     gallery: [
       "/TVS/tvs-still-01.jpg",
@@ -79,9 +79,9 @@ export const projects: Project[] = [
         orientation: "horizontal",
       },
       {
-        video: "/TVS/tvs-mt-saturday.mp4",
-        poster: "/TVS/tvs-mt-saturday.jpg",
-        label: "MT Saturday",
+        video: "/TVS/tvs-draft1.mp4",
+        poster: "/TVS/tvs-draft1.jpg",
+        label: "Social Draft",
         orientation: "horizontal",
       },
       {

@@ -12,6 +12,17 @@ export function LoadingScreen() {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const mobile = window.matchMedia("(max-width: 767px)").matches;
 
+    try {
+      if (sessionStorage.getItem("akatsuki-intro-ready") === "1") {
+        setProgress(100);
+        setDone(true);
+        document.body.style.overflow = "";
+        return;
+      }
+    } catch {
+      /* ignore */
+    }
+
     if (reducedMotion) {
       setProgress(100);
       setDone(true);

@@ -137,7 +137,7 @@ export function WorkIndex({ projects }: { projects: Project[] }) {
             </p>
           </div>
           <MagneticButton href="/contact" variant="primary">
-            Let&apos;s Talk →
+            Start the Project
           </MagneticButton>
         </div>
 

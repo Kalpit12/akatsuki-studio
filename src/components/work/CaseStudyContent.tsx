@@ -422,7 +422,7 @@ export function CaseStudyContent({
             ))}
           </div>
           <div className="mt-16 text-center">
-            <MagneticButton href="/contact">Start Your Project</MagneticButton>
+            <MagneticButton href="/contact">Start the Project</MagneticButton>
           </div>
         </section>
       </motion.div>

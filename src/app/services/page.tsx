@@ -75,13 +75,20 @@ export default function ServicesPage() {
         ))}
       </div>
 
-      <div className="section-padding relative pb-32 text-center">
-        <div
-          className="pointer-events-none absolute bottom-8 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(225,6,0,0.2)_0%,transparent_70%)] blur-xl"
-          aria-hidden
-        />
-        <p className="label mb-6 text-accent">Next step</p>
-        <MagneticButton href="/contact">Discuss Your Project</MagneticButton>
+      <div className="section-padding border-t border-white/10 pb-32">
+        <p className="label mb-4 text-accent">Pricing</p>
+        <div className="max-w-3xl border-l-2 border-accent pl-5 md:pl-6">
+          <h2 className="heading-md mb-4 text-balance">
+            How much does it cost?
+          </h2>
+          <p className="text-base leading-relaxed text-muted md:text-lg">
+            Every project is different. We tailor every proposal based on your
+            goals, deliverables, timeline, and budget.
+          </p>
+          <div className="mt-8">
+            <MagneticButton href="/contact">Start the Project</MagneticButton>
+          </div>
+        </div>
       </div>
     </div>
   );
