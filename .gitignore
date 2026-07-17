@@ -66,12 +66,17 @@ next-env.d.ts
 
 # Original service / craft source PNGs (site uses compressed .webp)
 /public/Website Design.png
+/public/Website design.png
 /public/Social Media Management.png
 /public/SEO & Digital growth.png
+/public/SEO & Digital Growth.png
 /public/Event Coverage.png
+/public/Event coverage.png
 /public/Creative Campaigns.png
+/public/Creative campaign.png
 /public/Commerical Production.png
 /public/Cinematic Content.png
+/public/Cinematic content.png
 /public/Craft/*.png
 /public/services/*.jpg
 

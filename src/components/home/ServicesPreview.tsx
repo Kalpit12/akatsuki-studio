@@ -6,18 +6,46 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { services } from "@/data/services";
 import Link from "next/link";
 import { useMobileCenterActive } from "@/hooks/useMobileCenterActive";
+import { useInViewport } from "@/hooks/useInViewport";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function ServicesPreview() {
   const [active, setActive] = useState(0);
+  const [loaded, setLoaded] = useState<Set<number>>(() => new Set([0]));
   const sectionRef = useRef<HTMLElement>(null);
+  const sectionInView = useInViewport(sectionRef, "300px 0px");
   const { lockScrollSelection } = useMobileCenterActive(
     sectionRef,
     'button[class*="service-item-"]',
     setActive,
   );
+
+  useEffect(() => {
+    setLoaded((prev) => {
+      if (prev.has(active)) return prev;
+      const next = new Set(prev);
+      next.add(active);
+      return next;
+    });
+  }, [active]);
+
+  useEffect(() => {
+    if (!sectionInView) return;
+
+    const warm = (index: number) => {
+      const service = services[index];
+      if (!service) return;
+      const img = new Image();
+      img.decoding = "async";
+      img.src = service.image;
+    };
+
+    warm(active);
+    warm((active + 1) % services.length);
+    warm((active - 1 + services.length) % services.length);
+  }, [active, sectionInView]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -46,22 +74,24 @@ export function ServicesPreview() {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden bg-black">
-      {services.map((service, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={service.id}
-          src={service.image}
-          alt=""
-          className={cn(
-            "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
-            i === active ? "opacity-100" : "opacity-0",
-          )}
-          loading="eager"
-          decoding="async"
-          fetchPriority={i === 0 ? "high" : i < 3 ? "low" : "auto"}
-          aria-hidden
-        />
-      ))}
+      {services.map((service, i) =>
+        loaded.has(i) ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={service.id}
+            src={service.image}
+            alt=""
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
+              i === active ? "opacity-100" : "opacity-0",
+            )}
+            loading={i === 0 ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={i === active ? "high" : "low"}
+            aria-hidden
+          />
+        ) : null,
+      )}
       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/50" />
 
       <div className="section-padding relative z-10 flex min-h-screen flex-col justify-center gap-16 py-28 lg:flex-row lg:items-end lg:justify-between lg:gap-24">
