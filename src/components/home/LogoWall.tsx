@@ -6,7 +6,7 @@ import type { LogoImageItem } from "@/components/ui/LogoLoop";
 import { clientRoster } from "@/data/clients";
 
 type LogoWallProps = {
-  /** Hide the section intro (useful on /clients where the page hero already covers it) */
+  /** Hide the section intro (useful on /portfolio where the page hero already covers it) */
   showIntro?: boolean;
   /** Copy under the logo strip */
   caption?: ReactNode;

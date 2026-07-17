@@ -191,7 +191,7 @@ export function HeroSection() {
               Start the Project →
             </MagneticButton>
             <MagneticButton
-              href="/work"
+              href="/#work"
               variant="outline"
               className="justify-center border-white/40 bg-black/25 backdrop-blur-sm hover:border-accent hover:bg-accent/15"
             >

@@ -83,6 +83,7 @@ next-env.d.ts
 # Client source masters — homepage uses compressed kebab-case copies
 /public/Connect Coffee/Coffee tasting Testimonial .mp4
 /public/Connect Coffee/Connect Tour (South Korean Guest).mp4 Video 3
+/public/Autobox/RR Main Vid.mp4
 /public/Autobox/CROWN V2.mp4
 /public/Autobox/lC30 aUTO.mp4
 /public/Autobox/Lexus VIP Black .mp4
@@ -160,9 +161,11 @@ next-env.d.ts
 /public/Personal Vids/Chase scene.mp4
 /public/Personal Vids/POCKET CAMERA.mp4
 /public/Personal Vids/C0251.mp4
+/public/Personal Vids/Insta on .mp4
 
 # Compression logs
 scripts/compress-reel.log
 scripts/compress-personal-vids.log
+scripts/compress-portfolio-hero-log.txt
 *.encoding.mp4
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { team, type TeamMember } from "@/data/team";
@@ -67,81 +67,27 @@ function FounderSocials({ member }: { member: TeamMember }) {
   );
 }
 
-function FounderPortrait({ member }: { member: TeamMember }) {
-  const [mobileSwap, setMobileSwap] = useState(false);
-  const hasHoverAlt = Boolean(member.hoverImage && member.hoverImage !== member.image);
+function memberInitials(member: TeamMember) {
+  if (member.initials) return member.initials;
+  const parts = member.name.split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) {
+    return `${parts[0][0] ?? ""}${parts[parts.length - 1][0] ?? ""}`.toUpperCase();
+  }
+  return member.name.slice(0, 2).toUpperCase();
+}
 
-  const toggleMobileSwap = () => {
-    // Desktop keeps CSS hover — don't hijack fine-pointer devices
-    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    if (!hasHoverAlt) return;
-    setMobileSwap((v) => !v);
-  };
-
+function FounderInitials({ member }: { member: TeamMember }) {
   return (
-    <div
-      role={hasHoverAlt ? "button" : undefined}
-      tabIndex={hasHoverAlt ? 0 : undefined}
-      aria-pressed={hasHoverAlt ? mobileSwap : undefined}
-      aria-label={
-        hasHoverAlt
-          ? mobileSwap
-            ? `Show primary photo of ${member.name}`
-            : `Show alternate photo of ${member.name}`
-          : undefined
-      }
-      onClick={toggleMobileSwap}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          toggleMobileSwap();
-        }
-      }}
-      className="group relative aspect-square cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] shadow-[0_24px_80px_rgba(0,0,0,0.45)] outline-none focus-visible:ring-2 focus-visible:ring-accent/70 [@media(hover:hover)_and_(pointer:fine)]:cursor-default"
-    >
-      {member.image ? (
-        <>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={member.image}
-            alt={member.name}
-            className={cn(
-              "absolute inset-0 h-full w-full object-cover transition duration-700",
-              // Desktop hover (unchanged)
-              "[@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105 [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-0",
-              // Mobile / touch tap toggle
-              mobileSwap &&
-                "[@media(hover:none)]:scale-105 [@media(hover:none)]:opacity-0",
-            )}
-            loading="lazy"
-            decoding="async"
-          />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={member.hoverImage ?? member.image}
-            alt=""
-            className={cn(
-              "absolute inset-0 h-full w-full scale-105 object-cover opacity-0 transition duration-700",
-              "[@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-100 [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100",
-              mobileSwap &&
-                "[@media(hover:none)]:scale-100 [@media(hover:none)]:opacity-100",
-            )}
-            loading="lazy"
-            decoding="async"
-            aria-hidden
-          />
-        </>
-      ) : null}
-
-      {hasHoverAlt ? (
+    <div className="relative aspect-square overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-white/[0.08] via-black to-black">
         <span
-          className="pointer-events-none absolute top-4 left-4 rounded-full bg-black/55 px-2.5 py-1 text-[10px] tracking-[0.18em] text-white/80 uppercase backdrop-blur-sm [@media(hover:hover)_and_(pointer:fine)]:hidden"
+          className="font-display text-5xl tracking-tight text-white md:text-6xl lg:text-7xl"
           aria-hidden
         >
-          Tap
+          {memberInitials(member)}
         </span>
-      ) : null}
-
+      </div>
+      <span className="sr-only">{member.name}</span>
       <FounderSocials member={member} />
     </div>
   );
@@ -166,7 +112,7 @@ function FounderBlock({
         data-story-portrait
         className={cn("lg:col-span-5", reverse && "lg:order-2")}
       >
-        <FounderPortrait member={member} />
+        <FounderInitials member={member} />
 
         <div className="mt-5">
           <p className="font-display text-xl tracking-tight text-white md:text-2xl">

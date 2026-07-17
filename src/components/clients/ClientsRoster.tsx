@@ -14,6 +14,7 @@ import {
 import { getProject } from "@/data/projects";
 import { getClientWork, hasClientWork } from "@/data/clientFilms";
 import { MOBILE_MQ } from "@/lib/gsap-mobile";
+import { PORTFOLIO_PATH } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -24,11 +25,7 @@ function getClientPreview(client: Client) {
   const hasWork = Boolean(client.workSlug && project);
   const hasFilms = hasClientWork(client.slug);
   const hasPage = hasWork || hasFilms;
-  const href = hasWork
-    ? `/work/${client.workSlug}`
-    : hasFilms
-      ? `/clients/${client.slug}`
-      : undefined;
+  const href = hasPage ? `${PORTFOLIO_PATH}/${client.slug}` : undefined;
 
   let poster: string | undefined;
   if (hasWork && project) {
@@ -168,7 +165,7 @@ function ClientSectorBlock({
           </p>
         </div>
         <Link
-          href="/work"
+          href="/#work"
           className="label hidden shrink-0 text-muted transition hover:text-accent md:inline-block"
         >
           Browse all work →

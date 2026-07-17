@@ -64,8 +64,8 @@ export const MEDIA = {
       label: "Lifestyle Light",
     },
     {
-      video: "/Autobox/autobox-x6.mp4",
-      poster: "/Autobox/autobox-x6.jpg",
+      video: "/Autobox/autobox-rr-main.mp4",
+      poster: "/Autobox/autobox-rr-main.jpg",
       label: "Autobox",
     },
     {

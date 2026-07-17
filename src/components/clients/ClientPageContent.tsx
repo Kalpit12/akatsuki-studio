@@ -6,6 +6,8 @@ import type { ClientWork } from "@/data/clientFilms";
 import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 import { WorkGallery } from "@/components/work/WorkGallery";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { PORTFOLIO_PATH } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 export function ClientPageContent({
   client,
@@ -24,27 +26,29 @@ export function ClientPageContent({
   return (
     <article>
       <section className="relative h-[85vh] min-h-[500px]">
-        {work.heroVideo ? (
-          <LazyVideoPlayer
-            src={work.heroVideo}
-            poster={work.heroPoster}
-            className="absolute inset-0 h-full w-full"
-            alwaysPlay
-            showControls={false}
-            showPlayOverlay={false}
-          />
-        ) : work.heroImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={work.heroImage}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover"
-            loading="eager"
-            decoding="async"
-          />
-        ) : null}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-black/30 to-transparent" />
-        <div className="section-padding pointer-events-none relative flex h-full flex-col justify-end pb-16 pt-32">
+        <div className="absolute inset-x-0 top-[4.5rem] bottom-0 md:top-[5.25rem]">
+          {work.heroVideo ? (
+            <LazyVideoPlayer
+              src={work.heroVideo}
+              poster={work.heroPoster}
+              className="absolute inset-0 h-full w-full"
+              alwaysPlay
+              showControls={false}
+              showPlayOverlay={false}
+            />
+          ) : work.heroImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={work.heroImage}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="eager"
+              decoding="async"
+            />
+          ) : null}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-black/30 to-transparent" />
+        </div>
+        <div className="section-padding pointer-events-none relative flex h-full flex-col justify-end pb-16 pt-[5.5rem] md:pt-28">
           <p className="label mb-4">{client.detail}</p>
           <h1 className="heading-xl">{client.name}</h1>
           <p className="mt-4 max-w-2xl text-lg text-muted">{work.excerpt}</p>
@@ -63,9 +67,19 @@ export function ClientPageContent({
             </p>
           </div>
 
-          <div className="grid justify-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div
+            className={cn(
+              "grid justify-items-center gap-8",
+              work.filmsGrid === "staggered"
+                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 lg:gap-x-6 lg:gap-y-12 xl:gap-x-8"
+                : "sm:grid-cols-2 lg:grid-cols-3",
+            )}
+          >
             {galleryFilms.map((film) => (
-              <figure key={film.video} className="w-full max-w-[22rem]">
+              <figure
+                key={film.video}
+                className={cn("w-full max-w-[22rem]", film.gridClass)}
+              >
                 <LazyVideoPlayer
                   src={film.video}
                   poster={film.poster}
@@ -102,18 +116,18 @@ export function ClientPageContent({
             </h2>
           </div>
           <div className="flex flex-wrap gap-4">
-            <MagneticButton href="/clients" variant="outline">
-              All clients
+            <MagneticButton href={PORTFOLIO_PATH} variant="outline">
+              All portfolio
             </MagneticButton>
-            <MagneticButton href="/work">View work</MagneticButton>
+            <MagneticButton href="/#work">View work</MagneticButton>
           </div>
         </div>
         <p className="mt-8">
           <Link
-            href="/clients"
+            href={PORTFOLIO_PATH}
             className="label text-muted transition hover:text-accent"
           >
-            ← Back to clients
+            ← Back to portfolio
           </Link>
         </p>
       </section>

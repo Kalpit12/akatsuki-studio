@@ -24,8 +24,8 @@ export const VISHH254 = {
     youtube: "https://www.youtube.com/@Vish254",
     tiktok: "https://www.tiktok.com/@vishh254",
   },
-  heroVideo: "/Personal Vids/vish-bike.mp4",
-  heroPoster: "/Personal Vids/vish-bike.jpg",
+  heroVideo: "/Personal Vids/insta-on.mp4",
+  heroPoster: "/Personal Vids/insta-on.jpg",
   /** Homepage teaser — five flagship cuts */
   teaserFilms: [
     {
@@ -67,6 +67,13 @@ export const VISHH254 = {
     },
   ] as VishhFilm[],
   works: [
+    {
+      id: "00",
+      title: "Vish Bike",
+      tag: "Personal",
+      video: "/Personal Vids/vish-bike.mp4",
+      poster: "/Personal Vids/vish-bike.jpg",
+    },
     {
       id: "01",
       title: "Swap Merc",

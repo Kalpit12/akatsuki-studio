@@ -4,6 +4,8 @@ export type ClientFilm = {
   video: string;
   poster: string;
   label: string;
+  /** Optional grid placement for portfolio film grids */
+  gridClass?: string;
 };
 
 export type ClientWork = {
@@ -17,6 +19,8 @@ export type ClientWork = {
   heroImage?: string;
   excerpt: string;
   films: ClientFilm[];
+  /** Offset second-row films into gaps between top-row columns (desktop) */
+  filmsGrid?: "staggered";
   /** Still gallery for photography-led clients */
   gallery?: string[];
 };
@@ -53,35 +57,46 @@ export const clientWorks: ClientWork[] = [
   },
   {
     slug: "autobox-motors",
-    heroVideo: "/Autobox/autobox-x6.mp4",
-    heroPoster: "/Autobox/autobox-x6.jpg",
+    heroVideo: "/Autobox/autobox-rr-main.mp4",
+    heroPoster: "/Autobox/autobox-rr-main.jpg",
     excerpt:
       "Automotive retail with attitude — sharp cuts, night energy, and brand films that sell the showroom.",
+    filmsGrid: "staggered",
     films: [
+      {
+        video: "/Autobox/autobox-rr-main.mp4",
+        poster: "/Autobox/autobox-rr-main.jpg",
+        label: "Range Rover",
+      },
       {
         video: "/Autobox/autobox-x6.mp4",
         poster: "/Autobox/autobox-x6.jpg",
         label: "X6 Short",
+        gridClass: "lg:col-span-2 lg:col-start-1",
       },
       {
         video: "/Autobox/autobox-crown-v2.mp4",
         poster: "/Autobox/autobox-crown-v2.jpg",
         label: "Crown V2",
+        gridClass: "lg:col-span-2 lg:col-start-3",
       },
       {
         video: "/Autobox/autobox-lc30.mp4",
         poster: "/Autobox/autobox-lc30.jpg",
         label: "LC30",
+        gridClass: "lg:col-span-2 lg:col-start-5",
       },
       {
         video: "/Autobox/autobox-lexus-vip.mp4",
         poster: "/Autobox/autobox-lexus-vip.jpg",
         label: "Lexus VIP",
+        gridClass: "lg:col-span-2 lg:col-start-2",
       },
       {
         video: "/Autobox/autobox-vogue-2023.mp4",
         poster: "/Autobox/autobox-vogue-2023.jpg",
         label: "Vogue 2023",
+        gridClass: "lg:col-span-2 lg:col-start-4",
       },
     ],
     gallery: [
@@ -175,20 +190,20 @@ export const clientWorks: ClientWork[] = [
   },
   {
     slug: "inti",
-    heroVideo: "/INTI/inti-bento-box.mp4",
-    heroPoster: "/INTI/inti-bento-box.jpg",
+    heroVideo: "/INTI/inti-sushi-chef.mp4",
+    heroPoster: "/INTI/inti-sushi-chef.jpg",
     excerpt:
       "Restaurant films with craft at the centre — dishes, chefs, and the detail that makes Inti distinct.",
     films: [
       {
-        video: "/INTI/inti-bento-box.mp4",
-        poster: "/INTI/inti-bento-box.jpg",
-        label: "Bento Box",
-      },
-      {
         video: "/INTI/inti-sushi-chef.mp4",
         poster: "/INTI/inti-sushi-chef.jpg",
         label: "Sushi Chef Elias",
+      },
+      {
+        video: "/INTI/inti-bento-box.mp4",
+        poster: "/INTI/inti-bento-box.jpg",
+        label: "Bento Box",
       },
     ],
   },
@@ -226,20 +241,20 @@ export const clientWorks: ClientWork[] = [
   },
   {
     slug: "slate",
-    heroVideo: "/Slate/slate-lunch-reset.mp4",
-    heroPoster: "/Slate/slate-lunch-reset.jpg",
+    heroVideo: "/Slate/slate-meat.mp4",
+    heroPoster: "/Slate/slate-meat.jpg",
     excerpt:
       "Kitchen, bar, and dining atmosphere — content that carries the mood of the room.",
     films: [
       {
-        video: "/Slate/slate-lunch-reset.mp4",
-        poster: "/Slate/slate-lunch-reset.jpg",
-        label: "Lunch Reset",
-      },
-      {
         video: "/Slate/slate-meat.mp4",
         poster: "/Slate/slate-meat.jpg",
         label: "Meat Video",
+      },
+      {
+        video: "/Slate/slate-lunch-reset.mp4",
+        poster: "/Slate/slate-lunch-reset.jpg",
+        label: "Lunch Reset",
       },
       {
         video: "/Slate/slate-kitchen-bar.mp4",

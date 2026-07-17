@@ -1,5 +1,6 @@
 export const RETURN_SCROLL_KEY = "akatsuki-return-scroll";
 export const VISHH254_SECTION_ID = "vishh254";
+export const WORK_SECTION_ID = "work";
 
 export function setReturnScroll(sectionId: string) {
   try {

@@ -180,13 +180,6 @@ export function LazyVideoPlayer({
     return () => mq.removeEventListener("change", sync);
   }, []);
 
-  const tryPlay = useCallback(() => {
-    const video = videoRef.current;
-    if (!video || !wantPlay.current) return;
-    video.muted = mutedRef.current;
-    void video.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
-  }, []);
-
   const attachSrc = useCallback(
     (video: HTMLVideoElement) => {
       if (!video.currentSrc && src) {
@@ -196,6 +189,14 @@ export function LazyVideoPlayer({
     },
     [src],
   );
+
+  const tryPlay = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !wantPlay.current) return;
+    attachSrc(video);
+    video.muted = mutedRef.current;
+    void video.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+  }, [attachSrc]);
 
   const pause = useCallback(() => {
     wantPlay.current = false;
@@ -315,6 +316,8 @@ export function LazyVideoPlayer({
           wantPlay.current = true;
           setDeepPreload(true);
           setSrcLoaded(true);
+          const video = videoRef.current;
+          if (video) attachSrc(video);
           tryPlay();
           return;
         }
@@ -344,7 +347,7 @@ export function LazyVideoPlayer({
       warm.disconnect();
       playObs.disconnect();
     };
-  }, [playInView, playInViewMinRatio, unloadWhenHidden, ambientActive, introReady, tryPlay, pause, alwaysPlay]);
+  }, [playInView, playInViewMinRatio, unloadWhenHidden, ambientActive, introReady, tryPlay, pause, alwaysPlay, attachSrc]);
 
   useEffect(() => {
     if (alwaysPlay || !playInView || ambientActive) return;

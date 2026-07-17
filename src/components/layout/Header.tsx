@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { NAV_LINKS, SITE } from "@/lib/constants";
+import { NAV_LINKS, PORTFOLIO_PATH, SITE } from "@/lib/constants";
+import { setReturnScroll, VISHH254_SECTION_ID } from "@/lib/scroll-anchor";
 import { Logo } from "@/components/brand/Logo";
 import { MoonSplash } from "@/components/brand/MoonSplash";
 import { cn } from "@/lib/utils";
@@ -82,8 +83,59 @@ function MobileMenuLink({
   );
 }
 
+function PortfolioHeaderLink({
+  href,
+  label,
+  className,
+  onClick,
+}: {
+  href: string;
+  label: string;
+  className?: string;
+  onClick?: () => void;
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <Link
+      href={href}
+      data-magnetic
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
+      className={cn(
+        "label relative isolate inline-flex items-center gap-2 border border-accent/45 bg-accent/10 px-4 py-2.5 text-[10px] uppercase tracking-[0.2em] text-accent shadow-[0_0_24px_rgba(225,6,0,0.12)] transition hover:border-accent hover:bg-accent hover:text-white md:px-5 md:text-xs",
+        "before:absolute before:top-0 before:left-0 before:h-full before:w-0.5 before:bg-accent before:content-['']",
+        className,
+      )}
+    >
+      <MoonSplash active={hovered} />
+      <span className="relative z-10">{label}</span>
+    </Link>
+  );
+}
+
+function isPortfolioPath(pathname: string) {
+  return pathname === PORTFOLIO_PATH || pathname.startsWith(`${PORTFOLIO_PATH}/`);
+}
+
+function isMinimalNavPath(pathname: string) {
+  return isPortfolioPath(pathname) || pathname === "/vishh254";
+}
+
 export function Header() {
   const pathname = usePathname();
+  const isMinimalNav = isMinimalNavPath(pathname);
+  const isPortfolioDetail =
+    pathname.startsWith(`${PORTFOLIO_PATH}/`) && pathname !== PORTFOLIO_PATH;
+  const isVishh254 = pathname === "/vishh254";
+  const minimalBackHref = isVishh254
+    ? `/#${VISHH254_SECTION_ID}`
+    : isPortfolioDetail
+      ? PORTFOLIO_PATH
+      : "/";
   const [scrolled, setScrolled] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
   const [open, setOpen] = useState(false);
@@ -117,12 +169,38 @@ export function Header() {
     return () => setScrollLocked(false);
   }, [open]);
 
+  if (isMinimalNav) {
+    return (
+      <header
+        className={cn(
+          "fixed top-0 right-0 left-0 z-50 max-w-[100vw] overflow-x-clip border-b border-accent/20 bg-black/55 py-4 backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:py-5",
+          scrolled && "bg-black/75 shadow-[0_8px_32px_rgba(0,0,0,0.45)]",
+        )}
+      >
+        <div className="section-padding flex w-full max-w-full items-center justify-between gap-4">
+          <PortfolioHeaderLink href="/" label="Home" />
+          <PortfolioHeaderLink
+            href={minimalBackHref}
+            label="← Back"
+            onClick={
+              isVishh254 ? () => setReturnScroll(VISHH254_SECTION_ID) : undefined
+            }
+          />
+        </div>
+      </header>
+    );
+  }
+
   const navLinks = NAV_LINKS.map((link) => (
     <NavLink
       key={link.href}
       href={link.href}
       label={link.label}
-      active={pathname === link.href}
+      active={
+        link.href === PORTFOLIO_PATH
+          ? pathname === PORTFOLIO_PATH || pathname.startsWith(`${PORTFOLIO_PATH}/`)
+          : pathname === link.href
+      }
     />
   ));
 
@@ -271,7 +349,7 @@ export function Footer() {
           <div className="lg:col-span-1">
             <p className="label mb-4">Navigate</p>
             <ul className="flex flex-wrap items-center gap-x-8 gap-y-3">
-              {NAV_LINKS.map((link) => (
+              {NAV_LINKS.filter((link) => link.href !== "/#work").map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm text-muted transition hover:text-white">
                     {link.label}

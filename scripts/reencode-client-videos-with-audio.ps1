@@ -44,6 +44,7 @@ $jobs = @(
     @{
         dir = "Autobox"
         items = @(
+            @{ src = "RR Main Vid.mp4"; out = "autobox-rr-main.mp4" }
             @{ src = "x6 short .mp4"; out = "autobox-x6.mp4" }
             @{ src = "CROWN V2.mp4"; out = "autobox-crown-v2.mp4" }
             @{ src = "lC30 aUTO.mp4"; out = "autobox-lc30.mp4" }

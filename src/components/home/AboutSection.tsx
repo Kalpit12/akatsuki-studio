@@ -163,16 +163,17 @@ export function AboutSection({
           poster={videoPoster}
           className="h-full w-full"
           videoClassName="object-cover object-center"
-          playOnHover
+          playInView
+          playInViewMinRatio={0.35}
           showMuteOnly
           showControls={false}
           showPlayOverlay={false}
           unloadWhenHidden
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-black/15" />
-        <div className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/50 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-black/15" />
+        <div className="pointer-events-none absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/50 to-transparent" />
 
-        <div className="absolute right-0 bottom-0 left-0 flex items-end justify-between gap-4 px-5 py-5 sm:px-6 sm:py-6 md:px-8 md:py-8">
+        <div className="pointer-events-none absolute right-0 bottom-0 left-0 flex items-end justify-between gap-4 px-5 py-5 sm:px-6 sm:py-6 md:px-8 md:py-8">
           <div>
             <p className="font-mono text-[10px] tracking-[0.22em] text-accent">EST.</p>
             <p className="mt-1 font-display text-2xl text-white">Nairobi</p>
@@ -325,15 +326,16 @@ export function AboutSection({
                   src={MEDIA.studioTour}
                   poster={MEDIA.studioTourPoster}
                   className="h-full w-full"
-                  playOnHover
+                  playInView
+                  playInViewMinRatio={0.35}
                   showMuteOnly
                   showControls={false}
                   showPlayOverlay={false}
                   unloadWhenHidden
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-black/10" />
-                <div className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent" />
-                <div className="absolute right-0 bottom-0 left-0 flex items-end justify-between p-6 md:p-8">
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-black/10" />
+                <div className="pointer-events-none absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent" />
+                <div className="pointer-events-none absolute right-0 bottom-0 left-0 flex items-end justify-between p-6 md:p-8">
                   <div>
                     <p className="font-mono text-[10px] tracking-[0.22em] text-accent">
                       THE FLOOR

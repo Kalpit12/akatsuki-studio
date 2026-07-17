@@ -90,6 +90,7 @@ function Compress-Video {
 $folder = Join-Path $PSScriptRoot "..\public\Personal Vids"
 
 $items = @(
+    @{ src = "Insta on .mp4"; out = "insta-on.mp4"; poster = $true }
     @{ src = "AKatsuki Vish  bike.mp4"; out = "vish-bike.mp4"; poster = $true }
     @{ src = "AKatsuki BIke chase BTSmp4.mp4"; out = "bike-chase-bts.mp4"; poster = $true }
     @{ src = "Chase scene.mp4"; out = "chase-scene.mp4"; poster = $true }

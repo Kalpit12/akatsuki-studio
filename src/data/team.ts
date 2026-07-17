@@ -33,8 +33,7 @@ export const team: TeamMember[] = [
     name: "Vishal Singh",
     role: "Founder, Akatsuki Studio",
     title: "Founder, Filmmaker, Creative Director",
-    image: "/vishal.jpg",
-    hoverImage: "/vishal-2.jpg",
+    initials: "VS",
     social: {
       instagram: "https://www.instagram.com/vishh254",
       youtube: YOUTUBE_CHANNEL,
@@ -61,8 +60,7 @@ export const team: TeamMember[] = [
     name: "B. Chitroda",
     role: "Founder, Akatsuki Studio",
     title: "Founder, Creative Strategist, Storyteller",
-    image: "/b-chitroda-1.jpg",
-    hoverImage: "/b-chitroda-2.jpg",
+    initials: "BC",
     social: {
       instagram: "https://www.instagram.com/b.chitroda",
       youtube: YOUTUBE_CHANNEL,

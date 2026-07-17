@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getHomeWorkCards, type HomeWorkCard } from "@/data/homeWork";
 import { MOBILE_MQ, DESKTOP_MQ } from "@/lib/gsap-mobile";
+import { WORK_SECTION_ID } from "@/lib/scroll-anchor";
 import { useIntroReady } from "@/hooks/useIntroReady";
 import { useInViewport } from "@/hooks/useInViewport";
 import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
@@ -296,7 +297,7 @@ export function FeaturedProjects() {
   );
 
   return (
-    <section ref={sectionRef} data-featured-section className="relative isolate z-[1] bg-background">
+    <section ref={sectionRef} id={WORK_SECTION_ID} data-featured-section className="relative isolate z-[1] bg-background">
       <div
         className="pointer-events-none absolute top-10 right-[6%] z-0 hidden h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(225,6,0,0.16)_0%,transparent_70%)] blur-3xl md:block"
         aria-hidden

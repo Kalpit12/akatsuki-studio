@@ -1,4 +1,5 @@
 import { clientRoster } from "@/data/clients";
+import { PORTFOLIO_PATH } from "@/lib/constants";
 import { getClientWork } from "@/data/clientFilms";
 import { getProject, type FilmOrientation } from "@/data/projects";
 
@@ -33,7 +34,7 @@ function buildCardForClient(client: (typeof clientRoster)[number]): HomeWorkCard
   const project = client.workSlug ? getProject(client.workSlug) : undefined;
   const work = getClientWork(client.slug);
 
-  const href = `/clients/${client.slug}`;
+  const href = `${PORTFOLIO_PATH}/${client.slug}`;
   const title = client.workTitle ?? client.name;
   const subtitle = client.detail;
   let poster: string | undefined;

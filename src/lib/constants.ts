@@ -15,11 +15,13 @@ export const SITE = {
   },
 } as const;
 
+export const PORTFOLIO_PATH = "/portfolio" as const;
+
 export const NAV_LINKS = [
-  { href: "/work", label: "Work" },
+  { href: "/#work", label: "Work" },
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
-  { href: "/clients", label: "Clients" },
+  { href: PORTFOLIO_PATH, label: "Portfolio" },
   { href: "/contact", label: "Contact" },
 ] as const;
 

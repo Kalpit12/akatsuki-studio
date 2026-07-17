@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { Vishh254BackLink } from "@/components/vishh254/Vishh254BackLink";
 import { Vishh254ScrollMark } from "@/components/vishh254/Vishh254ScrollMark";
 import { VISHH254, type VishhFilm } from "@/data/vishh254";
 
@@ -50,20 +49,19 @@ export default function Vishh254Page() {
   return (
     <article>
       <Vishh254ScrollMark />
-      <div className="section-padding pt-32 md:pt-40">
-        <Vishh254BackLink />
-      </div>
-      <section className="relative -mt-16 h-[85vh] min-h-[500px] md:-mt-20">
-        <LazyVideoPlayer
-          src={VISHH254.heroVideo}
-          poster={VISHH254.heroPoster}
-          className="absolute inset-0 h-full w-full"
-          alwaysPlay
-          showControls={false}
-          showPlayOverlay={false}
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-black/35 to-black/20" />
-        <div className="section-padding pointer-events-none relative flex h-full flex-col justify-end pb-16 pt-32 md:pb-20">
+      <section className="relative h-[85vh] min-h-[500px]">
+        <div className="absolute inset-x-0 top-[4.5rem] bottom-0 md:top-[5.25rem]">
+          <LazyVideoPlayer
+            src={VISHH254.heroVideo}
+            poster={VISHH254.heroPoster}
+            className="absolute inset-0 h-full w-full"
+            alwaysPlay
+            showControls={false}
+            showPlayOverlay={false}
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-black/35 to-black/20" />
+        </div>
+        <div className="section-padding pointer-events-none relative flex h-full flex-col justify-end pb-16 pt-[5.5rem] md:pb-20 md:pt-28">
           <p className="label mb-4 text-accent">{VISHH254.eyebrow}</p>
           <p className="mb-3 font-mono text-[10px] tracking-[0.22em] text-white/45">
             @{VISHH254.handle} · {VISHH254.role}
@@ -84,7 +82,7 @@ export default function Vishh254Page() {
 
       <section className="section-padding border-b border-white/10 py-10 md:py-12">
         <div className="flex flex-wrap items-center gap-5">
-          <MagneticButton href="/work">Studio Work →</MagneticButton>
+          <MagneticButton href="/#work">Studio Work →</MagneticButton>
           <div className="flex items-center gap-3" role="group" aria-label="Social">
             <Link
               href={VISHH254.social.instagram}
@@ -183,7 +181,7 @@ export default function Vishh254Page() {
           </h2>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <MagneticButton href="/contact">Start the Project</MagneticButton>
-            <MagneticButton href="/work" variant="outline">
+            <MagneticButton href="/#work" variant="outline">
               See Studio Work
             </MagneticButton>
           </div>
