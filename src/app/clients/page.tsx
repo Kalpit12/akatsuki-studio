@@ -37,34 +37,34 @@ export default function ClientsPage() {
       <LogoWall
         showIntro={false}
         caption={
-          <p className="mx-auto max-w-2xl font-display text-2xl leading-snug text-balance text-white md:text-3xl">
+          <p className="mx-auto max-w-2xl font-display text-xl leading-snug text-balance text-white max-md:px-1 md:text-3xl">
             From first campaigns to long-term partners —{" "}
             <span className="text-accent">brands that refuse to blend in.</span>
           </p>
         }
       />
 
-      <div className="section-padding pt-16 md:pt-20">
-        <div className="mb-12 flex flex-wrap gap-8 border-b border-white/10 pb-8 md:mb-16 md:gap-14">
+      <div className="section-padding max-md:pt-10 pt-16 md:pt-20">
+        <div className="mb-8 grid max-w-lg grid-cols-3 gap-4 border-b border-white/10 pb-6 md:mb-16 md:flex md:max-w-none md:flex-wrap md:gap-14 md:pb-8">
           <div>
-            <p className="font-mono text-3xl text-white md:text-4xl">
+            <p className="font-mono text-2xl text-white md:text-4xl">
               {String(clientRoster.length).padStart(2, "0")}
             </p>
-            <p className="label mt-2 text-accent">Partners</p>
+            <p className="label mt-1.5 text-accent md:mt-2">Partners</p>
           </div>
           <div>
-            <p className="font-mono text-3xl text-white md:text-4xl">
+            <p className="font-mono text-2xl text-white md:text-4xl">
               {String(sectors.length).padStart(2, "0")}
             </p>
-            <p className="label mt-2 text-accent">Sectors</p>
+            <p className="label mt-1.5 text-accent md:mt-2">Sectors</p>
           </div>
           <div>
-            <p className="font-mono text-3xl text-white md:text-4xl">
+            <p className="font-mono text-2xl text-white md:text-4xl">
               {String(
                 clientRoster.filter((c) => c.workSlug).length,
               ).padStart(2, "0")}
             </p>
-            <p className="label mt-2 text-muted">Case studies live</p>
+            <p className="label mt-1.5 text-muted md:mt-2">Case studies live</p>
           </div>
         </div>
       </div>

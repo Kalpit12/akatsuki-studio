@@ -1,12 +1,20 @@
 import { MEDIA } from "@/lib/cloudinary";
 
+export type FilmOrientation = "horizontal" | "vertical";
+
 export type ProjectFilm = {
   video: string;
   poster: string;
   label: string;
+  /** Native aspect — horizontal uses 16:9, vertical uses 9:16 in the case study */
+  orientation?: FilmOrientation;
   /** Center highlight in the films grid (case study) */
   featured?: boolean;
 };
+
+export function getFilmOrientation(film: ProjectFilm): FilmOrientation {
+  return film.orientation ?? "vertical";
+}
 
 export type Project = {
   slug: string;
@@ -68,21 +76,25 @@ export const projects: Project[] = [
         video: "/TVS/tvs-meru-day.mp4",
         poster: "/TVS/tvs-meru-day.jpg",
         label: "Meru Day",
+        orientation: "horizontal",
       },
       {
         video: "/TVS/tvs-mt-saturday.mp4",
         poster: "/TVS/tvs-mt-saturday.jpg",
         label: "MT Saturday",
+        orientation: "horizontal",
       },
       {
         video: "/TVS/tvs-mea-awards.mp4",
         poster: "/TVS/tvs-mea-awards.jpg",
         label: "MEA Awards",
+        orientation: "horizontal",
       },
       {
         video: "/TVS/tvs-motor-show.mp4",
         poster: "/TVS/tvs-motor-show.jpg",
         label: "Motor Show",
+        orientation: "vertical",
       },
     ],
     featured: true,
@@ -119,17 +131,93 @@ export const projects: Project[] = [
       "/Kyra/kyra-still-04.jpg",
       "/Kyra/kyra-still-05.jpg",
       "/Kyra/kyra-still-06.jpg",
+      "/Kyra/kyra-gallery-01.webp",
+      "/Kyra/kyra-gallery-02.webp",
+      "/Kyra/kyra-gallery-03.webp",
+      "/Kyra/kyra-gallery-04.webp",
+      "/Kyra/kyra-gallery-05.webp",
+      "/Kyra/kyra-gallery-06.webp",
+      "/Kyra/kyra-gallery-07.webp",
+      "/Kyra/kyra-gallery-08.webp",
+      "/Kyra/kyra-gallery-09.webp",
+      "/Kyra/kyra-gallery-10.webp",
+      "/Kyra/kyra-gallery-11.webp",
+      "/Kyra/kyra-gallery-12.webp",
+      "/Kyra/kyra-gallery-13.webp",
+      "/Kyra/kyra-gallery-14.webp",
     ],
     films: [
       {
         video: "/Kyra/kyra-x3m-reel.mp4",
         poster: "/Kyra/kyra-x3m-reel.jpg",
         label: "X3 M Reel",
+        orientation: "vertical",
       },
       {
         video: "/Kyra/kyra-xm.mp4",
         poster: "/Kyra/kyra-xm.jpg",
         label: "XM Cut",
+        orientation: "vertical",
+      },
+      {
+        video: "/Kyra/kyra-c5643.mp4",
+        poster: "/Kyra/kyra-c5643.jpg",
+        label: "C5643",
+        orientation: "vertical",
+      },
+      {
+        video: "/Kyra/kyra-c5678.mp4",
+        poster: "/Kyra/kyra-c5678.jpg",
+        label: "C5678",
+        orientation: "vertical",
+      },
+      {
+        video: "/Kyra/kyra-e63.mp4",
+        poster: "/Kyra/kyra-e63.jpg",
+        label: "E63",
+        orientation: "vertical",
+      },
+      {
+        video: "/Kyra/kyra-m440i.mp4",
+        poster: "/Kyra/kyra-m440i.jpg",
+        label: "M440i Insta",
+        orientation: "horizontal",
+      },
+      {
+        video: "/Kyra/kyra-bentley-review.mp4",
+        poster: "/Kyra/kyra-bentley-review.jpg",
+        label: "Bentley Review",
+        orientation: "vertical",
+      },
+      {
+        video: "/Kyra/kyra-c2625.mp4",
+        poster: "/Kyra/kyra-c2625.jpg",
+        label: "C2625",
+        orientation: "vertical",
+      },
+      {
+        video: "/Kyra/kyra-lc-v8-review.mp4",
+        poster: "/Kyra/kyra-lc-v8-review.jpg",
+        label: "LC V8 Review",
+        orientation: "vertical",
+      },
+      {
+        video: "/Kyra/kyra-obsessed-sti.mp4",
+        poster: "/Kyra/kyra-obsessed-sti.jpg",
+        label: "Obsessed STI",
+        orientation: "vertical",
+      },
+      {
+        video: "/Kyra/kyra-c63s.mp4",
+        poster: "/Kyra/kyra-c63s.jpg",
+        label: "C63S",
+        orientation: "vertical",
+      },
+      {
+        video: "/Kyra/kyra-svr-reel.mp4",
+        poster: "/Kyra/kyra-svr-reel.jpg",
+        label: "SVR Reel",
+        orientation: "vertical",
       },
     ],
     featured: true,

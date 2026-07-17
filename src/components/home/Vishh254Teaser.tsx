@@ -73,6 +73,84 @@ function TeaserTitleIcon({ icon }: { icon: VishhFilm["icon"] }) {
   return null;
 }
 
+/** Featured film in the physical center; same order for desktop row and mobile stack. */
+function buildTeaserDisplayOrder(films: VishhFilm[]) {
+  const featured = films.find((film) => film.featured);
+  const others = films.filter((film) => !film.featured);
+
+  if (!featured) return films;
+
+  const beforeCount = Math.floor(others.length / 2);
+  return [...others.slice(0, beforeCount), featured, ...others.slice(beforeCount)];
+}
+
+function TeaserFilmCard({
+  film,
+  index,
+  allowLoad,
+}: {
+  film: VishhFilm;
+  index: number;
+  allowLoad: boolean;
+}) {
+  const isFeatured = film.featured === true;
+
+  return (
+    <div
+      className={cn(
+        "group relative overflow-hidden border bg-black transition duration-500",
+        isFeatured
+          ? "w-[13.5rem] shrink-0 border-accent/35 shadow-[0_0_50px_rgba(225,6,0,0.12)] hover:border-accent/55 sm:w-[15.5rem] md:w-[15rem] lg:w-[16.5rem] xl:w-[17rem] max-md:w-full"
+          : "w-[9.75rem] shrink-0 self-end border-white/10 max-md:border-white/20 hover:border-white/25 sm:w-[10.75rem] md:w-[10.25rem] lg:w-[11rem] xl:w-[11.5rem] max-md:w-full max-md:self-stretch",
+      )}
+    >
+      <div className="relative aspect-[9/16]">
+        <TeaserVideo film={film} allowLoad={allowLoad} />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/40" />
+        <div
+          className={cn(
+            "pointer-events-none absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent transition-opacity duration-500",
+            isFeatured ? "opacity-100" : "max-md:opacity-70 opacity-0 group-hover:opacity-100",
+          )}
+          aria-hidden
+        />
+        <div className="pointer-events-none absolute top-3 left-3 z-[11]">
+          <span className="font-mono text-[10px] tracking-[0.22em] text-accent">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <span className="mt-1 block text-[10px] uppercase tracking-[0.2em] text-white/55">
+            {film.tag}
+          </span>
+        </div>
+        <div className="pointer-events-none absolute right-4 bottom-4 left-4">
+          <div
+            className="mb-2 h-px w-10 origin-left max-md:scale-x-100 scale-x-0 bg-accent transition duration-500 group-hover:scale-x-100"
+            aria-hidden
+          />
+          <p
+            className={cn(
+              "font-body flex items-center gap-2 font-medium leading-snug tracking-[0.04em] text-white/90 transition duration-500 group-hover:text-white",
+              isFeatured
+                ? "text-base sm:text-lg md:text-xl"
+                : "text-[0.85rem] sm:text-[0.9rem]",
+            )}
+          >
+            <TeaserTitleIcon icon={film.icon} />
+            <span>{film.title}</span>
+          </p>
+        </div>
+        <Link
+          href="/vishh254"
+          onClick={markVishh254Return}
+          className="absolute inset-0 z-10"
+          aria-label={`View ${film.title} on Vishh254`}
+          tabIndex={-1}
+        />
+      </div>
+    </div>
+  );
+}
+
 function TeaserVideo({
   film,
   allowLoad,
@@ -232,6 +310,8 @@ export function Vishh254Teaser() {
   const sectionInView = useInViewport(sectionRef, "150px 0px");
   const allowLoad = introReady && sectionInView;
   const films = VISHH254.teaserFilms;
+  const displayOrder = buildTeaserDisplayOrder(films);
+  const filmIndex = new Map(films.map((film, i) => [film.id, i]));
 
   useEffect(() => {
     if (!sectionInView) return;
@@ -308,66 +388,28 @@ export function Vishh254Teaser() {
             </p>
           </div>
 
-          <div className="mx-auto flex max-w-6xl flex-wrap items-end justify-center gap-3 sm:gap-4 md:gap-6 max-md:flex-col max-md:items-stretch max-md:gap-5">
-            {films.map((film, i) => {
-              const isFeatured = film.featured === true;
-
-              return (
-              <div
+          {/* Mobile: featured in the middle of the stack */}
+          <div className="mx-auto flex max-w-6xl flex-col items-stretch gap-5 md:hidden">
+            {displayOrder.map((film) => (
+              <TeaserFilmCard
                 key={film.id}
-                className={cn(
-                  "group relative overflow-hidden border bg-black transition duration-500",
-                  isFeatured
-                    ? "w-[13.5rem] border-accent/35 shadow-[0_0_50px_rgba(225,6,0,0.12)] hover:border-accent/55 sm:w-[15.5rem] md:w-[17rem] lg:w-[18rem] max-md:w-full"
-                    : "w-[9.75rem] self-end border-white/10 max-md:border-white/20 hover:border-white/25 sm:w-[10.75rem] md:w-[12rem] max-md:w-full max-md:self-stretch",
-                )}
-              >
-                <div className="relative aspect-[9/16]">
-                  <TeaserVideo film={film} allowLoad={allowLoad} />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/40" />
-                  <div
-                    className={cn(
-                      "pointer-events-none absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent transition-opacity duration-500",
-                      isFeatured ? "opacity-100" : "max-md:opacity-70 opacity-0 group-hover:opacity-100",
-                    )}
-                    aria-hidden
-                  />
-                  <div className="pointer-events-none absolute top-3 left-3 z-[11]">
-                    <span className="font-mono text-[10px] tracking-[0.22em] text-accent">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span className="mt-1 block text-[10px] uppercase tracking-[0.2em] text-white/55">
-                      {film.tag}
-                    </span>
-                  </div>
-                  <div className="pointer-events-none absolute right-4 bottom-4 left-4">
-                    <div
-                      className="mb-2 h-px w-10 origin-left max-md:scale-x-100 scale-x-0 bg-accent transition duration-500 group-hover:scale-x-100"
-                      aria-hidden
-                    />
-                    <p
-                      className={cn(
-                        "font-body flex items-center gap-2 font-medium leading-snug tracking-[0.04em] text-white/90 transition duration-500 group-hover:text-white",
-                        isFeatured
-                          ? "text-base sm:text-lg md:text-xl"
-                          : "text-[0.85rem] sm:text-[0.9rem]",
-                      )}
-                    >
-                      <TeaserTitleIcon icon={film.icon} />
-                      <span>{film.title}</span>
-                    </p>
-                  </div>
-                  <Link
-                    href="/vishh254"
-                    onClick={markVishh254Return}
-                    className="absolute inset-0 z-10"
-                    aria-label={`View ${film.title} on Vishh254`}
-                    tabIndex={-1}
-                  />
-                </div>
-              </div>
-            );
-            })}
+                film={film}
+                index={filmIndex.get(film.id) ?? 0}
+                allowLoad={allowLoad}
+              />
+            ))}
+          </div>
+
+          {/* Desktop: all cuts in one row, hero centered */}
+          <div className="mx-auto hidden max-w-[76rem] flex-nowrap items-end justify-center gap-3 md:flex lg:gap-4 xl:gap-5">
+            {displayOrder.map((film) => (
+              <TeaserFilmCard
+                key={film.id}
+                film={film}
+                index={filmIndex.get(film.id) ?? 0}
+                allowLoad={allowLoad}
+              />
+            ))}
           </div>
         </div>
 

@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { testimonials } from "@/data/testimonials";
+import { MOBILE_MQ } from "@/lib/gsap-mobile";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,7 +22,7 @@ function TestimonialCard({
   index: number;
 }) {
   return (
-    <article className="group relative flex h-full min-h-[22rem] flex-col border border-white/10 bg-white/[0.02] transition duration-500 max-md:border-accent/20 hover:border-accent/35 hover:bg-accent/[0.03] md:min-h-[24rem]">
+    <article className="group relative flex h-full min-h-[18rem] flex-col border border-white/10 bg-white/[0.02] transition duration-500 max-md:border-accent/20 hover:border-accent/35 hover:bg-accent/[0.03] md:min-h-[24rem]">
       <span
         className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-accent via-accent/50 to-transparent"
         aria-hidden
@@ -67,6 +68,15 @@ export function TestimonialsSection() {
   const rootRef = useRef<HTMLElement>(null);
   const [pairIndex, setPairIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_MQ);
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -93,7 +103,7 @@ export function TestimonialsSection() {
   }, []);
 
   useEffect(() => {
-    if (paused || PAIR_COUNT <= 1) return;
+    if (isMobile || paused || PAIR_COUNT <= 1) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const id = window.setInterval(() => {
@@ -101,7 +111,7 @@ export function TestimonialsSection() {
     }, PAIR_DURATION_MS);
 
     return () => window.clearInterval(id);
-  }, [paused]);
+  }, [paused, isMobile]);
 
   const start = pairIndex * PAIR_SIZE;
   const visible = testimonials.slice(start, start + PAIR_SIZE);
@@ -145,8 +155,8 @@ export function TestimonialsSection() {
         <div
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
-          onTouchStart={() => setPaused(true)}
-          onTouchEnd={() => setPaused(false)}
+          onTouchStart={() => !isMobile && setPaused(true)}
+          onTouchEnd={() => !isMobile && setPaused(false)}
           onFocusCapture={() => setPaused(true)}
           onBlurCapture={(e) => {
             if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
@@ -154,7 +164,26 @@ export function TestimonialsSection() {
             }
           }}
         >
-          <div className="relative min-h-[22rem] md:min-h-[24rem]">
+          {/* Mobile: swipe through all testimonials */}
+          <div className="relative md:hidden">
+            <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {testimonials.map((item, i) => (
+                <div
+                  key={item.id}
+                  className="w-[88vw] max-w-[22rem] shrink-0 snap-center"
+                >
+                  <TestimonialCard item={item} index={i} />
+                </div>
+              ))}
+            </div>
+            <p className="mt-6 font-mono text-[10px] tracking-[0.2em] text-muted">
+              Swipe to read · {String(testimonials.length).padStart(2, "0")}{" "}
+              voices
+            </p>
+          </div>
+
+          {/* Desktop: paired rotation */}
+          <div className="relative hidden min-h-[24rem] md:block">
             <AnimatePresence mode="wait">
               <motion.div
                 key={pairIndex}
@@ -164,9 +193,7 @@ export function TestimonialsSection() {
                 transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
                 className={cn(
                   "grid gap-5 lg:gap-6",
-                  visible.length >= 3
-                    ? "md:grid-cols-3"
-                    : "md:grid-cols-2",
+                  visible.length >= 3 ? "md:grid-cols-3" : "md:grid-cols-2",
                 )}
               >
                 {visible.map((item, i) => (
@@ -180,7 +207,7 @@ export function TestimonialsSection() {
             </AnimatePresence>
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
+          <div className="mt-10 hidden flex-wrap items-center justify-between gap-4 md:flex">
             <p className="font-mono text-[10px] tracking-[0.2em] text-muted">
               {String(pairIndex + 1).padStart(2, "0")} /{" "}
               {String(PAIR_COUNT).padStart(2, "0")}

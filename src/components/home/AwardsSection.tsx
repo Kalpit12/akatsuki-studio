@@ -4,7 +4,7 @@ import { awards } from "@/data/clients";
 
 export function AwardsSection() {
   return (
-    <section className="section-padding py-28 md:py-36">
+    <section className="section-padding max-md:py-20 py-28 md:py-36">
       <div className="mb-14 flex flex-col gap-4 md:mb-16 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="label mb-4">Recognition</p>
@@ -21,7 +21,7 @@ export function AwardsSection() {
         {awards.map((award) => (
           <li
             key={award.title}
-            className="group grid grid-cols-[4.5rem_1fr] items-baseline gap-4 border-b border-white/15 py-7 transition-colors md:grid-cols-[6rem_1fr_1fr] md:gap-8 md:py-9"
+            className="group grid grid-cols-[4.5rem_1fr] items-baseline gap-4 border-b border-white/15 max-md:py-5 py-7 transition-colors md:grid-cols-[6rem_1fr_1fr] md:gap-8 md:py-9"
           >
             <span className="font-mono text-xs tracking-[0.15em] text-accent">
               {award.year}

@@ -130,6 +130,9 @@ export type LazyVideoPlayerProps = {
   loop?: boolean;
   /** Large centered play button when paused (ignored when playInView) */
   showPlayOverlay?: boolean;
+  /** Mobile work films: only this src may play; others auto-pause */
+  soloPlaybackKey?: string | null;
+  onSoloPlaybackClaim?: (src: string) => void;
 };
 
 export function LazyVideoPlayer({
@@ -146,6 +149,8 @@ export function LazyVideoPlayer({
   showMuteOnly = false,
   loop = true,
   showPlayOverlay = true,
+  soloPlaybackKey = null,
+  onSoloPlaybackClaim,
 }: LazyVideoPlayerProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -347,6 +352,7 @@ export function LazyVideoPlayer({
     try {
       await video.play();
       setPlaying(true);
+      onSoloPlaybackClaim?.(src);
       return;
     } catch {
       /* retry once media is ready */
@@ -359,12 +365,23 @@ export function LazyVideoPlayer({
       } else {
         video.muted = mutedRef.current;
       }
-      void video.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+      void video
+        .play()
+        .then(() => {
+          setPlaying(true);
+          onSoloPlaybackClaim?.(src);
+        })
+        .catch(() => setPlaying(false));
     };
 
     if (video.readyState >= 2) onReady();
     else video.addEventListener("canplay", onReady, { once: true });
-  }, [attachSrc, playInView]);
+  }, [attachSrc, playInView, onSoloPlaybackClaim, src]);
+
+  useEffect(() => {
+    if (!soloPlaybackKey || soloPlaybackKey === src || !playing) return;
+    pause();
+  }, [soloPlaybackKey, src, playing, pause]);
 
   const togglePlay = useCallback(() => {
     if (playing) pause();

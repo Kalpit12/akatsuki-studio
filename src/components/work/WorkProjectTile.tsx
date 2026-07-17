@@ -1,10 +1,130 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/data/projects";
 import { useWorkMorph } from "@/components/work/WorkMorphProvider";
+import { MOBILE_MQ } from "@/lib/gsap-mobile";
 import { cn } from "@/lib/utils";
+
+const CROSSFADE =
+  "transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]";
+
+function WorkTileMobileCover({
+  coverVideo,
+  coverImage,
+  morphingAway,
+}: {
+  coverVideo: string;
+  coverImage: string;
+  morphingAway: boolean;
+}) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [inView, setInView] = useState(false);
+  const [srcAttached, setSrcAttached] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+  const shouldPlay = inView && !morphingAway;
+  const showVideo = shouldPlay && videoReady && srcAttached;
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible =
+          Boolean(entry?.isIntersecting) &&
+          (entry?.intersectionRatio ?? 0) >= 0.45;
+        setInView(visible);
+        if (visible) setSrcAttached(true);
+      },
+      {
+        threshold: [0, 0.35, 0.45, 0.6],
+        rootMargin: "80px 0px",
+      },
+    );
+
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (!shouldPlay) {
+      video.pause();
+      if (!inView) {
+        setVideoReady(false);
+        try {
+          video.currentTime = 0;
+        } catch {
+          /* ignore */
+        }
+      }
+      return;
+    }
+
+    if (!video.currentSrc && srcAttached) {
+      video.src = coverVideo;
+      video.load();
+    }
+
+    const play = () => {
+      video.muted = true;
+      void video.play().catch(() => {});
+    };
+    const onReady = () => setVideoReady(true);
+
+    if (video.readyState >= 2) {
+      onReady();
+      play();
+    } else {
+      video.addEventListener("canplay", play, { once: true });
+      video.addEventListener("loadeddata", onReady, { once: true });
+    }
+
+    return () => {
+      video.removeEventListener("canplay", play);
+      video.removeEventListener("loadeddata", onReady);
+    };
+  }, [shouldPlay, inView, srcAttached, coverVideo]);
+
+  return (
+    <div ref={rootRef} className="absolute inset-0 md:hidden">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={coverImage}
+        alt=""
+        className={cn(
+          "absolute inset-0 h-full w-full object-cover",
+          CROSSFADE,
+          showVideo ? "scale-[1.02] opacity-0" : "scale-100 opacity-100",
+        )}
+        loading="lazy"
+        decoding="async"
+        aria-hidden
+      />
+      {srcAttached ? (
+        <video
+          ref={videoRef}
+          className={cn(
+            "absolute inset-0 h-full w-full object-cover",
+            CROSSFADE,
+            showVideo ? "scale-[1.02] opacity-100" : "scale-100 opacity-0",
+          )}
+          poster={coverImage}
+          muted
+          loop
+          playsInline
+          preload={shouldPlay ? "auto" : "metadata"}
+          aria-hidden
+        />
+      ) : null}
+    </div>
+  );
+}
 
 export function WorkProjectTile({
   project,
@@ -16,10 +136,21 @@ export function WorkProjectTile({
   const mediaRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLAnchorElement>(null);
   const { startMorph, activeSlug, lockHero } = useWorkMorph();
+  const [isMobile, setIsMobile] = useState(false);
 
   const morphingAway = activeSlug === project.slug && lockHero;
 
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_MQ);
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (isMobile) return;
+
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
       return;
     }
@@ -61,9 +192,15 @@ export function WorkProjectTile({
         <img
           src={project.coverImage}
           alt={project.client}
-          className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
+          className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02] max-md:hidden"
           loading="lazy"
           decoding="async"
+        />
+
+        <WorkTileMobileCover
+          coverVideo={project.coverVideo}
+          coverImage={project.coverImage}
+          morphingAway={morphingAway}
         />
 
         <span

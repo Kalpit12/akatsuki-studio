@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LOGO_SRC, INTRO_DONE_EVENT } from "@/components/brand/Logo";
+import { LOADER_LOGO_SRC, INTRO_DONE_EVENT } from "@/components/brand/Logo";
 
 export function LoadingScreen() {
   const [progress, setProgress] = useState(0);
@@ -88,7 +88,7 @@ export function LoadingScreen() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={LOGO_SRC}
+                src={LOADER_LOGO_SRC}
                 alt="Akatsuki Studio"
                 width={640}
                 height={260}

@@ -99,6 +99,8 @@ $items = @(
     @{ src = "gle400d final.mp4"; out = "gle400d.mp4"; poster = $true }
     @{ src = "C9989_1.mp4"; out = "c9989.mp4"; poster = $true }
     @{ src = "11MOTORS G63 REVIEW.mp4"; out = "g63-review.mp4"; poster = $true }
+    @{ src = "POCKET CAMERA.mp4"; out = "pocket-camera.mp4"; poster = $true }
+    @{ src = "C0251.mp4"; out = "vish-c0251.mp4"; poster = $true }
 )
 
 foreach ($item in $items) {

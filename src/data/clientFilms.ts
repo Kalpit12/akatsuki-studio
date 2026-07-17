@@ -20,15 +20,15 @@ export type ClientWork = {
 export const clientWorks: ClientWork[] = [
   {
     slug: "11-motors",
-    heroVideo: "/11 Motors/11-motors-gle53.mp4",
-    heroPoster: "/11 Motors/11-motors-gle53.jpg",
+    heroVideo: "/11 Motors/11-motors-range-rover.mp4",
+    heroPoster: "/11 Motors/11-motors-range-rover.jpg",
     excerpt:
       "Premium metal, showroom presence, and retail energy — films built for the floor and the feed.",
     films: [
       {
-        video: "/11 Motors/11-motors-gle53.mp4",
-        poster: "/11 Motors/11-motors-gle53.jpg",
-        label: "GLE 53",
+        video: "/11 Motors/11-motors-range-rover.mp4",
+        poster: "/11 Motors/11-motors-range-rover.jpg",
+        label: "Range Rover Vogue",
       },
       {
         video: "/11 Motors/11-motors-g63.mp4",
@@ -41,9 +41,9 @@ export const clientWorks: ClientWork[] = [
         label: "CX5 Shades",
       },
       {
-        video: "/11 Motors/11-motors-range-rover.mp4",
-        poster: "/11 Motors/11-motors-range-rover.jpg",
-        label: "Range Rover Vogue",
+        video: "/11 Motors/11-motors-gle53.mp4",
+        poster: "/11 Motors/11-motors-gle53.jpg",
+        label: "GLE 53",
       },
     ],
   },
@@ -79,6 +79,26 @@ export const clientWorks: ClientWork[] = [
         poster: "/Autobox/autobox-vogue-2023.jpg",
         label: "Vogue 2023",
       },
+    ],
+    gallery: [
+      "/Autobox/autobox-gallery-01.webp",
+      "/Autobox/autobox-gallery-02.webp",
+      "/Autobox/autobox-gallery-03.webp",
+      "/Autobox/autobox-gallery-04.webp",
+      "/Autobox/autobox-gallery-05.webp",
+      "/Autobox/autobox-gallery-06.webp",
+      "/Autobox/autobox-gallery-07.webp",
+      "/Autobox/autobox-gallery-08.webp",
+      "/Autobox/autobox-gallery-09.webp",
+      "/Autobox/autobox-gallery-10.webp",
+      "/Autobox/autobox-gallery-11.webp",
+      "/Autobox/autobox-gallery-12.webp",
+      "/Autobox/autobox-gallery-13.webp",
+      "/Autobox/autobox-gallery-14.webp",
+      "/Autobox/autobox-gallery-15.webp",
+      "/Autobox/autobox-gallery-16.webp",
+      "/Autobox/autobox-gallery-17.webp",
+      "/Autobox/autobox-gallery-18.webp",
     ],
   },
   {

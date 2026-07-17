@@ -83,6 +83,8 @@ next-env.d.ts
 /public/Autobox/Lexus VIP Black .mp4
 /public/Autobox/Vogue 2023 Autobox.mp4
 /public/Autobox/x6 short .mp4
+/public/Autobox/DSC*.jpg
+/public/Autobox/*-thumb.webp
 /public/BTS Vids/Airball.mp4
 /public/BTS Vids/Akatsuki AUtobox.mp4
 /public/BTS Vids/C1295_2.mp4
@@ -95,6 +97,19 @@ next-env.d.ts
 /public/Kyra/ASTON MARTIN PPF_1.mp4
 /public/Kyra/C5043.mp4
 /public/Kyra/M340i B roll.mp4
+/public/Kyra/C5643.mp4
+/public/Kyra/C5678.mp4
+/public/Kyra/E63 Kyra.mp4
+/public/Kyra/Kyra Insta M440i.mp4
+/public/Kyra/bENTLEY rEVIEW .mp4
+/public/Kyra/C2625.mp4
+/public/Kyra/Lc V8 Review.mp4
+/public/Kyra/Obsessed sti kyra.mp4
+/public/Kyra/Kyra C63s.mp4
+/public/Kyra/AKYRA SVR REEl watermark 2mp4.mp4
+/public/Kyra/DSC*.jpg
+/public/Kyra/*-thumb.webp
+/public/Loader logo.jpeg
 /public/TVS/MEA AWARDS 2 REVIEW VERSION.mp4
 /public/TVS/TIGONI RIDE APACHE V2.mp4
 /public/TVS/TVS DRAFT1.mp4
@@ -134,6 +149,8 @@ next-env.d.ts
 /public/Personal Vids/Jeep wrangler.mp4
 /public/Personal Vids/Swap merc .mp4
 /public/Personal Vids/Chase scene.mp4
+/public/Personal Vids/POCKET CAMERA.mp4
+/public/Personal Vids/C0251.mp4
 
 # Compression logs
 scripts/compress-reel.log

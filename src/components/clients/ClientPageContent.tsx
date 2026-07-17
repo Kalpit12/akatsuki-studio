@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Client } from "@/data/clients";
 import type { ClientWork } from "@/data/clientFilms";
 import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
+import { WorkGallery } from "@/components/work/WorkGallery";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export function ClientPageContent({
@@ -82,31 +83,14 @@ export function ClientPageContent({
       ) : null}
 
       {galleryImages.length > 0 ? (
-        <section className="section-padding py-16 md:py-20">
-          <div className="mb-10 flex flex-col gap-4 border-b border-white/10 pb-8 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="label mb-3 text-accent">Gallery</p>
-              <h2 className="heading-md">On location</h2>
-            </div>
-            <p className="font-mono text-xs tracking-[0.2em] text-white/45">
-              {String(work.gallery?.length ?? 0).padStart(2, "0")} stills
-            </p>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {galleryImages.map((src, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={src}
-                src={src}
-                alt={`${client.name} gallery ${i + 1}`}
-                className="aspect-[4/3] w-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
-            ))}
-          </div>
-        </section>
+        <WorkGallery
+          title={client.name}
+          images={galleryImages}
+          layout="landscape"
+          sectionLabel="Gallery"
+          sectionHeading="On location"
+          className="py-16 md:py-20"
+        />
       ) : null}
 
       <section className="section-padding border-t border-white/10 py-16">

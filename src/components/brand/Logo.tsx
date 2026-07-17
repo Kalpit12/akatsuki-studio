@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { RedMoonSmoke } from "@/components/brand/RedMoonSmoke";
 
 export const LOGO_SRC = "/brand/akatsuki-logo.png?v=2";
+export const LOADER_LOGO_SRC = "/brand/loader-logo.png?v=1";
 export const INTRO_DONE_EVENT = "akatsuki:intro-done";
 
 type LogoProps = {
@@ -104,8 +105,7 @@ export function Logo({
       width={308}
       height={89}
       decoding="async"
-      // Header logo shares the same URL as the loader mark — keep it low so React
-      // does not emit a second unused preload while the intro screen is up.
+      // Loader uses a separate mark — keep header fetch low priority on first paint.
       loading={priority ? "eager" : "lazy"}
       fetchPriority="low"
       className={cn("relative z-10 h-auto w-auto object-contain", className)}

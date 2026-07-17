@@ -25,7 +25,7 @@ export const VISHH254 = {
   },
   heroVideo: "/Personal Vids/vish-bike.mp4",
   heroPoster: "/Personal Vids/vish-bike.jpg",
-  /** Homepage teaser — three flagship cuts */
+  /** Homepage teaser — five flagship cuts */
   teaserFilms: [
     {
       id: "teaser-01",
@@ -49,6 +49,20 @@ export const VISHH254 = {
       tag: "Automotive",
       video: "/Personal Vids/vish-c3073.mp4",
       poster: "/Personal Vids/vish-c3073.jpg",
+    },
+    {
+      id: "teaser-04",
+      title: "Pocket Camera",
+      tag: "Personal",
+      video: "/Personal Vids/pocket-camera.mp4",
+      poster: "/Personal Vids/pocket-camera.jpg",
+    },
+    {
+      id: "teaser-05",
+      title: "C0251",
+      tag: "Film",
+      video: "/Personal Vids/vish-c0251.mp4",
+      poster: "/Personal Vids/vish-c0251.jpg",
     },
   ] as VishhFilm[],
   works: [
