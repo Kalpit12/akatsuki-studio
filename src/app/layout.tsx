@@ -42,9 +42,6 @@ export const metadata: Metadata = {
     title: SITE.name,
     description: SITE.description,
   },
-  icons: {
-    icon: [{ url: "/brand/akatsuki-logo.png", type: "image/png" }],
-  },
   robots: { index: true, follow: true },
 };
 

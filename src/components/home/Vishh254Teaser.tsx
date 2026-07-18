@@ -213,7 +213,7 @@ export function Vishh254Teaser() {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(225,6,0,0.14)_0%,transparent_55%)]"
         aria-hidden
       />
-      <div className="section-padding relative max-md:py-16 md:py-28">
+      <div className="section-padding relative max-md:py-12 md:pt-16 md:pb-14">
         <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <p className="label mb-4 text-accent">vishh254</p>
@@ -244,7 +244,7 @@ export function Vishh254Teaser() {
           </div>
         </div>
 
-        <div className="mt-12 md:mt-16">
+        <div className="mt-10 md:mt-12">
           <div className="mb-6 flex items-end justify-between gap-4">
             <p className="font-mono text-[10px] tracking-[0.22em] text-white/45 max-md:hidden">
               Selected personal cuts · hover to preview
@@ -281,7 +281,7 @@ export function Vishh254Teaser() {
         </div>
 
         <div
-          className="mt-10 h-px w-full bg-gradient-to-r from-accent/70 via-white/10 to-transparent"
+          className="mt-8 h-px w-full bg-gradient-to-r from-accent/70 via-white/10 to-transparent md:mt-10"
           aria-hidden
         />
       </div>

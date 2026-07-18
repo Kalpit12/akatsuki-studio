@@ -28,6 +28,7 @@ export default function ContactPage() {
       if (!res.ok) throw new Error("Failed");
       setStatus("success");
       form.reset();
+      window.setTimeout(() => setStatus("idle"), 6000);
     } catch {
       setStatus("error");
     }

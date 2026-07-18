@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LOADER_LOGO_SRC, INTRO_DONE_EVENT } from "@/components/brand/Logo";
+import { LOADER_LOGO_SRC, INTRO_DONE_EVENT, preloadHeaderLogo } from "@/components/brand/Logo";
 
 const INTRO_READY_KEY = "akatsuki-intro-ready";
 
@@ -38,6 +38,9 @@ export function LoadingScreen() {
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const mobile = window.matchMedia("(max-width: 767px)").matches;
+
+    // Warm the header logo while the loader runs so smoke reveal starts instantly.
+    preloadHeaderLogo();
 
     if (readIntroSkipped() || reducedMotion) {
       finishIntro();

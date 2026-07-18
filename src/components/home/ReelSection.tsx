@@ -278,9 +278,9 @@ export function ReelSection() {
     <section
       ref={sectionRef}
       data-reel-section
-      className="relative isolate z-[2] bg-background max-md:py-16 md:flex md:h-[100svh] md:flex-col md:overflow-hidden"
+      className="relative isolate z-[2] bg-background max-md:py-12 md:flex md:h-[100svh] md:flex-col md:overflow-hidden"
     >
-      <div className="section-padding relative z-20 flex shrink-0 items-end justify-between gap-6 max-md:pt-16 max-md:pb-3 md:pt-24 md:pb-4">
+      <div className="section-padding relative z-20 flex shrink-0 items-end justify-between gap-6 max-md:pt-12 max-md:pb-3 md:pt-16 md:pb-4">
         <div>
           <p className="label mb-2 md:mb-3">Studio reel</p>
           <h2 className="heading-lg max-w-xl text-balance">
@@ -317,7 +317,7 @@ export function ReelSection() {
         <div
           ref={trackRef}
           className={cn(
-            "flex w-max max-w-none items-end gap-3 px-6 max-md:snap-x max-md:snap-mandatory md:gap-4 md:px-12 lg:gap-5 lg:px-20",
+            "flex w-max max-w-none items-end gap-3 px-6 max-md:snap-x max-md:snap-mandatory md:h-full md:gap-4 md:px-12 lg:gap-5 lg:px-20",
             sectionInView && "md:will-change-transform",
           )}
         >

@@ -6,9 +6,18 @@ import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { RedMoonSmoke } from "@/components/brand/RedMoonSmoke";
 
-export const LOGO_SRC = "/brand/akatsuki-logo.png?v=2";
+export const LOGO_SRC = "/brand/akatsuki-logo.png?v=3";
 export const LOADER_LOGO_SRC = "/brand/loader-logo.png?v=1";
 export const INTRO_DONE_EVENT = "akatsuki:intro-done";
+
+/** Warm the header mark into the browser cache during the loader. */
+export function preloadHeaderLogo() {
+  if (typeof window === "undefined") return;
+  const img = new Image();
+  img.decoding = "async";
+  img.src = LOGO_SRC;
+  void img.decode?.().catch(() => {});
+}
 
 type LogoProps = {
   className?: string;
@@ -62,40 +71,63 @@ export function Logo({
   const reduceMotion = useReducedMotion();
   const skipSmoke = reduceMotion === true;
   const [introReady, setIntroReady] = useState(!smokeReveal || skipSmoke);
+  const [imageReady, setImageReady] = useState(!smokeReveal || skipSmoke);
   const [revealed, setRevealed] = useState(!smokeReveal || skipSmoke);
   const [smokeLive, setSmokeLive] = useState(false);
 
   useEffect(() => {
     if (!smokeReveal || skipSmoke) {
       setIntroReady(true);
+      setImageReady(true);
       setRevealed(true);
       setSmokeLive(false);
       return;
     }
 
+    // Start fetching/decoding immediately — don't wait for the intro to finish.
+    preloadHeaderLogo();
+    const warm = new Image();
+    warm.src = LOGO_SRC;
+    const markReady = () => setImageReady(true);
+    if (warm.complete) markReady();
+    else {
+      warm.addEventListener("load", markReady, { once: true });
+      warm.addEventListener("error", markReady, { once: true });
+      void warm.decode?.().then(markReady).catch(markReady);
+    }
+
     const unlock = () => setIntroReady(true);
+    try {
+      if (sessionStorage.getItem("akatsuki-intro-ready") === "1") {
+        unlock();
+      }
+    } catch {
+      /* ignore */
+    }
+
     window.addEventListener(INTRO_DONE_EVENT, unlock);
-    const fallback = window.setTimeout(unlock, 6500);
+    const fallback = window.setTimeout(unlock, 4200);
 
     return () => {
       window.removeEventListener(INTRO_DONE_EVENT, unlock);
       window.clearTimeout(fallback);
+      warm.removeEventListener("load", markReady);
+      warm.removeEventListener("error", markReady);
     };
   }, [smokeReveal, skipSmoke]);
 
   useEffect(() => {
-    if (!smokeReveal || skipSmoke || !introReady) return;
+    if (!smokeReveal || skipSmoke || !introReady || !imageReady) return;
 
     setSmokeLive(true);
-    const start = window.setTimeout(() => setRevealed(true), 40);
-    // Unmount smoke layers after they fully fade — no leftover haze/box
-    const end = window.setTimeout(() => setSmokeLive(false), 2300);
+    const start = window.setTimeout(() => setRevealed(true), 16);
+    const end = window.setTimeout(() => setSmokeLive(false), 2100);
 
     return () => {
       window.clearTimeout(start);
       window.clearTimeout(end);
     };
-  }, [smokeReveal, skipSmoke, introReady]);
+  }, [smokeReveal, skipSmoke, introReady, imageReady]);
 
   const image = (
     // eslint-disable-next-line @next/next/no-img-element
@@ -104,10 +136,10 @@ export function Logo({
       alt="Akatsuki Studio"
       width={308}
       height={89}
-      decoding="async"
-      // Loader uses a separate mark — keep header fetch low priority on first paint.
+      decoding={priority ? "sync" : "async"}
       loading={priority ? "eager" : "lazy"}
-      fetchPriority="low"
+      fetchPriority={priority ? "high" : "auto"}
+      onLoad={() => setImageReady(true)}
       className={cn("relative z-10 h-auto w-auto object-contain", className)}
     />
   );

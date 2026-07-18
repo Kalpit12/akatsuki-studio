@@ -341,6 +341,41 @@ export const clientWorks: ClientWork[] = [
     ],
   },
   {
+    slug: "keystone-dental",
+    heroVideo: "/Key stone dental/keystone-cover.mp4",
+    heroPoster: "/Key stone dental/keystone-cover.jpg",
+    heroOrientation: "vertical",
+    excerpt:
+      "Clinical care, filmed with intention — preparation, presence, and trust for Keystone Dental Clinic in Nairobi.",
+    films: [
+      {
+        video: "/Key stone dental/keystone-cover.mp4",
+        poster: "/Key stone dental/keystone-cover.jpg",
+        label: "Ready for Care",
+      },
+      {
+        video: "/Key stone dental/keystone-film-01.mp4",
+        poster: "/Key stone dental/keystone-film-01.jpg",
+        label: "Inside the Clinic",
+      },
+      {
+        video: "/Key stone dental/keystone-film-02.mp4",
+        poster: "/Key stone dental/keystone-film-02.jpg",
+        label: "5 Things",
+      },
+      {
+        video: "/Key stone dental/keystone-film-03.mp4",
+        poster: "/Key stone dental/keystone-film-03.jpg",
+        label: "Black Triangles",
+      },
+      {
+        video: "/Key stone dental/keystone-film-04.mp4",
+        poster: "/Key stone dental/keystone-film-04.jpg",
+        label: "Welcome In",
+      },
+    ],
+  },
+  {
     slug: "alliance-automotive",
     heroImage: "/Alliance Automotive/DSC09702.jpg",
     excerpt:

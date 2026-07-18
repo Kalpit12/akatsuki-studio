@@ -9,7 +9,10 @@ export type HomeWorkCard = {
   subtitle: string;
   href: string;
   poster: string;
+  /** Full cover film (portfolio / deep link) */
   video?: string;
+  /** Lightweight hover preview for the homepage Work grid */
+  hoverVideo?: string;
   orientation: FilmOrientation;
 };
 
@@ -29,6 +32,13 @@ export const HOME_WORK_ORDER = [
   "macaash-investments",
   "stiltz-homelift",
 ] as const;
+
+export type HomeWorkSlug = (typeof HOME_WORK_ORDER)[number];
+
+/** Short compressed hover cuts — regenerate with `node scripts/generate-work-previews.mjs` */
+export function workHoverPreviewPath(slug: string) {
+  return `/work-previews/${slug}.mp4`;
+}
 
 function buildCardForClient(client: (typeof clientRoster)[number]): HomeWorkCard | null {
   const project = client.workSlug ? getProject(client.workSlug) : undefined;
@@ -54,6 +64,10 @@ function buildCardForClient(client: (typeof clientRoster)[number]): HomeWorkCard
 
   if (!poster) return null;
 
+  const hasHoverPreview = (HOME_WORK_ORDER as readonly string[]).includes(
+    client.slug,
+  );
+
   return {
     key: client.slug,
     title,
@@ -61,6 +75,7 @@ function buildCardForClient(client: (typeof clientRoster)[number]): HomeWorkCard
     href,
     poster,
     video,
+    hoverVideo: hasHoverPreview ? workHoverPreviewPath(client.slug) : video,
     orientation,
   };
 }

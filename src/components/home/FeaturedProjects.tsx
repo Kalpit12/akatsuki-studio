@@ -105,13 +105,14 @@ function WorkStackCard({
             : "aspect-[9/14]",
         )}
       >
-        {card.video ? (
+        {card.video || card.hoverVideo ? (
           <LazyVideoPlayer
-            src={card.video}
+            src={card.hoverVideo ?? card.video!}
             poster={card.poster}
             className="absolute inset-0 h-full w-full"
             videoClassName="object-cover object-center"
             playOnHover={allowVideo}
+            warmWhenNear
             showMuteOnly
             showControls={false}
             showPlayOverlay={false}
@@ -149,7 +150,8 @@ export function FeaturedProjects() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [staticLayout, setStaticLayout] = useState(false);
   const introReady = useIntroReady();
-  const sectionInView = useInViewport(sectionRef, "200px 0px");
+  // Wider margin so hover is allowed slightly before the section fully enters
+  const sectionInView = useInViewport(sectionRef, "320px 0px");
   const allowVideo = introReady && sectionInView;
 
   useLayoutEffect(() => {

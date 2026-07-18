@@ -18,7 +18,7 @@ export const SITE = {
 export const PORTFOLIO_PATH = "/portfolio" as const;
 
 export const NAV_LINKS = [
-  { href: "/#work", label: "Work" },
+  { href: "/#work", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
   { href: PORTFOLIO_PATH, label: "Portfolio" },

@@ -60,6 +60,33 @@ function SoundBars() {
   );
 }
 
+function CompactIconControl({
+  onClick,
+  ariaLabel,
+  active = false,
+  children,
+}: {
+  onClick: (e: React.MouseEvent) => void;
+  ariaLabel: string;
+  active?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={ariaLabel}
+      aria-pressed={active}
+      className={cn(
+        "flex h-7 w-7 items-center justify-center rounded-full bg-black/50 text-white/75 backdrop-blur-[2px] transition active:scale-95",
+        active && "text-accent",
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
 function StudioControlButton({
   active = false,
   onClick,
@@ -125,6 +152,8 @@ export type LazyVideoPlayerProps = {
   playInViewMinRatio?: number;
   /** Drop video src when fully out of view to free decoders */
   unloadWhenHidden?: boolean;
+  /** For playOnHover: attach + buffer when near viewport before first hover */
+  warmWhenNear?: boolean;
   /** When playInView: only autoplay while true (e.g. dominant story in a section) */
   ambientActive?: boolean;
   /** Show play/pause + mute controls */
@@ -141,6 +170,8 @@ export type LazyVideoPlayerProps = {
   mobileTapControls?: boolean;
   /** Sync parent hover state when mobile pause is tapped */
   onMobilePause?: () => void;
+  /** Mobile tap controls: icon-only buttons without studio chrome (reel tiles) */
+  mobileTapControlsMinimal?: boolean;
 };
 
 export function LazyVideoPlayer({
@@ -154,6 +185,7 @@ export function LazyVideoPlayer({
   alwaysPlay = false,
   playInViewMinRatio = 0.25,
   unloadWhenHidden = false,
+  warmWhenNear = false,
   ambientActive = true,
   showControls = true,
   showMuteOnly = false,
@@ -163,6 +195,7 @@ export function LazyVideoPlayer({
   onSoloPlaybackClaim,
   mobileTapControls = false,
   onMobilePause,
+  mobileTapControlsMinimal = false,
 }: LazyVideoPlayerProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -274,31 +307,63 @@ export function LazyVideoPlayer({
       return;
     }
 
+    // Keep buffered src after hover ends — only pause. Unload is handled by
+    // the near/viewport observer when warmWhenNear or unloadWhenHidden is set.
     setDeepPreload(false);
     pause();
-
-    if (
-      unloadWhenHidden &&
-      !(isMobile && hoverControlled && playOnHover && mobileTapControls)
-    ) {
-      const video = videoRef.current;
-      if (video) {
-        video.removeAttribute("src");
-        video.load();
-      }
-      setSrcLoaded(false);
-    }
   }, [
     playOnHover,
     pointerHover,
     introReady,
     tryPlay,
     pause,
-    unloadWhenHidden,
     alwaysPlay,
-    isMobile,
-    hoverControlled,
-    mobileTapControls,
+  ]);
+
+  // Warm hover videos before first pointer enter; optionally unload when far away
+  useEffect(() => {
+    if (alwaysPlay || !playOnHover || !introReady) return;
+    if (!warmWhenNear && !unloadWhenHidden) return;
+    const root = rootRef.current;
+    if (!root) return;
+
+    const warm = new IntersectionObserver(
+      ([entry]) => {
+        const near = !!entry?.isIntersecting;
+
+        if (near) {
+          setSrcLoaded(true);
+          // Metadata is enough until hover; deep preload kicks in on pointer enter
+          return;
+        }
+
+        if (!unloadWhenHidden || pointerHover) return;
+
+        pause();
+        const video = videoRef.current;
+        if (video) {
+          video.removeAttribute("src");
+          video.load();
+        }
+        setSrcLoaded(false);
+        setDeepPreload(false);
+      },
+      {
+        rootMargin: warmWhenNear ? "320px 0px" : "0px",
+        threshold: 0,
+      },
+    );
+
+    warm.observe(root);
+    return () => warm.disconnect();
+  }, [
+    playOnHover,
+    warmWhenNear,
+    unloadWhenHidden,
+    introReady,
+    alwaysPlay,
+    pointerHover,
+    pause,
   ]);
 
   // Ambient: attach + play only when near / in view (after intro)
@@ -501,6 +566,9 @@ export function LazyVideoPlayer({
     showMobilePlaybackControls ||
     showMobileTapControlsActive;
 
+  const useCompactMobileTapControls =
+    showMobileTapControlsActive && mobileTapControlsMinimal;
+
   return (
     <div
       ref={rootRef}
@@ -568,34 +636,63 @@ export function LazyVideoPlayer({
         <div
           className={cn(
             "absolute z-20 flex flex-wrap items-center justify-end gap-2",
-            showMuteOnly || showMobileTapControlsActive
-              ? "top-3 right-3 md:top-4 md:right-4"
-              : "right-3 bottom-3 md:right-4 md:bottom-4",
+            useCompactMobileTapControls
+              ? "top-2.5 right-2.5 gap-1 md:top-4 md:right-4 md:gap-2"
+              : showMuteOnly || showMobileTapControlsActive
+                ? "top-3 right-3 md:top-4 md:right-4"
+                : "right-3 bottom-3 md:right-4 md:bottom-4",
           )}
         >
           {showPlayButton ? (
-            <StudioControlButton
-              active={playing}
-              onClick={(e) => {
-                e.stopPropagation();
-                togglePlay();
-              }}
-              label={playing ? "Pause" : "Play"}
-              ariaLabel={playing ? "Pause video" : "Play video"}
-            >
-              {playing ? <PauseIcon /> : <PlayIcon />}
-            </StudioControlButton>
+            useCompactMobileTapControls ? (
+              <CompactIconControl
+                active={playing}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  togglePlay();
+                }}
+                ariaLabel={playing ? "Pause video" : "Play video"}
+              >
+                {playing ? (
+                  <PauseIcon />
+                ) : (
+                  <PlayIcon />
+                )}
+              </CompactIconControl>
+            ) : (
+              <StudioControlButton
+                active={playing}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  togglePlay();
+                }}
+                label={playing ? "Pause" : "Play"}
+                ariaLabel={playing ? "Pause video" : "Play video"}
+              >
+                {playing ? <PauseIcon /> : <PlayIcon />}
+              </StudioControlButton>
+            )
           ) : null}
-          <StudioControlButton
-            active={!muted}
-            onClick={handleToggleMute}
-            label={muted ? "Sound" : "Mute"}
-            ariaLabel={muted ? "Unmute video" : "Mute video"}
-            pulse={muted}
-            showBars={!muted}
-          >
-            <VolumeIcon muted={muted} />
-          </StudioControlButton>
+          {useCompactMobileTapControls ? (
+            <CompactIconControl
+              active={!muted}
+              onClick={handleToggleMute}
+              ariaLabel={muted ? "Unmute video" : "Mute video"}
+            >
+              <VolumeIcon muted={muted} />
+            </CompactIconControl>
+          ) : (
+            <StudioControlButton
+              active={!muted}
+              onClick={handleToggleMute}
+              label={muted ? "Sound" : "Mute"}
+              ariaLabel={muted ? "Unmute video" : "Mute video"}
+              pulse={muted}
+              showBars={!muted}
+            >
+              <VolumeIcon muted={muted} />
+            </StudioControlButton>
+          )}
         </div>
       ) : null}
     </div>
