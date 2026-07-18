@@ -29,6 +29,7 @@ export const HOME_WORK_ORDER = [
   "elias-jewelers",
   "posh-autobody",
   "durham-school",
+  "keystone-dental",
   "macaash-investments",
   "stiltz-homelift",
 ] as const;

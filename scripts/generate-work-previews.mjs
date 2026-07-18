@@ -5,7 +5,7 @@
  *
  * Usage: node scripts/generate-work-previews.mjs
  */
-import { mkdirSync, existsSync } from "node:fs";
+import { mkdirSync, existsSync, copyFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -26,9 +26,13 @@ const SOURCES = {
   "elias-jewelers": "elias-jewellery-campaign.mp4",
   "posh-autobody": "Posh Auto Body/posh-defender-ppf.mp4",
   "durham-school": "durham-x-radhika.mp4",
+  "keystone-dental": "Key stone dental/keystone-cover.mp4",
   "macaash-investments": "Macaash/macaash-cover.mp4",
-  "stiltz-homelift": "Stiltz Lifts/stiltz-college.mp4",
+  "stiltz-homelift": "Stiltz Lifts/stiltz-hero.mp4",
 };
+
+/** Copy full source as-is (no trim/re-encode) */
+const COPY_AS_IS = new Set(["stiltz-homelift"]);
 
 mkdirSync(outDir, { recursive: true });
 
@@ -43,6 +47,13 @@ for (const [slug, rel] of Object.entries(SOURCES)) {
   if (!existsSync(input)) {
     console.warn(`SKIP missing source: ${rel}`);
     skip += 1;
+    continue;
+  }
+
+  if (COPY_AS_IS.has(slug)) {
+    copyFileSync(input, output);
+    console.log(`OK  ${slug} -> work-previews/${slug}.mp4 (as-is)`);
+    ok += 1;
     continue;
   }
 

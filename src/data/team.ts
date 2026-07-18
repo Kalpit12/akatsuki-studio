@@ -41,25 +41,21 @@ export const team: TeamMember[] = [
     },
     story: [
       {
-        lead: "I picked up a camera chasing feeling — and never looked back.",
-        body: "What began as frames that made people pause grew into films, campaigns, and branded stories with weight. I move between photography, filmmaking, and creative direction — always hunting the clearest way to tell each story.",
+        lead: "I picked up a camera because I loved creating.",
+        body: "Somewhere along the way, that turned into building Akatsuki.",
       },
       {
-        lead: "A modern studio means pushing past safe.",
-        body: "From cinematic portraits to punchy reels and full campaigns, I aim to build work that feels distinct — the kind that breaks the scroll and makes someone stop.",
-      },
-      {
-        lead: "Details matter because they carry intention.",
-        body: "Every frame, every cut, every beat has to serve the story. If it doesn’t, it doesn’t stay.",
+        lead: "Today I lead the creative side of the studio,",
+        body: "turning ideas into films, campaigns, and content that people remember. I love pressure—the bigger the challenge, the more I enjoy it.",
       },
     ],
     closing:
-      "This is where intention becomes craft — and craft becomes work people remember.",
+      "Outside of work, you'll usually find me behind a camera, behind the wheel, or planning the next story.",
   },
   {
-    name: "B. Chitroda",
-    role: "Founder, Akatsuki Studio",
-    title: "Founder, Creative Strategist, Storyteller",
+    name: "Bansi Chitroda",
+    role: "Co-Founder, Finance & Operations",
+    title: "Co-Founder, Finance & Operations",
     initials: "BC",
     social: {
       instagram: "https://www.instagram.com/b.chitroda",
@@ -67,19 +63,11 @@ export const team: TeamMember[] = [
     },
     story: [
       {
-        lead: "I build brands people don’t just see — they feel.",
-        body: "My lane is the space between concept and culture: how a brief becomes a look, a mood, a moment that lives past the campaign window. Style is never decoration for me — it’s strategy in disguise.",
-      },
-      {
-        lead: "Presence is the real deliverable.",
-        body: "Whether we’re shaping a launch, a lifestyle cut, or a full visual system, I obsess over what makes someone pause mid-scroll and choose you. Attention is earned. Memory is designed.",
-      },
-      {
-        lead: "Taste is a filter — not a vibe.",
-        body: "I push for work that is sharp, current, and unmistakably ours. If it doesn’t raise the bar for the brand and for Akatsuki, we keep cutting until it does.",
+        lead: "Akatsuki has always been more than a business to me.",
+        body: "It's something we're building from the ground up, one client, one project, and one challenge at a time.",
       },
     ],
     closing:
-      "This is where vision meets nerve — and brands leave a mark that lasts.",
+      "I love creating structure behind the creativity—making sure the team can do their best work while building a company we're proud of for years to come.",
   },
 ];

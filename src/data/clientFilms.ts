@@ -209,11 +209,17 @@ export const clientWorks: ClientWork[] = [
   },
   {
     slug: "stiltz-homelift",
-    heroVideo: "/Stiltz Lifts/stiltz-college.mp4",
-    heroPoster: "/Stiltz Lifts/stiltz-college.jpg",
+    heroVideo: "/Stiltz Lifts/stiltz-hero.mp4",
+    heroPoster: "/Stiltz Lifts/stiltz-hero.jpg",
+    heroOrientation: "vertical",
     excerpt:
       "Home accessibility told with clarity — product films for events, installs, and everyday living.",
     films: [
+      {
+        video: "/Stiltz Lifts/stiltz-hero.mp4",
+        poster: "/Stiltz Lifts/stiltz-hero.jpg",
+        label: "Stiltz Hero",
+      },
       {
         video: "/Stiltz Lifts/stiltz-college.mp4",
         poster: "/Stiltz Lifts/stiltz-college.jpg",
@@ -228,6 +234,11 @@ export const clientWorks: ClientWork[] = [
         video: "/Stiltz Lifts/stiltz-home.mp4",
         poster: "/Stiltz Lifts/stiltz-home.jpg",
         label: "Stiltz Home",
+      },
+      {
+        video: "/Stiltz Lifts/stiltz-film-04.mp4",
+        poster: "/Stiltz Lifts/stiltz-film-04.jpg",
+        label: "Home Lift",
       },
     ],
     gallery: [
@@ -372,6 +383,31 @@ export const clientWorks: ClientWork[] = [
         video: "/Key stone dental/keystone-film-04.mp4",
         poster: "/Key stone dental/keystone-film-04.jpg",
         label: "Welcome In",
+      },
+    ],
+  },
+  {
+    slug: "kyra-customs",
+    heroVideo: "/Kyra Customs/kyra-customs-radhika-ppf.mp4",
+    heroPoster: "/Kyra Customs/kyra-customs-radhika-ppf.jpg",
+    heroOrientation: "vertical",
+    excerpt:
+      "Paint protection film and custom detailing — sharp cuts that show the craft behind every wrap and finish.",
+    films: [
+      {
+        video: "/Kyra Customs/kyra-customs-radhika-ppf.mp4",
+        poster: "/Kyra Customs/kyra-customs-radhika-ppf.jpg",
+        label: "Radhika PPF",
+      },
+      {
+        video: "/Kyra Customs/kyra-customs-ppf.mp4",
+        poster: "/Kyra Customs/kyra-customs-ppf.jpg",
+        label: "Kyra Customs PPF",
+      },
+      {
+        video: "/Kyra Customs/kyra-customs-ppf-love.mp4",
+        poster: "/Kyra Customs/kyra-customs-ppf-love.jpg",
+        label: "PPF Love",
       },
     ],
   },
