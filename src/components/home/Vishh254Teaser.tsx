@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { VISHH254, type VishhFilm } from "@/data/vishh254";
 import { setReturnScroll, VISHH254_SECTION_ID } from "@/lib/scroll-anchor";
+import { isFinePointer } from "@/lib/gsap-mobile";
 import { useIntroReady } from "@/hooks/useIntroReady";
 import { useInViewport } from "@/hooks/useInViewport";
 import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
@@ -68,6 +69,29 @@ function TeaserFilmCard({
   const isFeatured = film.featured === true;
   const [hovered, setHovered] = useState(false);
 
+  const handlePointerEnter = () => {
+    if (isFinePointer()) setHovered(true);
+  };
+
+  const handlePointerLeave = () => {
+    if (isFinePointer()) setHovered(false);
+  };
+
+  const handlePointerUp = (event: React.PointerEvent) => {
+    if (isFinePointer()) return;
+    if ((event.target as HTMLElement).closest("a, button")) return;
+    setHovered((active) => !active);
+  };
+
+  const handleMobilePlay = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setHovered(true);
+  };
+
+  const handleMobilePause = () => {
+    setHovered(false);
+  };
+
   return (
     <article
       className={cn(
@@ -76,13 +100,9 @@ function TeaserFilmCard({
           ? "w-[14rem] shrink-0 border-accent/35 shadow-[0_0_50px_rgba(225,6,0,0.12)] hover:border-accent/55 sm:w-[16rem] md:w-[15.75rem] lg:w-[17rem] xl:w-[18rem] max-md:w-full"
           : "w-[12.75rem] shrink-0 self-end border-white/10 max-md:border-white/20 hover:border-white/25 sm:w-[13.75rem] md:w-[13.5rem] lg:w-[14.5rem] xl:w-[15.25rem] max-md:w-full max-md:self-stretch",
       )}
-      onPointerEnter={() => setHovered(true)}
-      onPointerLeave={() => setHovered(false)}
-      onPointerUp={(event) => {
-        if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-        if ((event.target as HTMLElement).closest("a")) return;
-        setHovered((active) => !active);
-      }}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
+      onPointerUp={handlePointerUp}
     >
       <div className="relative aspect-[9/16]">
         <LazyVideoPlayer
@@ -91,11 +111,38 @@ function TeaserFilmCard({
           className="absolute inset-0 h-full w-full"
           playOnHover={introReady}
           hoverActive={hovered}
+          mobileTapControls
+          onMobilePause={handleMobilePause}
           showMuteOnly
           showControls={false}
           showPlayOverlay={false}
           unloadWhenHidden
         />
+        {introReady && !hovered ? (
+          <button
+            type="button"
+            onClick={handleMobilePlay}
+            className="absolute inset-0 z-10 flex items-center justify-center bg-black/25 transition active:bg-black/35 md:hidden"
+            aria-label={`Play ${film.title}`}
+          >
+            <span className="relative inline-flex items-center gap-2.5 overflow-hidden border border-white/20 bg-black/60 px-4 py-2.5 backdrop-blur-md">
+              <span
+                className="absolute inset-y-0 left-0 w-px bg-accent"
+                aria-hidden
+              />
+              <svg
+                viewBox="0 0 24 24"
+                className="h-3.5 w-3.5 shrink-0 fill-current text-white/75"
+                aria-hidden
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              <span className="font-mono text-[9px] tracking-[0.22em] text-white/75 uppercase">
+                Play
+              </span>
+            </span>
+          </button>
+        ) : null}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/40" />
         <div
           className={cn(
@@ -199,8 +246,11 @@ export function Vishh254Teaser() {
 
         <div className="mt-12 md:mt-16">
           <div className="mb-6 flex items-end justify-between gap-4">
-            <p className="font-mono text-[10px] tracking-[0.22em] text-white/45">
+            <p className="font-mono text-[10px] tracking-[0.22em] text-white/45 max-md:hidden">
               Selected personal cuts · hover to preview
+            </p>
+            <p className="font-mono text-[10px] tracking-[0.22em] text-white/45 md:hidden">
+              Selected personal cuts · tap Play to preview
             </p>
             <p className="font-mono text-xs tracking-[0.2em] text-accent">
               {String(films.length).padStart(2, "0")} cuts

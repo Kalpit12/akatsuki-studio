@@ -137,6 +137,10 @@ export type LazyVideoPlayerProps = {
   /** Mobile work films: only this src may play; others auto-pause */
   soloPlaybackKey?: string | null;
   onSoloPlaybackClaim?: (src: string) => void;
+  /** Mobile tap-toggle sections: show play/pause beside mute (requires hoverActive) */
+  mobileTapControls?: boolean;
+  /** Sync parent hover state when mobile pause is tapped */
+  onMobilePause?: () => void;
 };
 
 export function LazyVideoPlayer({
@@ -157,6 +161,8 @@ export function LazyVideoPlayer({
   showPlayOverlay = true,
   soloPlaybackKey = null,
   onSoloPlaybackClaim,
+  mobileTapControls = false,
+  onMobilePause,
 }: LazyVideoPlayerProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -271,7 +277,10 @@ export function LazyVideoPlayer({
     setDeepPreload(false);
     pause();
 
-    if (unloadWhenHidden) {
+    if (
+      unloadWhenHidden &&
+      !(isMobile && hoverControlled && playOnHover && mobileTapControls)
+    ) {
       const video = videoRef.current;
       if (video) {
         video.removeAttribute("src");
@@ -287,6 +296,9 @@ export function LazyVideoPlayer({
     pause,
     unloadWhenHidden,
     alwaysPlay,
+    isMobile,
+    hoverControlled,
+    mobileTapControls,
   ]);
 
   // Ambient: attach + play only when near / in view (after intro)
@@ -429,9 +441,11 @@ export function LazyVideoPlayer({
   }, [soloPlaybackKey, src, playing, pause]);
 
   const togglePlay = useCallback(() => {
-    if (playing) pause();
-    else void play();
-  }, [playing, play, pause]);
+    if (playing) {
+      pause();
+      if (isMobile && mobileTapControls) onMobilePause?.();
+    } else void play();
+  }, [playing, play, pause, isMobile, mobileTapControls, onMobilePause]);
 
   useEffect(() => {
     mutedRef.current = muted;
@@ -466,13 +480,26 @@ export function LazyVideoPlayer({
     !alwaysPlay &&
     playing;
 
+  const showMobileTapControlsUi =
+    isMobile &&
+    mobileTapControls &&
+    playOnHover &&
+    hoverControlled &&
+    !alwaysPlay;
+
+  const showMobileTapControlsActive =
+    showMobileTapControlsUi && (pointerHover || playing);
+
   const showMute =
     showControls ||
     showMuteOnly ||
     showMobilePlaybackControls ||
+    showMobileTapControlsActive ||
     (playOnHover && (pointerHover || playing));
   const showPlayButton =
-    (showControls && !showMuteOnly) || showMobilePlaybackControls;
+    (showControls && !showMuteOnly) ||
+    showMobilePlaybackControls ||
+    showMobileTapControlsActive;
 
   return (
     <div
@@ -541,7 +568,7 @@ export function LazyVideoPlayer({
         <div
           className={cn(
             "absolute z-20 flex flex-wrap items-center justify-end gap-2",
-            showMuteOnly
+            showMuteOnly || showMobileTapControlsActive
               ? "top-3 right-3 md:top-4 md:right-4"
               : "right-3 bottom-3 md:right-4 md:bottom-4",
           )}

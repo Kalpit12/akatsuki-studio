@@ -9,7 +9,7 @@ import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 import { useIntroReady } from "@/hooks/useIntroReady";
 import { useInViewport } from "@/hooks/useInViewport";
 import { useVisibilityRatio } from "@/hooks/useVisibilityRatio";
-import { DESKTOP_MQ, MOBILE_MQ } from "@/lib/gsap-mobile";
+import { DESKTOP_MQ, MOBILE_MQ, isFinePointer } from "@/lib/gsap-mobile";
 import { PORTFOLIO_PATH } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -74,13 +74,37 @@ function ReelCard({
     onRatioChange(index, ratio);
   }, [index, ratio, onRatioChange]);
 
+  const handlePointerEnter = useCallback(() => {
+    if (isFinePointer()) setHovered(true);
+  }, []);
+
+  const handlePointerLeave = useCallback(() => {
+    if (isFinePointer()) setHovered(false);
+  }, []);
+
+  const handlePointerUp = useCallback((event: React.PointerEvent) => {
+    if (isFinePointer()) return;
+    if ((event.target as HTMLElement).closest("button")) return;
+    setHovered((active) => !active);
+  }, []);
+
+  const handleMobilePlay = useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
+    setHovered(true);
+  }, []);
+
+  const handleMobilePause = useCallback(() => {
+    setHovered(false);
+  }, []);
+
   return (
     <article
       ref={cardRef}
       className={cn(REEL_CARD_SIZE, "group")}
       data-cursor-label="Play"
-      onPointerEnter={() => setHovered(true)}
-      onPointerLeave={() => setHovered(false)}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
+      onPointerUp={handlePointerUp}
     >
       <div className="relative h-full w-full overflow-hidden border border-white/10 bg-black">
         <LazyVideoPlayer
@@ -90,11 +114,38 @@ function ReelCard({
           videoClassName="object-cover object-center"
           playOnHover={allowLoad}
           hoverActive={hovered}
+          mobileTapControls
+          onMobilePause={handleMobilePause}
           showMuteOnly
           showControls={false}
           showPlayOverlay={false}
           unloadWhenHidden
         />
+        {allowLoad && !hovered ? (
+          <button
+            type="button"
+            onClick={handleMobilePlay}
+            className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 transition active:bg-black/35 md:hidden"
+            aria-label={`Play ${item.label} reel`}
+          >
+            <span className="relative inline-flex items-center gap-2.5 overflow-hidden border border-white/20 bg-black/60 px-4 py-2.5 backdrop-blur-md">
+              <span
+                className="absolute inset-y-0 left-0 w-px bg-accent"
+                aria-hidden
+              />
+              <svg
+                viewBox="0 0 24 24"
+                className="h-3.5 w-3.5 shrink-0 fill-current text-white/75"
+                aria-hidden
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              <span className="font-mono text-[9px] tracking-[0.22em] text-white/75 uppercase">
+                Play
+              </span>
+            </span>
+          </button>
+        ) : null}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/35" />
         <div
           className="absolute top-0 left-0 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"

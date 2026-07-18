@@ -11,14 +11,14 @@ import { PrefetchReelPosters } from "@/components/home/PrefetchReelPosters";
 import { ProcessTimeline } from "@/components/home/ProcessTimeline";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CraftSection } from "@/components/home/CraftSection";
+import { HOME_HERO } from "@/data/vishh254";
 import { ContactCTA } from "@/components/home/ContactCTA";
-import { MEDIA } from "@/lib/cloudinary";
 
 export default function HomePage() {
   return (
     <>
       {/* Hero poster only — video preload uses unsupported `as=video` in Chrome */}
-      <link rel="preload" as="image" href={MEDIA.heroPoster} />
+      <link rel="preload" as="image" href={HOME_HERO.poster} />
       <PrefetchServiceImages />
       <PrefetchReelPosters />
       <HeroSection />

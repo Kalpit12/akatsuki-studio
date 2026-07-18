@@ -32,9 +32,9 @@ export function cldImage(
 }
 
 export const MEDIA = {
-  /** Hero — Vishh254 bike chase */
-  hero: "/Personal Vids/chase-scene.mp4",
-  heroPoster: "/Personal Vids/chase-scene.jpg",
+  /** Hero — Bike Chase BTS (vishh254 teaser) */
+  hero: "/Personal Vids/bike-chase-bts.mp4",
+  heroPoster: "/Personal Vids/bike-chase-bts.jpg",
 
   /** About studio — homepage who-we-are (Huawei Product Launch Africa) */
   about: "/huawei-about.mp4",

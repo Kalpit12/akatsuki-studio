@@ -112,4 +112,9 @@ export const VISHH254 = {
   ] as VishhFilm[],
 } as const;
 
+/** Homepage hero — Bike Chase BTS (vishh254 teaser) */
+export const HOME_HERO = VISHH254.teaserFilms.find(
+  (film) => film.id === "teaser-01",
+)!;
+
 export const VISHH254_PLACEHOLDERS: VishhFilm[] = [];

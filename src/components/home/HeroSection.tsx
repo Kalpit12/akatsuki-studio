@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MEDIA } from "@/lib/cloudinary";
+import { HOME_HERO } from "@/data/vishh254";
 import { DESKTOP_MQ, MOBILE_MQ } from "@/lib/gsap-mobile";
 import { VideoBackground } from "@/components/ui/VideoBackground";
 import { MagneticButton } from "@/components/ui/MagneticButton";
@@ -80,11 +80,40 @@ export function HeroSection() {
         }
       };
 
-      ScrollTrigger.create({
-        trigger: section,
-        start: "bottom top",
-        onEnter: dismissHero,
-        onLeaveBack: restoreHero,
+      mm.add(MOBILE_MQ, () => {
+        let restoreTimer: ReturnType<typeof setTimeout> | null = null;
+
+        const dismissHeroMobile = () => {
+          if (restoreTimer) {
+            clearTimeout(restoreTimer);
+            restoreTimer = null;
+          }
+          dismissHero();
+        };
+
+        const restoreHeroMobile = () => {
+          if (restoreTimer) clearTimeout(restoreTimer);
+          restoreTimer = setTimeout(() => {
+            restoreHero();
+            restoreTimer = null;
+          }, 180);
+        };
+
+        ScrollTrigger.create({
+          trigger: section,
+          start: "bottom top",
+          onEnter: dismissHeroMobile,
+          onLeaveBack: restoreHeroMobile,
+        });
+      });
+
+      mm.add(DESKTOP_MQ, () => {
+        ScrollTrigger.create({
+          trigger: section,
+          start: "bottom top",
+          onEnter: dismissHero,
+          onLeaveBack: restoreHero,
+        });
       });
 
       mm.add(MOBILE_MQ, () => {
@@ -143,8 +172,8 @@ export function HeroSection() {
       <div ref={stickyRef} className="sticky top-0 isolate h-screen overflow-hidden">
         <div className="hero-video-wrap absolute inset-0 scale-105 md:will-change-transform">
           <VideoBackground
-            src={MEDIA.hero}
-            poster={MEDIA.heroPoster}
+            src={HOME_HERO.video}
+            poster={HOME_HERO.poster}
             overlay
             alwaysPlay
           />
