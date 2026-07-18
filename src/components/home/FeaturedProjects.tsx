@@ -161,8 +161,9 @@ export function FeaturedProjects() {
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const isMobile = window.matchMedia(MOBILE_MQ).matches;
 
-    if (reducedMotion) {
+    if (reducedMotion || isMobile) {
       setStaticLayout(true);
       return;
     }
@@ -251,7 +252,6 @@ export function FeaturedProjects() {
         };
       };
 
-      mm.add(MOBILE_MQ, () => buildTimeline("+=72%", 0.5));
       mm.add(DESKTOP_MQ, () => buildTimeline("+=88%", 0.38));
     }, section);
 

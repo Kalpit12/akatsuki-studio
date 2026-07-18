@@ -9,7 +9,7 @@ import { LazyVideoPlayer } from "@/components/ui/LazyVideoPlayer";
 import { useIntroReady } from "@/hooks/useIntroReady";
 import { useInViewport } from "@/hooks/useInViewport";
 import { useVisibilityRatio } from "@/hooks/useVisibilityRatio";
-import { DESKTOP_MQ, MOBILE_MQ, isFinePointer } from "@/lib/gsap-mobile";
+import { DESKTOP_MQ, isFinePointer } from "@/lib/gsap-mobile";
 import { PORTFOLIO_PATH } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -51,7 +51,7 @@ const REELS = [
 
 /** Shared footprint — every reel tile + CTA uses the same vertical frame */
 const REEL_CARD_SIZE =
-  "relative h-full max-h-full w-auto shrink-0 aspect-[9/16]";
+  "relative w-auto shrink-0 aspect-[9/16] max-md:h-[min(58vw,17.5rem)] max-md:max-h-none max-md:snap-center md:h-full md:max-h-full";
 
 type ReelItem = (typeof REELS)[number];
 
@@ -268,7 +268,6 @@ export function ReelSection() {
         });
       };
 
-      mm.add(MOBILE_MQ, pinReel);
       mm.add(DESKTOP_MQ, pinReel);
     }, section);
 
@@ -279,7 +278,7 @@ export function ReelSection() {
     <section
       ref={sectionRef}
       data-reel-section
-      className="relative isolate z-[2] flex h-[100svh] flex-col overflow-hidden bg-background"
+      className="relative isolate z-[2] bg-background max-md:py-16 md:flex md:h-[100svh] md:flex-col md:overflow-hidden"
     >
       <div className="section-padding relative z-20 flex shrink-0 items-end justify-between gap-6 max-md:pt-16 max-md:pb-3 md:pt-24 md:pb-4">
         <div>
@@ -288,7 +287,7 @@ export function ReelSection() {
             Motion in every direction.
           </h2>
           <p className="mt-2 text-xs text-muted md:hidden">
-            Scroll to scrub the reel →
+            Swipe the reel →
           </p>
         </div>
         <div className="hidden max-w-[14rem] shrink-0 text-right md:block">
@@ -304,7 +303,7 @@ export function ReelSection() {
         </div>
       </div>
 
-      <div className="section-padding relative z-20 mb-3 shrink-0 md:mb-4">
+      <div className="section-padding relative z-20 mb-3 hidden shrink-0 md:mb-4 md:block">
         <div className="h-px w-full overflow-hidden bg-white/10">
           <div
             ref={progressRef}
@@ -314,12 +313,12 @@ export function ReelSection() {
         </div>
       </div>
 
-      <div className="relative min-h-0 flex-1 overflow-hidden pb-6 max-md:pb-10 md:pb-7">
+      <div className="relative max-md:-mx-6 max-md:overflow-x-auto max-md:overflow-y-visible max-md:pb-2 max-md:[-ms-overflow-style:none] max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden md:min-h-0 md:flex-1 md:overflow-hidden md:pb-7">
         <div
           ref={trackRef}
           className={cn(
-            "flex h-full w-max max-w-none items-end gap-3 px-6 md:gap-4 md:px-12 lg:gap-5 lg:px-20",
-            sectionInView && "will-change-transform",
+            "flex w-max max-w-none items-end gap-3 px-6 max-md:snap-x max-md:snap-mandatory md:gap-4 md:px-12 lg:gap-5 lg:px-20",
+            sectionInView && "md:will-change-transform",
           )}
         >
           {REELS.map((item, i) => (

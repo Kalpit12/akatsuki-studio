@@ -81,43 +81,17 @@ export function HeroSection() {
       };
 
       mm.add(MOBILE_MQ, () => {
-        let restoreTimer: ReturnType<typeof setTimeout> | null = null;
-
-        const dismissHeroMobile = () => {
-          if (restoreTimer) {
-            clearTimeout(restoreTimer);
-            restoreTimer = null;
-          }
-          dismissHero();
-        };
-
-        const restoreHeroMobile = () => {
-          if (restoreTimer) clearTimeout(restoreTimer);
-          restoreTimer = setTimeout(() => {
-            restoreHero();
-            restoreTimer = null;
-          }, 180);
-        };
-
-        ScrollTrigger.create({
-          trigger: section,
-          start: "bottom top",
-          onEnter: dismissHeroMobile,
-          onLeaveBack: restoreHeroMobile,
-        });
-      });
-
-      mm.add(DESKTOP_MQ, () => {
-        ScrollTrigger.create({
-          trigger: section,
-          start: "bottom top",
-          onEnter: dismissHero,
-          onLeaveBack: restoreHero,
-        });
-      });
-
-      mm.add(MOBILE_MQ, () => {
         runEntrance(true);
+
+        ScrollTrigger.create({
+          trigger: section,
+          start: "bottom top+=8",
+          onEnter: dismissHero,
+          onLeaveBack: () => {
+            if (window.scrollY > window.innerHeight * 0.45) return;
+            restoreHero();
+          },
+        });
 
         gsap.to(".hero-content", {
           y: -28,
@@ -130,6 +104,15 @@ export function HeroSection() {
             scrub: 0.25,
             invalidateOnRefresh: true,
           },
+        });
+      });
+
+      mm.add(DESKTOP_MQ, () => {
+        ScrollTrigger.create({
+          trigger: section,
+          start: "bottom top",
+          onEnter: dismissHero,
+          onLeaveBack: restoreHero,
         });
       });
 
@@ -167,9 +150,9 @@ export function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate z-0 max-md:h-[108vh] max-md:overflow-hidden md:h-[120vh] md:overflow-hidden"
+      className="relative isolate z-0 max-md:min-h-[100svh] max-md:h-auto md:h-[120vh] md:overflow-hidden"
     >
-      <div ref={stickyRef} className="sticky top-0 isolate h-screen overflow-hidden">
+      <div ref={stickyRef} className="sticky top-0 isolate max-md:h-[100svh] h-screen overflow-hidden">
         <div className="hero-video-wrap absolute inset-0 scale-105 md:will-change-transform">
           <VideoBackground
             src={HOME_HERO.video}
