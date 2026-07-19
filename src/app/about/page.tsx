@@ -31,7 +31,6 @@ export default function AboutPage() {
         closingClassName="text-accent"
         showTruth={false}
         showAboutLink={false}
-        showStudioFloor
       />
       <ProcessTimeline />
       <TeamSection />

@@ -60,7 +60,7 @@ export const VISHH254 = {
     },
     {
       id: "teaser-05",
-      title: "C0251",
+      title: "Best Decision",
       tag: "Film",
       video: "/Personal Vids/vish-c0251.mp4",
       poster: "/Personal Vids/vish-c0251.jpg",
