@@ -215,6 +215,13 @@ export const clientRoster: Client[] = [
     logo: "/clients/wall/bambino.webp",
   },
   {
+    name: "Mara Enkaji",
+    slug: "mara-enkaji",
+    sector: "hospitality",
+    detail: "Safari Lodge",
+    logo: "/clients/wall/mara-enkaji.webp",
+  },
+  {
     name: "Keystone Dental",
     slug: "keystone-dental",
     sector: "healthcare",

@@ -24,6 +24,7 @@ export const HOME_WORK_ORDER = [
   "slate",
   "inti",
   "bambino",
+  "mara-enkaji",
   "autobox-motors",
   "craydel-kenya",
   "elias-jewelers",

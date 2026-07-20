@@ -7,13 +7,13 @@ export function MagneticCursor() {
   const [visible, setVisible] = useState(false);
   const [label, setLabel] = useState("");
   const [hovering, setHovering] = useState(false);
+  // Dot tracks the pointer directly (no spring) so it never feels behind.
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-  const springX = useSpring(cursorX, { stiffness: 500, damping: 40 });
-  const springY = useSpring(cursorY, { stiffness: 500, damping: 40 });
-  const ringX = useSpring(cursorX, { stiffness: 150, damping: 20 });
-  const ringY = useSpring(cursorY, { stiffness: 150, damping: 20 });
-  const scale = useSpring(1, { stiffness: 300, damping: 25 });
+  // Ring keeps a light trail — high stiffness/damping = snappy, not laggy.
+  const ringX = useSpring(cursorX, { stiffness: 600, damping: 38, mass: 0.2 });
+  const ringY = useSpring(cursorY, { stiffness: 600, damping: 38, mass: 0.2 });
+  const scale = useSpring(1, { stiffness: 450, damping: 32, mass: 0.2 });
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export function MagneticCursor() {
       setLabel("");
     };
 
-    window.addEventListener("mousemove", move);
+    window.addEventListener("mousemove", move, { passive: true });
     document.addEventListener("mouseover", onEnter);
     document.addEventListener("mouseout", onLeave);
 
@@ -72,7 +72,7 @@ export function MagneticCursor() {
     <>
       <motion.div
         className="pointer-events-none fixed top-0 left-0 z-[10000] hidden mix-blend-difference md:block"
-        style={{ x: springX, y: springY, translateX: "-50%", translateY: "-50%" }}
+        style={{ x: cursorX, y: cursorY, translateX: "-50%", translateY: "-50%" }}
       >
         <motion.div
           className="h-2 w-2 rounded-full bg-white"
@@ -89,7 +89,7 @@ export function MagneticCursor() {
             height: hovering ? (label ? 96 : 48) : 32,
             opacity: hovering ? 0.6 : 0.25,
           }}
-          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          transition={{ type: "spring", stiffness: 450, damping: 32, mass: 0.2 }}
           className="flex items-center justify-center rounded-full border border-white/30"
         >
           {label && (

@@ -29,6 +29,7 @@ const SOURCES = {
   "keystone-dental": "Key stone dental/keystone-cover.mp4",
   "macaash-investments": "Macaash/macaash-cover.mp4",
   "stiltz-homelift": "Stiltz Lifts/stiltz-hero.mp4",
+  "mara-enkaji": "Mara Enkaji/mara-enkaji-room-c5.mp4",
 };
 
 /** Copy full source as-is (no trim/re-encode) */
