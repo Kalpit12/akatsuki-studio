@@ -10,6 +10,10 @@ import { Logo } from "@/components/brand/Logo";
 import { MoonSplash } from "@/components/brand/MoonSplash";
 import { cn } from "@/lib/utils";
 import { setScrollLocked, subscribeScroll } from "@/lib/scroll-bridge";
+import {
+  formatCompactCount,
+  useSitePresence,
+} from "@/components/providers/PresenceProvider";
 
 function NavLink({
   href,
@@ -337,6 +341,31 @@ export function Header() {
   );
 }
 
+function SiteStatsLine() {
+  const { live, total } = useSitePresence();
+
+  if (live == null && total == null) return null;
+
+  const parts: string[] = [];
+  if (live != null) parts.push(`${formatCompactCount(live)} viewing`);
+  if (total != null) parts.push(`${formatCompactCount(total)} visits`);
+
+  return (
+    <p
+      className="inline-flex items-center gap-2 text-xs text-muted"
+      aria-live="polite"
+    >
+      {live != null ? (
+        <span
+          className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+          aria-hidden
+        />
+      ) : null}
+      <span>{parts.join(" · ")}</span>
+    </p>
+  );
+}
+
 export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-background">
@@ -393,8 +422,9 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-16 flex flex-col justify-between gap-4 border-t border-white/10 pt-8 text-xs text-muted md:flex-row">
+        <div className="mt-16 flex flex-col justify-between gap-4 border-t border-white/10 pt-8 text-xs text-muted md:flex-row md:items-center">
           <span>© {new Date().getFullYear()} Akatsuki Studio Kenya. All rights reserved.</span>
+          <SiteStatsLine />
           <span>Crafted by Nexora Digital with ❤️</span>
         </div>
       </div>
